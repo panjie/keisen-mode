@@ -26,10 +26,9 @@
 ;;
 ;; ~/.emacs に
 ;; 
-;;  (if (boundp 'MULE)
 ;;      (if window-system
-;;          (autoload 'keisen-mode "keisen-mouse" "MULE版罫線モード＋マウス" t))
-;;    (autoload 'keisen-mode "keisen-mule" "MULE版罫線モード" t))
+;;          (autoload 'keisen-mode "keisen-mouse-mode" "罫線モード＋マウス" t))
+;;    (autoload 'keisen-mode "keisen-mode" "罫線モード" t)
 ;;
 ;; のような4行を入れておくと良いでしょう
 ;;
@@ -38,8 +37,7 @@
 ;; Author: 小林 正興 (masaoki@tky.hp.com)
 ;;		       
 		       
-;; keisen-mule 2.02γが必要です
-(require 'keisen-mule) 
+(require 'keisen-mode) 
 
 ;; 変数の定義
 (defvar keisen-mouse-restrict-direction t
@@ -49,7 +47,7 @@
 (defvar keisen-mouse-use-hilite-region t
   "*non-nilならば, マウス操作で四角を描いたり, ドラッグをする場合に範囲を
  ハイライトする. 遅いマシンではnilにした方が良いと思う")
-
+│
 (defvar keisen-mouse-connection-list
   '("  " "│" "┃" "│" "│" "┃" "┃" "┃" "┃"
     "─" "┘" "┛" "┐" "┤" "┨" "┓" "┨" "┨"

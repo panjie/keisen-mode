@@ -188,27 +188,14 @@
 ;; さるよう，お願いいたします．-- 穴澤 <anazawa@lares.dti.ne.jp>
 ;;
 
-(setq debug-on-error t)
-
-(defvar emacs-major-version (string-to-int emacs-version))
-
-(if (>= emacs-major-version 19)
-    (progn
-      (defvar keisen-inverse-face)
-      (copy-face 'mode-line 'keisen-inverse-face)
-      (defun km:inverse-on-region (sta end)
-	(put-text-property sta end 'face 'keisen-inverse-face))
-      (defun km:inverse-off-region (sta end)
-	(put-text-property sta end 'face 'default))
-      (defun km:read-char ()
-	(read-char-exclusive)))
-  (require 'attribute)
-  (defun km:inverse-on-region (sta end)
-    (attribute-on-region 'inverse sta end))
-  (defun km:inverse-off-region (sta end)
-    (attribute-off-region 'inverse sta end))
-  (defun km:read-char ()
-    (read-char)))
+(defvar keisen-inverse-face)
+(copy-face 'mode-line 'keisen-inverse-face)
+(defun km:inverse-on-region (sta end)
+  (put-text-property sta end 'face 'keisen-inverse-face))
+(defun km:inverse-off-region (sta end)
+  (put-text-property sta end 'face 'default))
+(defun km:read-char ()
+  (read-char-exclusive))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -293,9 +280,8 @@ nilならカーソルキー、non-nilならM-[pnbf]キーを描画に使用する。
 (defvar keisen-old-major-mode)
 (defvar keisen-old-overwrite-mode)
 (defvar keisen-old-keyboard-coding-system nil)
-(if (>= emacs-major-version 19)
-    (defvar keisen-old-auto-fill-function)
-  (defvar keisen-old-auto-fill-hook))
+(defvar keisen-old-auto-fill-function)
+(defvar keisen-old-auto-fill-hook)
 (defvar keisen-old-self-insert-after-hook)
 (defvar keisen-old-indent-tabs-mode)
 
@@ -333,31 +319,25 @@ nilならカーソルキー、non-nilならM-[pnbf]キーを描画に使用する。
   "罫線判別の正規表現")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;								  │
-;;   キーバインディング						  │
-;;								  │
-(if keisen-mode-map						  │
-    nil								  │
-  (setq keisen-mode-map (make-keymap))				  │
-  (define-key keisen-mode-map "\C-f"     'keisen-forward-char-hscr│l)
-  (define-key keisen-mode-map "\C-b"     'keisen-backward-char-hsc│ll)
-  (define-key keisen-mode-map "\C-p"     'keisen-previous-line)	  │
-  (define-key keisen-mode-map "\C-n"     'keisen-next-line)	  │
-  (define-key keisen-mode-map "\C-a"     'keisen-beginning-of-line│
-  (define-key keisen-mode-map "\C-e"     'keisen-end-of-line)	  │
-  (define-key keisen-mode-map "\C-m"     'keisen-newline)	  │
-; (define-key keisen-mode-map "\C-j"     'keisen-locked-forward-li│)
-  (define-key keisen-mode-map "\C-j"     'keisen-locked-forward-li│-ext)
-  (define-key keisen-mode-map "\177"     'keisen-clear-backward-ch│)
-  (define-key keisen-mode-map "\C-d"     'keisen-clear-char)	  │
-  (define-key keisen-mode-map "\C-k"     'keisen-clear-line)	  │
-; (define-key keisen-mode-map "\C-o"     'undefined)		  │
-  (define-key keisen-mode-map "\C-w"     'undefined)		  │
+;;
+;;   キーバインディング
+;;
+(if keisen-mode-map
+    nil
+  (setq keisen-mode-map (make-keymap))
+  (define-key keisen-mode-map "\C-f"     'keisen-forward-char-hscroll)
+  (define-key keisen-mode-map "\C-b"     'keisen-backward-char-hscroll)
+  (define-key keisen-mode-map "\C-p"     'keisen-previous-line)
+  (define-key keisen-mode-map "\C-n"     'keisen-next-line)
+  (define-key keisen-mode-map "\C-a"     'keisen-beginning-of-line)
+  (define-key keisen-mode-map "\C-e"     'keisen-end-of-line)
+  (define-key keisen-mode-map "\C-m"     'keisen-newline)
+  (define-key keisen-mode-map "\C-j"     'keisen-locked-forward-line-ext)
+  (define-key keisen-mode-map "\177"     'keisen-clear-backward-char)
+  (define-key keisen-mode-map "\C-d"     'keisen-clear-char)
+  (define-key keisen-mode-map "\C-k"     'keisen-clear-line)
+  (define-key keisen-mode-map "\C-w"     'undefined)
   (define-key keisen-mode-map "\C-y"     'keisen-yank)		  
-; (define-key keisen-mode-map "\ef"      'keisen-draw-right)
-; (define-key keisen-mode-map "\eb"      'keisen-draw-left)
-; (define-key keisen-mode-map "\ep"      'keisen-draw-up)
-; (define-key keisen-mode-map "\en"      'keisen-draw-down)
   (define-key keisen-mode-map "\er"      'keisen-square-line)
   (define-key keisen-mode-map "\es"      'keisen-square-line2)
   (define-key keisen-mode-map "\eh"      'keisen-rectangle)
@@ -382,8 +362,7 @@ nilならカーソルキー、non-nilならM-[pnbf]キーを描画に使用する。
   (define-key keisen-mode-map "\C-cl"    'keisen-toggle-line)
   (define-key keisen-mode-map "\C-cm"    'keisen-toggle-move)
   (define-key keisen-mode-map "\C-@"     'keisen-set-mark)
-  (if (>= emacs-major-version 19)
-      (define-key keisen-mode-map [?\C-\ ]   'keisen-set-mark))
+  (define-key keisen-mode-map [?\C-\ ]   'keisen-set-mark)
   (define-key keisen-mode-map "\t"       'keisen-picture-tab)
   (define-key keisen-mode-map "\C-c<"    'keisen-movement-left)
   (define-key keisen-mode-map "\C-c>"    'keisen-movement-right)
@@ -420,7 +399,7 @@ nilならカーソルキー、non-nilならM-[pnbf]キーを描画に使用する。
   (define-key keisen-mode-map "\C-o\C-u" 'keisen-arrow-up)
   (define-key keisen-mode-map "\C-o\C-r" 'keisen-arrow-right)
   (define-key keisen-mode-map "\C-o\C-l" 'keisen-arrow-left)
-  )
+  )  
 
 (defun keisen-key-mode () ;-- Based by T.Sakano -------------------------------
   "[罫線モード機能]
@@ -432,20 +411,10 @@ nilならカーソルキー、non-nilならM-[pnbf]キーを描画に使用する。
   (if keisen-key-flag
       (progn
         ;カーソル移動
-	(if (>= emacs-major-version 19)
-	    (progn
-	      (define-key keisen-mode-map [right] 'keisen-forward-char-hscroll)
-	      (define-key keisen-mode-map [left] 'keisen-backward-char-hscroll)
-	      (define-key keisen-mode-map [up] 'keisen-previous-line)
-	      (define-key keisen-mode-map [down] 'keisen-next-line))
-	  (define-key keisen-mode-map "\eOC" 'keisen-forward-char-hscroll)
-	  (define-key keisen-mode-map "\eOD" 'keisen-backward-char-hscroll)
-	  (define-key keisen-mode-map "\eOA" 'keisen-previous-line)
-	  (define-key keisen-mode-map "\eOB" 'keisen-next-line)
-	  (define-key keisen-mode-map "\e[C" 'keisen-forward-char-hscroll)
-	  (define-key keisen-mode-map "\e[D" 'keisen-backward-char-hscroll)
-	  (define-key keisen-mode-map "\e[A" 'keisen-previous-line)
-	  (define-key keisen-mode-map "\e[B" 'keisen-next-line))
+	(define-key keisen-mode-map [right] 'keisen-forward-char-hscroll)
+	(define-key keisen-mode-map [left] 'keisen-backward-char-hscroll)
+	(define-key keisen-mode-map [up] 'keisen-previous-line)
+	(define-key keisen-mode-map [down] 'keisen-next-line)
         ;罫線描画
         (define-key keisen-mode-map "\ef"  'keisen-draw-right)
         (define-key keisen-mode-map "\eb"  'keisen-draw-left)
@@ -453,20 +422,10 @@ nilならカーソルキー、non-nilならM-[pnbf]キーを描画に使用する。
         (define-key keisen-mode-map "\en"  'keisen-draw-down)
         (message  "描画にM-[pnbf]キーを使用します"))
     ;罫線描画
-    (if (>= emacs-major-version 19)
-	(progn
-	  (define-key keisen-mode-map [right] 'keisen-draw-right)
-	  (define-key keisen-mode-map [left] 'keisen-draw-left)
-	  (define-key keisen-mode-map [up] 'keisen-draw-up)
-	  (define-key keisen-mode-map [down] 'keisen-draw-down))
-      (define-key keisen-mode-map "\eOC" 'keisen-draw-right)
-      (define-key keisen-mode-map "\eOD" 'keisen-draw-left)
-      (define-key keisen-mode-map "\eOA" 'keisen-draw-up)
-      (define-key keisen-mode-map "\eOB" 'keisen-draw-down)
-      (define-key keisen-mode-map "\e[C" 'keisen-draw-right)
-      (define-key keisen-mode-map "\e[D" 'keisen-draw-left)
-      (define-key keisen-mode-map "\e[A" 'keisen-draw-up)
-      (define-key keisen-mode-map "\e[B" 'keisen-draw-down))
+    (define-key keisen-mode-map [right] 'keisen-draw-right)
+    (define-key keisen-mode-map [left] 'keisen-draw-left)
+    (define-key keisen-mode-map [up] 'keisen-draw-up)
+    (define-key keisen-mode-map [down] 'keisen-draw-down)
     ;カーソル移動
     (define-key keisen-mode-map "\ef"  'keisen-forward-char-hscroll)
     (define-key keisen-mode-map "\eb"  'keisen-backward-char-hscroll)
@@ -3954,16 +3913,11 @@ See also documentation for variable  keisen-picture-tab-chars."
     (make-local-variable 'keisen-old-overwrite-mode)
     (setq keisen-old-overwrite-mode overwrite-mode)
     (overwrite-mode 0)
-    (if (>= emacs-major-version 19)
-	(progn
-	  (if (not (boundp 'self-insert-after-hook))
-	      (defvar self-insert-after-hook nil))
-	  (make-local-variable 'keisen-old-auto-fill-function)
-	  (setq keisen-old-auto-fill-function auto-fill-function)
-	  (setq auto-fill-function nil))
-      (make-local-variable 'keisen-old-auto-fill-hook)
-      (setq keisen-old-auto-fill-hook auto-fill-hook)
-      (setq auto-fill-hook nil))
+    (if (not (boundp 'self-insert-after-hook))
+	(defvar self-insert-after-hook nil))
+    (make-local-variable 'keisen-old-auto-fill-function)
+    (setq keisen-old-auto-fill-function auto-fill-function)
+    (setq auto-fill-function nil)
     (make-local-variable 'keisen-old-self-insert-after-hook)
     (setq keisen-old-self-insert-after-hook self-insert-after-hook)
     (if (setq keisen-overwrite-mode keisen-old-overwrite-mode)
@@ -3977,16 +3931,11 @@ See also documentation for variable  keisen-picture-tab-chars."
     (km:update-mode-line)
 
     ;; check keyboard-coding-system  -- 93.09.20
-    (if (= emacs-major-version 19)
-	(if (not (eq keyboard-coding-system *euc-japan*))
-	    (progn
-	      (setq keisen-old-keyboard-coding-system keyboard-coding-system)
-	      (set-keyboard-coding-system *euc-japan*))))
-    (if nil; (= emacs-major-version 20)
-	(if (not (eq default-keyboard-coding-system 'euc-japan))
-	    (progn
-	      (setq keisen-old-keyboard-coding-system default-keyboard-coding-system)
-	      (set-keyboard-coding-system 'euc-japan))))
+    ;; TODO
+    (if (not (eq default-keyboard-coding-system 'euc-japan))
+	(progn
+	  (setq keisen-old-keyboard-coding-system default-keyboard-coding-system)
+	  (set-keyboard-coding-system 'euc-japan)))
     ;
 
     ;; begin of patch -- Based by M.Ozawa
@@ -4030,18 +3979,14 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq mode-name keisen-old-mode-name)
     (use-local-map keisen-old-local-map)
     (setq major-mode keisen-old-major-mode)
-    (if (>= emacs-major-version 19)
-	(setq auto-fill-function keisen-old-auto-fill-function)
-      (setq auto-fill-hook keisen-old-auto-fill-hook))
+    (setq auto-fill-function keisen-old-auto-fill-function)
     (overwrite-mode (if keisen-old-overwrite-mode 1 0))
     (setq self-insert-after-hook keisen-old-self-insert-after-hook)
     (setq indent-tabs-mode keisen-old-indent-tabs-mode)  ;
     ;;(tabify (point-min) (point-max))                             ;
     (kill-local-variable 'keisen-old-mode-name)
     (kill-local-variable 'keisen-old-local-map)
-    (if (>= emacs-major-version 19)
-	(kill-local-variable 'keisen-old-auto-fill-function)
-      (kill-local-variable 'keisen-old-auto-fill-hook))
+    (kill-local-variable 'keisen-old-auto-fill-function)
     (kill-local-variable 'keisen-old-overwrite-mode)
     (kill-local-variable 'keisen-old-self-insert-after-hook)
     (kill-local-variable 'keisen-old-indent-tabs-mode)
