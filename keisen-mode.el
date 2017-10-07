@@ -26,7 +26,7 @@
 ;;      by KEN.TORII
 ;;
 ;;;
-;; keisen-mule.el
+;; keisen-mode.el
 ;;   Author   : Ken Torii & Tetsuya Sugimoto
 ;;   Modifier : Masahiko Iwamoto
 ;;		<iwamoto@mtc.telcom.oki.co.jp, KFR03243@niftyserve.or.jp>
@@ -214,8 +214,7 @@
 ;;
 ;;   変数
 ;;
-;;(defconst keisen-version "MULE版罫線モード ver 2.02 \"γリリース\""
-(defconst keisen-version "Emacs20版罫線モード ver 2.02 \"γリリース\""
+(defconst keisen-version "罫線モード ver 2.02 \"γリリース\""
   "罫線モードバージョン番号")
 
 (defvar keisen-mode-view-status-flag nil
@@ -4289,5 +4288,5 @@ with the same width of spaces before deleting."
 	  (setq p2 (point))
 	  (delete-region p1 p2)))))
 
-(provide 'keisen-mule)
-;;; keisen-mule.el ends here
+(provide 'keisen-mode)
+;;; keisen-mode.el ends here
