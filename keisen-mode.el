@@ -1,26 +1,26 @@
-;;; -*- Mode: Emacs-Lisp ; Coding: iso-2022-jp -*-
+;;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 ;;
 ;; keisen mode commands for Emacs
 ;; Copyright (C) 1986,1992,1993,1994 Free Software Foundation, Inc.
 ;;
 ;;;
-;; $BK\%W%m%0%i%`$O%U%j!<!&%=%U%H%&%'%"$G$9!#$"$J$?$O!"(BFree Software
-;; Foundation $B$,8xI=$7$?(B GNU $B0lHL8xM-;HMQ5vBz$N!V%P!<%8%g%s(B 1$B!W$"$k$$$O$=$l(B
-;; $B0J9_$N3F%P!<%8%g%s$NCf$+$i$$$:$l$+$rA*Br$7!"$=$N%P!<%8%g%s$,Dj$a$k>r9`$K(B
-;; $B=>$C$FK\%W%m%0%i%`$r:FHRI[$^$?$OJQ99$9$k$3$H$,$G$-$^$9!#(B
+;; 本プログラムはフリー・ソフトウェアです。あなたは、Free Software
+;; Foundation が公表した GNU 一般公有使用許諾の「バージョン 1」あるいはそれ
+;; 以降の各バージョンの中からいずれかを選択し、そのバージョンが定める条項に
+;; 従って本プログラムを再頒布または変更することができます。
 ;;
-;; $BK\%W%m%0%i%`$OM-MQ$H$O;W$$$^$9$,!"HRI[$K$"$?$C$F$O!";T>l@-5Z$SFCDjL\E*E,(B
-;; $B9g@-$K$D$$$F$N0EL[$NJ]>Z$r4^$a$F!"$$$+$J$kJ]>Z$b9T$J$$$^$;$s!#>\:Y$K$D$$(B
-;; $B$F$O(B GNU $B0lHL8xM-;HMQ5vBz=q$r$*FI$_2<$5$$!#(B
+;; 本プログラムは有用とは思いますが、頒布にあたっては、市場性及び特定目的適
+;; 合性についての暗黙の保証を含めて、いかなる保証も行ないません。詳細につい
+;; ては GNU 一般公有使用許諾書をお読み下さい。
 ;;
-;; $B$"$J$?$O!"K\%W%m%0%i%`$H0l=o$K(B GNU $B0lHL8xM-;HMQ5vBz=q$N<L$7$r<u$1<h$C$F$$(B
-;; $B$k$O$:$G$9!#$=$&$G$J$$>l9g$O!"(BFree Software Foundation, Inc., 675 Mass
-;; Ave, Cambridge, MA 02139, USA $B$X<j;f$r=q$$$F2<$5$$!#(B
+;; あなたは、本プログラムと一緒に GNU 一般公有使用許諾書の写しを受け取ってい
+;; るはずです。そうでない場合は、Free Software Foundation, Inc., 675 Mass
+;; Ave, Cambridge, MA 02139, USA へ手紙を書いて下さい。
 ;;
 ;;;
-;; $B$3$N%W%m%0%i%`$O!";0=EBg3X9)3XItEE5$EE;R9)3X2J$NJ?@.#2G/EYB46H@8(B
-;; $BD;5o(B $B7r$5$s$H?yK\(B $BE/Li$5$s$,:n@.$7!"3yIt(B $B9@$5$s$,G[I[$7$?$b$N$r(B
-;; $B%Y!<%9$H$7$F!"(BMULE$BBP1~$X$N=$@55Z$S5!G=DI2C$r9T$C$?$b$N$G$9!#(B
+;; このプログラムは、三重大学工学部電気電子工学科の平成２年度卒業生
+;; 鳥居 健さんと杉本 哲也さんが作成し、鎌部 浩さんが配布したものを
+;; ベースとして、MULE対応への修正及び機能追加を行ったものです。
 ;;
 ;; keisen.el   ver 1.2  (non-tabs version)
 ;;      by KEN.TORII
@@ -31,161 +31,161 @@
 ;;   Modifier : Masahiko Iwamoto
 ;;		<iwamoto@mtc.telcom.oki.co.jp, KFR03243@niftyserve.or.jp>
 ;;   Created  : Dec 13, 1994
-;;   Version  : 2.02$B&C(B
+;;   Version  : 2.02γ
 ;;
 ;;;
 ;; History
 ;;   1993.05.17 08:30 ver 1.90.00    M.Iwamoto
-;;      [[ MULE$BBP1~HG7S@~%b!<%I(B $B&A%j%j!<%9(B ]]
+;;      [[ MULE対応版罫線モード αリリース ]]
 ;;   1993.05.17 11:10 ver 1.90.01    M.Iwamoto
-;;      -- keisen-extend-left$B4X?t$N%P%02~=$(B
+;;      -- keisen-extend-left関数のバグ改修
 ;;   1993.05.17 13:09 ver 1.90.02    M.Iwamoto
-;;      -- keisen-center-line$B4X?t$NDI2C(B
-;;      -- keisen-right-line$B4X?t$NDI2C(B
-;;      -- keisen-left-line$B4X?t$NDI2C(B
+;;      -- keisen-center-line関数の追加
+;;      -- keisen-right-line関数の追加
+;;      -- keisen-left-line関数の追加
 ;;   1993.05.25 09:15 ver 1.90.03    M.Iwamoto
-;;      -- $B<+F02~9T5!G=$NDI2C(B
-;;      -- $B<+F03HD%5!G=$NDI2C(B
+;;      -- 自動改行機能の追加
+;;      -- 自動拡張機能の追加
 ;;   1993.06.08 08:44 ver 1.90.04    M.Iwamoto
-;;      -- keisen-clear-backward-char$B4X?t$N%P%02~=$(B
-;;      -- keisen-overwrite-string$B4X?t$N%P%02~=$(B
-;;      -- keisen-kill-rectangle$B4X?t$NDI2C(B
-;;      -- keisen-yank-rectangle$B4X?t$NDI2C(B
-;;      -- keisen-open-rectangle$B4X?t$NDI2C(B
-;;      -- keisen-clear-rectangle$B4X?t$NDI2C(B
-;;   1993.06.14 16:20 ver 1.90.05    M.Iwamoto		<$BHs8x3+(B>
-;;      -- keisen-clear-char$B4X?t$N%P%02~=$(B
-;;      -- keisen-enlarge-vertically$B4X?t$N%P%02~=$(B
-;;      -- keisen-shrink-horizontally$B4X?t$N%P%02~=$(B
-;;      -- keisen-extend-right$B4X?t$N0lIt;EMMJQ99(B
-;;	-- keisen-extend-left$B4X?t$N0lIt;EMMJQ99(B
-;;	-- keisen-extend-up$B4X?t$N0lIt;EMMJQ99(B
-;;	-- keisen-extend-down$B4X?t$N0lIt;EMMJQ99(B
+;;      -- keisen-clear-backward-char関数のバグ改修
+;;      -- keisen-overwrite-string関数のバグ改修
+;;      -- keisen-kill-rectangle関数の追加
+;;      -- keisen-yank-rectangle関数の追加
+;;      -- keisen-open-rectangle関数の追加
+;;      -- keisen-clear-rectangle関数の追加
+;;   1993.06.14 16:20 ver 1.90.05    M.Iwamoto		<非公開>
+;;      -- keisen-clear-char関数のバグ改修
+;;      -- keisen-enlarge-vertically関数のバグ改修
+;;      -- keisen-shrink-horizontally関数のバグ改修
+;;      -- keisen-extend-right関数の一部仕様変更
+;;	-- keisen-extend-left関数の一部仕様変更
+;;	-- keisen-extend-up関数の一部仕様変更
+;;	-- keisen-extend-down関数の一部仕様変更
 ;;   1993.10.20 12:53 ver 1.95.00    M.Iwamoto
-;;      [[ MULE$BBP1~HG7S@~%b!<%I(B $B&B%j%j!<%9(B ]]
-;;      -- keisen-movement-right$B4X?t$NDI2C(B
-;;      -- keisen-movement-left$B4X?t$NDI2C(B
-;;      -- keisen-movement-up$B4X?t$NDI2C(B
-;;      -- keisen-movement-down$B4X?t$NDI2C(B
-;;      -- keisen-movement-wnw$B4X?t$NDI2C(B
-;;      -- keisen-movement-ene$B4X?t$NDI2C(B
-;;      -- keisen-movement-wsw$B4X?t$NDI2C(B
-;;      -- keisen-movement-ese$B4X?t$NDI2C(B
-;;      -- keisen-movement-nw$B4X?t$NDI2C(B
-;;      -- keisen-movement-ne$B4X?t$NDI2C(B
-;;      -- keisen-movement-sw$B4X?t$NDI2C(B
-;;      -- keisen-movement-se$B4X?t$NDI2C(B
-;;      -- keisen-picture-set-tab-stops$B4X?t$NDI2C(B
-;;      -- keisen-picture-tab-search$B4X?t$NDI2C(B
-;;      -- keisen-picture-tab$B4X?t$NDI2C(B
-;;      -- keisen-set-mark$B4X?t$N;EMMJQ99(B
-;;      -- keisen-center-line$B4X?t$N%P%02~=$(B
-;;      -- keisen-right-line$B4X?t$N%P%02~=$(B
-;;      -- keisen-left-line$B4X?t$N%P%02~=$(B
-;;      -- keisen-arrow$B4X?t$NDI2C(B
-;;      -- keisen-line$B4X?t$NDI2C(B
-;;      -- keisen-square-line2$B4X?t$NDI2C(B
-;;      -- keisen-rectangle$B4X?t$NDI2C(B
-;;      -- keisen-save-rectangle$B4X?t$NDI2C(B
-;;      -- keisen-delete-rectangle$B4X?t$NDI2C(B
-;;      -- keisen-status$B4X?t$NDI2C(B
-;;      -- keisen-previous-line$B4X?t$N;EMMJQ99(B
-;;      -- keisen-next-line$B4X?t$N;EMMJQ99(B
-;;      -- keisen-forward-jump-frame$B4X?t$NDI2C(B
-;;      -- keisen-backward-jump-frame$B4X?t$NDI2C(B
-;;      -- keisen-previous-jump-frame$B4X?t$NDI2C(B
-;;      -- keisen-next-jump-frame$B4X?t$NDI2C(B
-;;      -- keisen-kill-rectangle-to-register$B4X?t$NDI2C(B
-;;      -- keisen-delete-rectangle-to-register$B4X?t$NDI2C(B
-;;      -- keisen-save-rectangle-to-register$B4X?t$NDI2C(B
-;;      -- keisen-yank-rectangle-from-register$B4X?t$NDI2C(B
-;;      -- keisen-view-rectangle-register$B4X?t$NDI2C(B
+;;      [[ MULE対応版罫線モード βリリース ]]
+;;      -- keisen-movement-right関数の追加
+;;      -- keisen-movement-left関数の追加
+;;      -- keisen-movement-up関数の追加
+;;      -- keisen-movement-down関数の追加
+;;      -- keisen-movement-wnw関数の追加
+;;      -- keisen-movement-ene関数の追加
+;;      -- keisen-movement-wsw関数の追加
+;;      -- keisen-movement-ese関数の追加
+;;      -- keisen-movement-nw関数の追加
+;;      -- keisen-movement-ne関数の追加
+;;      -- keisen-movement-sw関数の追加
+;;      -- keisen-movement-se関数の追加
+;;      -- keisen-picture-set-tab-stops関数の追加
+;;      -- keisen-picture-tab-search関数の追加
+;;      -- keisen-picture-tab関数の追加
+;;      -- keisen-set-mark関数の仕様変更
+;;      -- keisen-center-line関数のバグ改修
+;;      -- keisen-right-line関数のバグ改修
+;;      -- keisen-left-line関数のバグ改修
+;;      -- keisen-arrow関数の追加
+;;      -- keisen-line関数の追加
+;;      -- keisen-square-line2関数の追加
+;;      -- keisen-rectangle関数の追加
+;;      -- keisen-save-rectangle関数の追加
+;;      -- keisen-delete-rectangle関数の追加
+;;      -- keisen-status関数の追加
+;;      -- keisen-previous-line関数の仕様変更
+;;      -- keisen-next-line関数の仕様変更
+;;      -- keisen-forward-jump-frame関数の追加
+;;      -- keisen-backward-jump-frame関数の追加
+;;      -- keisen-previous-jump-frame関数の追加
+;;      -- keisen-next-jump-frame関数の追加
+;;      -- keisen-kill-rectangle-to-register関数の追加
+;;      -- keisen-delete-rectangle-to-register関数の追加
+;;      -- keisen-save-rectangle-to-register関数の追加
+;;      -- keisen-yank-rectangle-from-register関数の追加
+;;      -- keisen-view-rectangle-register関数の追加
 ;;   1993.11.04 12:00 ver 1.95.01    M.Iwamoto
-;;      -- keisen-mode$B4X?t$N%P%0=$@5(B
-;;      -- keisen-key-mode$B4X?t$N=$@5(B
-;;      -- keisen-save-rectangle-to-register$B4X?t$N%P%0=$@5(B   
+;;      -- keisen-mode関数のバグ修正
+;;      -- keisen-key-mode関数の修正
+;;      -- keisen-save-rectangle-to-register関数のバグ修正   
 ;;;
 ;; Unofficial History
 ;;   1994.11.04 14:00 ver ?.??.??   Sakai Kiyotaka <ksakai@mtl.t.u-tokyo.ac.jp>
 ;;	-- modified for Mule Ver.2.1
 ;;   1994.12.13 18:40 ver ?.??.??   Tatsuo Furukawa <tatsuo@kobe.hp.com>
-;;	-- Mule 2.x $B$K$F%+!<%=%k0\F0$,$*$+$7$$$H$$$&IT6q9g$r=$@5(B
+;;	-- Mule 2.x にてカーソル移動がおかしいという不具合を修正
 ;;;
-;;   1993.11.25 11:50 ver 1.95.02    M.Iwamoto		<$BHs8x3+(B>
-;;      -- km:new-keisen-string$B4X?t$N%P%0=$@5(B
-;;   1994.02.16 17:27 ver 1.95.03    M.Ozawa		<$BHs8x3+(B>
-;;      -- km:beginning-of-line$B4X?t$N%P%0=$@5(B
-;;      -- km:end-of-line$B4X?t$N%P%0=$@5(B
+;;   1993.11.25 11:50 ver 1.95.02    M.Iwamoto		<非公開>
+;;      -- km:new-keisen-string関数のバグ修正
+;;   1994.02.16 17:27 ver 1.95.03    M.Ozawa		<非公開>
+;;      -- km:beginning-of-line関数のバグ修正
+;;      -- km:end-of-line関数のバグ修正
 ;;   1994.02.16 18:18 ver 1.95.04    M.Iwamoto
-;;      -- km:eoblp$B4X?t$N%P%0=$@5(B
-;;   1994.03.18 12:56 ver 1.96.00    M.Ozawa		<$BHs8x3+(B>
-;;      -- $BF14|%9%/%m!<%k%b!<%I$NDI2C(B
+;;      -- km:eoblp関数のバグ修正
+;;   1994.03.18 12:56 ver 1.96.00    M.Ozawa		<非公開>
+;;      -- 同期スクロールモードの追加
 ;;          keisen-sync-mode
 ;;          keisen-sync-mode-exit
 ;;          keisen-sync-change-region
-;;   1994.03.30 10:33 ver 1.96.01    M.Ozawa		<$BHs8x3+(B>
-;;      -- km:beginning-of-line$B4X?t$N%P%0=$@5(B
-;;   1994.03.30 12:41 ver 1.97.00    M.Iwamoto		<$BHs8x3+(B>
-;;      -- keisen-clear-keisen$B4X?t$NDI2C(B
-;;      -- keisen-clear-frame$B4X?t$NDI2C(B
-;;      -- keisen-line-horizontally$B4X?t$NDI2C(B
-;;      -- keisen-line-vertically$B4X?t$NDI2C(B
-;;      -- keisen-arrow-down$B4X?t$NDI2C(B
-;;      -- keisen-arrow-up$B4X?t$NDI2C(B
-;;      -- keisen-arrow-right$B4X?t$NDI2C(B
-;;      -- keisen-arrow-left$B4X?t$NDI2C(B
-;;      -- keisen-insert-register$B4X?t$NDI2C(B
-;;      -- keisen-locked-forward-line-ext$B4X?t$NDI2C(B
-;;      -- keisen-change-locked-forward-after$B4X?t$NDI2C(B
-;;   1994.03.30 14:22 ver 1.97.01    M.Ozawa		<$BHs8x3+(B>
-;;      -- km:beginning-of-line$B4X?t$N%P%0=$@5(B
-;;      -- km:top-of-frame$B4X?t$N%P%0=$@5(B
-;;      -- km:bottom-of-frame$B4X?t$N%P%0=$@5(B
+;;   1994.03.30 10:33 ver 1.96.01    M.Ozawa		<非公開>
+;;      -- km:beginning-of-line関数のバグ修正
+;;   1994.03.30 12:41 ver 1.97.00    M.Iwamoto		<非公開>
+;;      -- keisen-clear-keisen関数の追加
+;;      -- keisen-clear-frame関数の追加
+;;      -- keisen-line-horizontally関数の追加
+;;      -- keisen-line-vertically関数の追加
+;;      -- keisen-arrow-down関数の追加
+;;      -- keisen-arrow-up関数の追加
+;;      -- keisen-arrow-right関数の追加
+;;      -- keisen-arrow-left関数の追加
+;;      -- keisen-insert-register関数の追加
+;;      -- keisen-locked-forward-line-ext関数の追加
+;;      -- keisen-change-locked-forward-after関数の追加
+;;   1994.03.30 14:22 ver 1.97.01    M.Ozawa		<非公開>
+;;      -- km:beginning-of-line関数のバグ修正
+;;      -- km:top-of-frame関数のバグ修正
+;;      -- km:bottom-of-frame関数のバグ修正
 ;;   1994.03.30 17:53 ver 1.97.02    M.Iwamoto
-;;      -- km:beginning-of-line$B4X?t$N%P%0=$@5(B
+;;      -- km:beginning-of-line関数のバグ修正
 ;;   1994.04.04 11:40 ver 1.97.03    M.Ozawa
-;;      -- keisen-arrow-left$B4X?t$N%P%0=$@5(B
-;;      -- keisen-arrow-right$B4X?t$N%P%0=$@5(B
-;;   1994.04.05 08:28 ver 1.97.04    M.Iwamoto		<$BHs8x3+(B>
-;;      -- provide$B$NL>>N%_%9$r=$@5(B
-;;   1994.04.18 15:00 ver 1.97.05    M.Iwamoto		<$BHs8x3+(B>
-;;      -- keisen-next-line$B4X?t$N;EMMJQ99(B
-;;      -- $B>e5-;EMMJQ99$KH<$$(Bkeisen-move-stop$BJQ?tDI2C(B
-;;   1994.04.19 17:21 ver 1.97.06    M.Iwamoto		<$BHs8x3+(B>
-;;	-- keisen-draw-right$B4X?t$N;EMMJQ99(B
-;;	-- keisen-draw-left$B4X?t$N;EMMJQ99(B
-;;	-- keisen-extend-right$B4X?t$N;EMMJQ99(B
-;;	-- keisen-extend-left$B4X?t$N;EMMJQ99(B
-;;   1994.04.22 16:20 ver 1.97.07    M.Ozawa		<$BHs8x3+(B>
-;;      -- km:beginning-of-line$B4X?t$N%P%0=$@5(B
-;;	-- km:end-of-line$B4X?t$N%P%0=$@5(B
-;;   1994.04.22 16:30 ver 1.97.08    M.Iwamoto		<$BHs8x3+(B>
-;;	-- keisen-beginning-of-line$B4X?t$N%P%0=$@5(B
-;;	-- keisen-end-of-line$B4X?t$N%P%0=$@5(B
-;;   1994.04.26 13:05 ver 1.97.09    M.Iwamoto		<$BHs8x3+(B>
-;;	-- keisen-forward-word-hscroll$B4X?t$NDI2C(B
-;;	-- keisen-backward-word-hscroll$B4X?t$NDI2C(B
-;;   1994.06.02 16:05 ver 1.97.10    M.Iwamoto		<$BHs8x3+(B>
-;;	-- keisen-clear-frame$B4X?t$N%P%0=$@5(B
-;;	-- keisen-kill-line$B4X?t$NDI2C(B
+;;      -- keisen-arrow-left関数のバグ修正
+;;      -- keisen-arrow-right関数のバグ修正
+;;   1994.04.05 08:28 ver 1.97.04    M.Iwamoto		<非公開>
+;;      -- provideの名称ミスを修正
+;;   1994.04.18 15:00 ver 1.97.05    M.Iwamoto		<非公開>
+;;      -- keisen-next-line関数の仕様変更
+;;      -- 上記仕様変更に伴いkeisen-move-stop変数追加
+;;   1994.04.19 17:21 ver 1.97.06    M.Iwamoto		<非公開>
+;;	-- keisen-draw-right関数の仕様変更
+;;	-- keisen-draw-left関数の仕様変更
+;;	-- keisen-extend-right関数の仕様変更
+;;	-- keisen-extend-left関数の仕様変更
+;;   1994.04.22 16:20 ver 1.97.07    M.Ozawa		<非公開>
+;;      -- km:beginning-of-line関数のバグ修正
+;;	-- km:end-of-line関数のバグ修正
+;;   1994.04.22 16:30 ver 1.97.08    M.Iwamoto		<非公開>
+;;	-- keisen-beginning-of-line関数のバグ修正
+;;	-- keisen-end-of-line関数のバグ修正
+;;   1994.04.26 13:05 ver 1.97.09    M.Iwamoto		<非公開>
+;;	-- keisen-forward-word-hscroll関数の追加
+;;	-- keisen-backward-word-hscroll関数の追加
+;;   1994.06.02 16:05 ver 1.97.10    M.Iwamoto		<非公開>
+;;	-- keisen-clear-frame関数のバグ修正
+;;	-- keisen-kill-line関数の追加
 ;;   1994.11.04 17:30 ver 2.00	     M.Iwamoto(Based by S.Kiyotaka)
-;;							<$BHs8x3+(B>
-;;      [[ Mule-2.x$BBP1~HG7S@~%b!<%I(B $B&C%j%j!<%9(B ]]
-;;   1994.11.09 22:42 ver 2.01       M.Iwamoto		<$BHs8x3+(B>
-;;      -- keisen-sync-mode$B4X?t$N%P%0=$@5(B
-;;	-- km:sync-reverse-region$B4X?t$N%P%0=$@5(B
+;;							<非公開>
+;;      [[ Mule-2.x対応版罫線モード γリリース ]]
+;;   1994.11.09 22:42 ver 2.01       M.Iwamoto		<非公開>
+;;      -- keisen-sync-mode関数のバグ修正
+;;	-- km:sync-reverse-region関数のバグ修正
 ;;   1994.12.13 20:35 ver 2.02       M.Iwamoto(Based by T.Furukawa)
-;;      -- keisen-half-locked-forward-line$B4X?t$N%P%0=$@5(B
+;;      -- keisen-half-locked-forward-line関数のバグ修正
 ;;
 ;;
 ;; Emacs-20 version:
-;;   1998.05.08 16:05 Emacs20 version, ver 0.01   A.Anazawa   <$BHs8x3+(B>
-;;      -- km:*em20-p* $BJQ?t$rF3F~$7!"(BEmacs20(Meadow)$B$KBP1~(B
-;;	-- delete-text-in-column $B$NBeBX4X?t(B km:delete-text-in-column $B$r:n@.(B
+;;   1998.05.08 16:05 Emacs20 version, ver 0.01   A.Anazawa   <非公開>
+;;      -- km:*em20-p* 変数を導入し、Emacs20(Meadow)に対応
+;;	-- delete-text-in-column の代替関数 km:delete-text-in-column を作成
 ;;
-;; $B:FG[I[>r7o$O!$>e5-$N$H$*$j!$(BGPL $B$K=>$$$^$9$,!$K\%P!<%8%g%s$OHs>o$K(B
-;; $BIT40A4$J$b$N$G$9!%K|$,0l:FG[I[$5$l$k:]$O!$$=$NE@$r==J,$K$*EA$($/$@(B
-;; $B$5$k$h$&!$$*4j$$$$$?$7$^$9!%(B-- $B7j_7(B <anazawa@lares.dti.ne.jp>
+;; 再配布条件は，上記のとおり，GPL に従いますが，本バージョンは非常に
+;; 不完全なものです．万が一再配布される際は，その点を十分にお伝えくだ
+;; さるよう，お願いいたします．-- 穴澤 <anazawa@lares.dti.ne.jp>
 ;;
 
 (defvar keisen-inverse-face)
@@ -199,81 +199,81 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $BJQ?t(B
+;;   変数
 ;;
-(defconst keisen-version "$B7S@~%b!<%I(B ver 2.02 \"$B&C%j%j!<%9(B\""
-  "$B7S@~%b!<%I%P!<%8%g%sHV9f(B")
+(defconst keisen-version "罫線モード ver 2.02 \"γリリース\""
+  "罫線モードバージョン番号")
 
 (defvar keisen-mode-view-status-flag nil
-  "$B7S@~%b!<%I5/F0;~$K%b!<%I>uBV$NI=<(%U%i%0(B
-t$B$J$iI=<(!"(Bnil$B$J$iI=<($7$J$$!#(B")
+  "罫線モード起動時にモード状態の表示フラグ
+tなら表示、nilなら表示しない。")
 
 (defvar keisen-text-mode-flag nil
-  "$B7S@~%b!<%IMQ$N%F%-%9%H%b!<%I%U%i%0(B($B8=>u(Bnil$B8GDj(B)")
+  "罫線モード用のテキストモードフラグ(現状nil固定)")
 
 (defvar keisen-auto-line-feed-flag nil
-  "$B7S@~OHFb$GJ8;zNs$r<+F02~9T$9$k%U%i%0(B")
+  "罫線枠内で文字列を自動改行するフラグ")
 
 (defvar keisen-auto-enlarge-vertically-flag nil
-  "$B7S@~OHFb$GJ8;zNs$,F~$j$-$i$J$+$C$?>l9g!"=DJ}8~$X<+F03HD%$9$k%U%i%0(B
-keisen-auto-line-feed-flag$B$,(Bnil$B$N$H$-$OL58z(B")
+  "罫線枠内で文字列が入りきらなかった場合、縦方向へ自動拡張するフラグ
+keisen-auto-line-feed-flagがnilのときは無効")
 
 (defvar keisen-auto-enlarge-horizontally-flag nil
-  "$B7S@~OHFb$GJ8;zNs$,F~$j$-$i$J$+$C$?>l9g!"2#J}8~$X<+F03HD%$9$k%U%i%0(B
-keisen-auto-line-feed-flag$B$,(Bt$B$N$H$-$OL58z(B")
+  "罫線枠内で文字列が入りきらなかった場合、横方向へ自動拡張するフラグ
+keisen-auto-line-feed-flagがtのときは無効")
 
 (defvar keisen-move-mode nil ; Based by S.Kobayashi
-  "$B%+!<%=%k0\F0%b!<%I(B
-t$B$J$i7S@~$rHt$SD6$($F%+!<%=%k$r0\F0!"(Bnil$B$J$iL5>r7o$K%+!<%=%k$r0\F0$9$k(B")
+  "カーソル移動モード
+tなら罫線を飛び超えてカーソルを移動、nilなら無条件にカーソルを移動する")
 
 (defvar keisen-move-stop nil ; 94.04.18 by M.I
-  "$B%+!<%=%k0\F0%9%H%C%W%b!<%I(B
-t$B$J$i:G=*%i%$%s$G%+!<%=%k$,Dd;_!"(Bnil$B$J$iL5>r7o$K%+!<%=%k$r0\F0$9$k(B")
+  "カーソル移動ストップモード
+tなら最終ラインでカーソルが停止、nilなら無条件にカーソルを移動する")
 
 (defvar keisen-move-level 0
-  "$B%+!<%=%k0\F0%l%Y%k(B
-0$B$J$i2hLL$NC<$X!"(B1$B$J$i3FOH$NC<$X!"(B2$B$J$iJ8;zNs$NC<$X0\F0$9$k(B" )
+  "カーソル移動レベル
+0なら画面の端へ、1なら各枠の端へ、2なら文字列の端へ移動する" )
 
 (defvar keisen-status-display-interval-time 2
-  "$B7S@~%b!<%I>uBVI=$NI=<(;~4V(B")
+  "罫線モード状態表の表示時間")
 
 (defvar keisen-mode-hook nil
-  "$B7S@~%b!<%I$N%U%C%/(B")
+  "罫線モードのフック")
 
 (defvar keisen-mode-map nil
-  "$B7S@~%b!<%I$N%-!<%^%C%W(B")
+  "罫線モードのキーマップ")
 
 (defvar keisen-extend-regexp-flag nil
-  "extend$B%3%^%s%I$N@55,I=8=$r7hDj$9$k(Bflag
-nil$B$N$H$-$9$Y$F$N7S@~!"#1$N$H$-:Y$$7S@~!"#2$N$H$-B@$$7S@~(B")
+  "extendコマンドの正規表現を決定するflag
+nilのときすべての罫線、１のとき細い罫線、２のとき太い罫線")
 
 (defvar keisen-vertical-move-count 0
-  "$B?bD>J}8~$N0\F0NL(B")
+  "垂直方向の移動量")
 
 (defvar keisen-horizontal-move-count 1
-  "$B?eJ?J}8~$N0\F0NL(B")
+  "水平方向の移動量")
 
 (defconst keisen-draw-force nil
-  "nil$B$N$H$-:Y$$7S@~$OB@$$7S@~$K4^$^$l$k(B
-non-nil$B$N$H$-B@$$7S@~$N>e$K:Y$$7S@~$r0z$/$H:Y$$7S@~$,=q$+$l$k(B")
+  "nilのとき細い罫線は太い罫線に含まれる
+non-nilのとき太い罫線の上に細い罫線を引くと細い罫線が書かれる")
 
 (defconst keisen-adjust-column-force t
-  "nil$B$N$H$-$O7S@~%3%^%s%I$r;H$C$?$H$-%+%i%`%A%'%C%/$r$7$J$$(B
-non-nil$B$N$H$-6/@)E*$K%]%$%s%H$N%+%i%`?t$,6v?t$K%]%$%s%H$r0\F0$5$;$k(B")
+  "nilのときは罫線コマンドを使ったときカラムチェックをしない
+non-nilのとき強制的にポイントのカラム数が偶数にポイントを移動させる")
 
 (defvar keisen-lock nil
-  "non-nil$B$N$H$-A^F~!">C5n!":o=|$H$b$K7S@~$r1[$($k$3$H$O$G$-$J$$(B")
+  "non-nilのとき挿入、消去、削除ともに罫線を越えることはできない")
 
 (defvar keisen-width 1
-  "$B7S@~$NB@$5(B 0$B$N$H$->C5n!"(B1$B$N$H$-:Y@~!"(B2$B$N$H$-B@@~(B")
+  "罫線の太さ 0のとき消去、1のとき細線、2のとき太線")
 
 (defvar keisen-overwrite-mode nil
-  "$B7S@~%b!<%I$NCf$G$N%*!<%P!<%i%$%H%b!<%I$+$I$&$+$N%U%i%C%0(B
-nil$B$J$i%$%s%5!<%H%b!<%I!"(Bnon-nil$B$J$i%*!<%P!<%i%$%H%b!<%I(B")
+  "罫線モードの中でのオーバーライトモードかどうかのフラッグ
+nilならインサートモード、non-nilならオーバーライトモード")
 
 (defvar keisen-key-flag nil ; Based by T.Sakano
-  "$B7S@~$NIA2h%-!<%U%i%0(B
-nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B")
+  "罫線の描画キーフラグ
+nilならカーソルキー、non-nilならM-[pnbf]キーを描画に使用する。")
 
 (defvar keisen-old-local-map)
 (defvar keisen-old-mode-name)
@@ -291,36 +291,36 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
 (defconst keisen-down  8)
 
 (defconst keisen-table "\
-$B!!!!!!(&!!(!(%(*!!(#("('($((()(+(B\
-$B!!!!(&(&(!(!(*(*(#(#(<(<(((((+(+(B\
-$B!!(&!!(&(%(?(%(?("('("('()(+()(+(B\
-$B(1(1(1(1(?(?(?(?(<(<(<(<(+(+(+(+(B\
-$B!!(!(%(*!!(!(%(*($(((>(+($(((>(+(B\
-$B(,(,(:(:(,(,(:(:(8(8(;(;(8(8(;(;(B\
-$B(0(?(0(?(0(?(0(?(?(>(>(+(>(+(>(+(B\
-$B(5(5(5(5(5(5(5(5(;(;(;(;(;(;(;(;(B\
-$B!!(#("('($(=()(+!!(#("('($(=()(+(B\
-$B(.(.(<(<(=(=(+(+(.(.(<(<(=(=(+(+(B\
-$B(-(7(-(7(9(@(9(@(-(7(-(7(9(@(9(@(B\
-$B(2(2(2(2(@(@(@(@(2(2(2(2(@(@(@(@(B\
-$B(/(=(>(+(/(=(>(+(/(=(>(+(/(=(>(+(B\
-$B(3(3(;(;(3(3(;(;(3(3(;(;(3(3(;(;(B\
-$B(4(@(4(@(4(@(@(@(4(@(4(@(4(@(@(@(B\
-$B(6(6(6(6(6(6(6(6(6(6(6(6(6(6(6(6(B"
-  "$B7S@~%-%c%i%/%?$N3FJ}8~$N;^$NM-L5$r(B8$B%S%C%H$GI=8=$9$k(B.
-$B%$%s%G%C%/%9$N>e0L(B4$B%S%C%H$OB@$$@~$NM-L5$r<($7!"2<0L(B4$B%S%C%H$,:Y$$@~$NM-L5$r<($9(B.
-($B2<:8>e1&(B)")
+　　　└　─┘┴　┌│├┐┬┤┼\
+　　└└──┴┴┌┌┝┝┬┬┼┼\
+　└　└┘┸┘┸│├│├┤┼┤┼\
+┗┗┗┗┸┸┸┸┝┝┝┝┼┼┼┼\
+　─┘┴　─┘┴┐┬┥┼┐┬┥┼\
+━━┷┷━━┷┷┯┯┿┿┯┯┿┿\
+┛┸┛┸┛┸┛┸┸┥┥┼┥┼┥┼\
+┻┻┻┻┻┻┻┻┿┿┿┿┿┿┿┿\
+　┌│├┐┰┤┼　┌│├┐┰┤┼\
+┏┏┝┝┰┰┼┼┏┏┝┝┰┰┼┼\
+┃┠┃┠┨╂┨╂┃┠┃┠┨╂┨╂\
+┣┣┣┣╂╂╂╂┣┣┣┣╂╂╂╂\
+┓┰┥┼┓┰┥┼┓┰┥┼┓┰┥┼\
+┳┳┿┿┳┳┿┿┳┳┿┿┳┳┿┿\
+┫╂┫╂┫╂╂╂┫╂┫╂┫╂╂╂\
+╋╋╋╋╋╋╋╋╋╋╋╋╋╋╋╋"
+  "罫線キャラクタの各方向の枝の有無を8ビットで表現する.
+インデックスの上位4ビットは太い線の有無を示し、下位4ビットが細い線の有無を示す.
+(下左上右)")
 
 (defconst keisen-unit-length (length (char-to-string (aref keisen-table 0)))
-  "$B7S@~AGJR$N%P%$%H?t(B")
+  "罫線素片のバイト数")
 
 (defconst keisen-regexp
-  "[$B(!("(#($(%(&('((()(*(+(,(-(.(/(0(1(2(3(4(5(6(7(8(9(:(;(<(=(>(?(@(B]"
-  "$B7S@~H=JL$N@55,I=8=(B")
+  "[─│┌┐┘└├┬┤┴┼━┃┏┓┛┗┣┳┫┻╋┠┯┨┷┿┝┰┥┸╂]"
+  "罫線判別の正規表現")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B%-!<%P%$%s%G%#%s%0(B
+;;   キーバインディング
 ;;
 (if keisen-mode-map
     nil
@@ -375,7 +375,7 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
   (define-key keisen-mode-map "\C-c["    'keisen-sync-mode)
   (define-key keisen-mode-map "\C-c]"    'keisen-sync-mode-exit)
   (define-key keisen-mode-map "\C-c-"    'keisen-sync-change-region)
-  ;CTRL-O$B%^%C%W(B
+  ;CTRL-Oマップ
   (setq keisen-ctlo-map (make-keymap))
   (fset 'ctl-o-prefix keisen-ctlo-map)
   (define-key keisen-mode-map "\C-o"     'ctl-o-prefix)
@@ -402,48 +402,48 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
   )  
 
 (defun keisen-key-mode () ;-- Based by T.Sakano -------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$rIA$/%-!<$rJQ99$9$k!#(B
- keisen-key-flag$B$,(Bnil$B$J$i$P!"%+!<%=%k%-!<(B
-                    t$B$J$i$P!"(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B"
+  "[罫線モード機能]
+ 罫線を描くキーを変更する。
+ keisen-key-flagがnilならば、カーソルキー
+                    tならば、M-[pnbf]キーを描画に使用する。"
   (interactive)
   (setq keisen-key-flag (not keisen-key-flag))
   (if keisen-key-flag
       (progn
-        ;$B%+!<%=%k0\F0(B
+        ;カーソル移動
 	(define-key keisen-mode-map [right] 'keisen-forward-char-hscroll)
 	(define-key keisen-mode-map [left] 'keisen-backward-char-hscroll)
 	(define-key keisen-mode-map [up] 'keisen-previous-line)
 	(define-key keisen-mode-map [down] 'keisen-next-line)
-        ;$B7S@~IA2h(B
+        ;罫線描画
         (define-key keisen-mode-map "\ef"  'keisen-draw-right)
         (define-key keisen-mode-map "\eb"  'keisen-draw-left)
         (define-key keisen-mode-map "\ep"  'keisen-draw-up)
         (define-key keisen-mode-map "\en"  'keisen-draw-down)
-        (message  "$BIA2h$K(BM-[pnbf]$B%-!<$r;HMQ$7$^$9(B"))
-    ;$B7S@~IA2h(B
+        (message  "描画にM-[pnbf]キーを使用します"))
+    ;罫線描画
     (define-key keisen-mode-map [right] 'keisen-draw-right)
     (define-key keisen-mode-map [left] 'keisen-draw-left)
     (define-key keisen-mode-map [up] 'keisen-draw-up)
     (define-key keisen-mode-map [down] 'keisen-draw-down)
-    ;$B%+!<%=%k0\F0(B
+    ;カーソル移動
     (define-key keisen-mode-map "\ef"  'keisen-forward-char-hscroll)
     (define-key keisen-mode-map "\eb"  'keisen-backward-char-hscroll)
     (define-key keisen-mode-map "\ep"  'keisen-previous-line)
     (define-key keisen-mode-map "\en"  'keisen-next-line)
-    (message "$BIA2h$K%+!<%=%k%-!<$r;HMQ$7$^$9(B")))
+    (message "描画にカーソルキーを使用します")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B0\F05!G=(B
+;;   移動機能
 ;;
 (defun keisen-locked-forward-line () ;-----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$rHt$S1[$($J$$HO0O$G2~9T$9$k(B.
- $B$^$:2<$K$$$C$F$+$i7S@~$K$V$D$+$k$^$G:8$K$$$/(B.
- $B2~9T$G$-$?$i(Bt$B!"$G$-$J$+$C$?$i(Bnil$B$rJV$9(B."
+  "[罫線モード機能]
+ 罫線を飛び越えない範囲で改行する.
+ まず下にいってから罫線にぶつかるまで左にいく.
+ 改行できたらt、できなかったらnilを返す."
   (interactive)
-  (while (and (looking-at keisen-regexp) (not (bolp))) ;$B7S@~>e$+$i$NC&=P(B
+  (while (and (looking-at keisen-regexp) (not (bolp))) ;罫線上からの脱出
     (backward-char))
   (let ((col (current-column))
         (pos (point)))
@@ -454,18 +454,18 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
     (if (re-search-backward keisen-regexp (km:bol) t)
         (goto-char (match-end 0))
       (beginning-of-line))
-    (= (count-lines pos (point)) 2)))                  ;$BJV$9CM(B(t,nil)
+    (= (count-lines pos (point)) 2)))                  ;返す値(t,nil)
 
 (defun keisen-half-locked-forward-line () ;------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B=DJ}8~$N7S@~$rHt$S1[$($J$$HO0O$G2~9T$9$k(B.
- $B7S@~$G$J$$$H$3$m$^$G2<$K$$$-7S@~$K$V$D$+$k$^$G:8$K$$$/(B."
+  "[罫線モード機能]
+ 縦方向の罫線を飛び越えない範囲で改行する.
+ 罫線でないところまで下にいき罫線にぶつかるまで左にいく."
   (interactive)
-  (while (and (looking-at keisen-regexp) (not (bolp))) ;$B7S@~>e$+$i$NC&=P1&$X(B
+  (while (and (looking-at keisen-regexp) (not (bolp))) ;罫線上からの脱出右へ
     (backward-char))
   (let ((col (current-column))
         flag)
-    (while (and (setq flag (= (forward-line 1) 0))     ;$B7S@~>e$+$i$NC&=P2<$X(B
+    (while (and (setq flag (= (forward-line 1) 0))     ;罫線上からの脱出下へ
                 (progn (move-to-column col) (looking-at keisen-regexp))))
     (cond ((not flag)
 ;           (end-of-buffer)
@@ -479,7 +479,7 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
 (defvar km:locked-forward-after 'nomal) ;-- Based by M.Ozawa ------------------
 
 (defun keisen-locked-forward-line-ext () ;-- Based by M.Ozawa -----------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive)
   (if (keisen-locked-forward-line)
@@ -497,14 +497,14 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
     (keisen-locked-forward-line)))
 
 (defun km:point-check () ;-- Based by M.Ozawa ---------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
  "
   (save-excursion
     (skip-chars-forward " ")
     (if (looking-at km:vertically-regexp) nil t)))
 
 (defun keisen-change-locked-forward-after () ;-- Based by M.Ozawa -------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive)
   (setq km:locked-forward-after
@@ -517,11 +517,11 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
 ;  "Position point after last non-blank character on current line.
 ;With ARG not nil, move forward ARG - 1 lines first.
 ;If scan reaches end of buffer, stop there without error.
-;$B%]%$%s%H$r%+%l%s%H%i%$%s$G6uGr$G$J$$0lHV:G8e$N%-%c%i%/%?!<$K0\F0$5$;$k(B"
+;ポイントをカレントラインで空白でない一番最後のキャラクターに移動させる"
 ;  (interactive "P")
 ;  (if arg (forward-line (1- (prefix-numeric-value arg))))
 ;  (beginning-of-line)
-;  (skip-chars-backward "$B!!(B \t" (km:eol)))
+;  (skip-chars-backward "　 \t" (km:eol)))
 
 (defun keisen-forward-word-hscroll (&optional arg) ;---------------------------
   (interactive "*p")
@@ -550,13 +550,13 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B0\F05!G=(B [picture.el$B$h$jH4?h(B]
+;;   移動機能 [picture.elより抜粋]
 ;;
 (defun km:move-to-column-force (column &optional force) ;-- Based by K.Handa --
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H$r(Bcolumn$B$K0\F0$5$;$k(B.$B0\F0$G$-$J$$$H$-$O%?%V$r%9%Z!<%9$KCV$-49$($?$j(B
-$B9TKv$K%9%Z!<%9$rA^F~$7$?$j$7$F0\F0$5$;$k(B.$B$b$7(Bforce$B$,(Bnon-nil$B$G(Bcolumn$B$,4A;z%3(B
-$B!<%I$N#2%P%$%HL\$J$i4A;z$rH>3Q%9%Z!<%9#2$D$KCV$-49$($k(B"
+  "[罫線モード関数]
+ ポイントをcolumnに移動させる.移動できないときはタブをスペースに置き換えたり
+行末にスペースを挿入したりして移動させる.もしforceがnon-nilでcolumnが漢字コ
+ードの２バイト目なら漢字を半角スペース２つに置き換える"
   (if (and (/= (move-to-column column t) column) force)
       (let ((w (char-width (char-before (point)))))
 	(delete-char -1)
@@ -564,37 +564,37 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
 	(move-to-column column))))
 
 (defun km:picture-move-down (arg &optional force) ;-- Based by K.Handa --------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%k$r2<$X0\F0$5$k!#$b$7!"0\F0@h$,$J$1$l$P6uGr$rA^F~$7$F0\F0$9$k(B.
- $B0z?t(Barg $B$,$"$?$($i$l$?$J$i$P!"$=$N;XDj%i%$%s?tJ,2<$X0\F0$9$k(B."
+  "[罫線モード関数]
+ カーソルを下へ移動さる。もし、移動先がなければ空白を挿入して移動する.
+ 引数arg があたえられたならば、その指定ライン数分下へ移動する."
   (let ((col (current-column)))
     (km:picture-newline arg)
     (km:move-to-column-force col force)))
 
 (defun km:picture-move-up (arg) ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%k$r>e$X0\F0$5$k!#$b$7!"0\F0@h$,$J$1$l$P6uGr$rA^F~$7$F0\F0$9$k(B.
- $B0z?t(Barg $B$,$"$?$($i$l$?$J$i$P!"$=$N;XDj%i%$%s?tJ,>e$X0\F0$9$k(B."
+  "[罫線モード関数]
+ カーソルを上へ移動さる。もし、移動先がなければ空白を挿入して移動する.
+ 引数arg があたえられたならば、その指定ライン数分上へ移動する."
   (km:picture-move-down (- arg)))
 
 (defun km:picture-forward-column (arg &optional force) ;-- Based by K.Handa ---
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%k$r1&$X0\F0$5$k!#$b$7!"%+%l%s%H0LCV$,(B (eolp) $B$J$i$P6uGr$rA^F~$7$F0\F0(B
-$B$9$k(B.$B0z?t(Barg $B$,$"$?$($i$l$?$J$i$P!"$=$N;XDj%+%i%`?tJ,1&$X0\F0$9$k(B."
+  "[罫線モード関数]
+ カーソルを右へ移動さる。もし、カレント位置が (eolp) ならば空白を挿入して移動
+する.引数arg があたえられたならば、その指定カラム数分右へ移動する."
   (let ((prev-clm (current-column)))
     (km:move-to-column-force (+ prev-clm arg) force)
     (if (and (/= arg 0) (= prev-clm (current-column)))
         (km:move-to-column-force (+ prev-clm (1+ arg))))))
 
 (defun km:picture-backward-column (arg) ;--------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%k$r:8$X0\F0$5$k!#(B
- $B0z?t(Barg $B$,$"$?$($i$l$?$J$i$P!"$=$N;XDj%+%i%`?tJ,:8$X0\F0$9$k(B."
+  "[罫線モード関数]
+ カーソルを左へ移動さる。
+ 引数arg があたえられたならば、その指定カラム数分左へ移動する."
   (km:move-to-column-force (- (current-column) arg)))
 
 (defun km:picture-newline (arg) ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B2~9T$9$k(B.$B0z?t(Barg $B$,$"$?$($i$l$?$J$i$P!"$=$N;XDj?tJ,2~9T$9$k(B."
+  "[罫線モード関数]
+ 改行する.引数arg があたえられたならば、その指定数分改行する."
   (if (< arg 0)
       (forward-line arg)
     (while (> arg 0)
@@ -606,7 +606,7 @@ nil$B$J$i%+!<%=%k%-!<!"(Bnon-nil$B$J$i(BM-[pnbf]$B%-!<$rIA2h$K;HMQ$9$k!#(B
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B0\F0(B($B%?%V(B)$B5!G=(B [picture.el$B$h$jH4?h(B]
+;;   移動(タブ)機能 [picture.elより抜粋]
 ;;
 (defvar keisen-picture-tab-chars "!-~"
   "*A character set which controls behavior of commands
@@ -634,7 +634,7 @@ The command \\[keisen-picture-tab-search] is defined to move beneath (or to) a
 character belonging to this set independent of the tab stops list.")
 
 (defun keisen-picture-set-tab-stops (&optional arg) ;--------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  Set value of  tab-stop-list  according to context of this line.
 This controls the behavior of \\[keisen-picture-tab].  A tab stop
 is set at every column occupied by an \"interesting character\" that is
@@ -667,7 +667,7 @@ each stop."
         (message blurb)))))
 
 (defun keisen-picture-tab-search (&optional arg) ;-----------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  Move to column beneath next interesting char in previous line.
 With ARG move to column occupied by next interesting character in this
 line.  The character must be preceded by whitespace.
@@ -695,7 +695,7 @@ If no such character is found, move to beginning of line."
       (beginning-of-line))))
 
 (defun keisen-picture-tab (&optional arg) ;------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  Tab transparently (move) to next tab stop.
 With ARG overwrite the traversed text with spaces.  The tab stop
 list can be changed by \\[keisen-picture-set-tab-stops] and \\[edit-tab-stops].
@@ -713,13 +713,13 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B0\F05!G=DI2C(B $B!](B 1992.10.01
+;;   移動機能追加 − 1992.10.01
 ;;
 (defun keisen-next-line () ;-- Based by S.Kobayashi ---------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+!<%=%k$r2<$X0\F0$9$k(B.
- keisen-move-mode$B$,(B  t$B$N;~!"7S@~$rHt$SD6$($F0\F0$9$k(B.
-                   nil$B$N;~!"L5>r7o$K<!$N9T$X0\F0$9$k(B."
+  "[罫線モード機能]
+ カーソルを下へ移動する.
+ keisen-move-modeが  tの時、罫線を飛び超えて移動する.
+                   nilの時、無条件に次の行へ移動する."
   (interactive)
   (if (and keisen-move-stop (km:eoblp)) ; 94.04.18 by M.I
       nil
@@ -727,23 +727,23 @@ See also documentation for variable  keisen-picture-tab-chars."
 	(km:picture-move-down 1) ; 1993.10.15 by M.Iwamoto
       (km:next-window-line 1)))  ;
   (if keisen-move-mode
-      (while (and (looking-at "[$B(!(,(B]") (not (bolp)))
+      (while (and (looking-at "[─━]") (not (bolp)))
         (if truncate-lines                  ;
             (km:picture-move-down 1)    ; 1993.10.15 by M.Iwamoto
           (km:next-window-line 1)))))       ;
 
 (defun keisen-previous-line () ;-- Based by S.Kobayashi -----------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+!<%=%k$r>e$X0\F0$9$k(B.
- keisen-move-mode$B$,(B  t$B$N;~!"7S@~$rHt$SD6$($F0\F0$9$k(B.
-                   nil$B$N;~!"L5>r7o$KA0$N9T$X0\F0$9$k(B."
+  "[罫線モード機能]
+ カーソルを上へ移動する.
+ keisen-move-modeが  tの時、罫線を飛び超えて移動する.
+                   nilの時、無条件に前の行へ移動する."
   (interactive)
   (if truncate-lines                ;
       (km:picture-move-up 1)    ; 1993.10.15 by M.Iwamoto
     (km:previous-window-line 1))    ;
   (if keisen-move-mode
       (let ((end t))
-        (while (and (looking-at "[$B(!(,(B]") (not (bolp)) end)
+        (while (and (looking-at "[─━]") (not (bolp)) end)
           (if truncate-lines                ;
               (km:picture-move-up 1)    ; 1993.10.15 by M.Iwamoto
             (km:previous-window-line 1))    ;
@@ -751,11 +751,11 @@ See also documentation for variable  keisen-picture-tab-chars."
               (setq end nil))))))
 
 (defun km:next-window-line (n) ;-----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%k$r2<$K0\F0$9$k(B.
- truncate-lines$B$,(Bnil$B$N;~!"(B(window-width)$B0J>e$NJ8;zNs$,$"$k$H<!$N9T$X$D$E$1$F(B
-$BI=<($5$l$k(B.$BDL>o!"%+!<%=%k$r0\F0$9$k$H$3$N9T$OHt$S$3$5$l$F$7$^$&(B.
- $B$=$l$r!"%S%8%e%"%kE*$K<!$N9T$H$J$k0LCV$X%+!<%=%k$r0\F0$9$k(B."
+  "[罫線モード関数]
+ カーソルを下に移動する.
+ truncate-linesがnilの時、(window-width)以上の文字列があると次の行へつづけて
+表示される.通常、カーソルを移動するとこの行は飛びこされてしまう.
+ それを、ビジュアル的に次の行となる位置へカーソルを移動する."
   (let ((cur_col (- (current-column)
                     (save-excursion (vertical-motion 0) (current-column)))))
     (if (not (km:eoblp))
@@ -765,26 +765,26 @@ See also documentation for variable  keisen-picture-tab-chars."
     (km:move-to-column-force (+ (current-column) cur_col))))
 
 (defun km:previous-window-line (n) ;-------------------------------------------
-   "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%k$r>e$K0\F0$9$k(B.
- truncate-lines$B$,(Bnil$B$N;~!"(B(window-width)$B0J>e$NJ8;zNs$,$"$k$H<!$N9T$X$D$E$1$F(B
-$BI=<($5$l$k(B.$BDL>o!"%+!<%=%k$r0\F0$9$k$H$3$N9T$OHt$S$3$5$l$F$7$^$&(B.
- $B$=$l$r!"%S%8%e%"%kE*$K<!$N9T$H$J$k0LCV$X%+!<%=%k$r0\F0$9$k(B."
+   "[罫線モード関数]
+ カーソルを上に移動する.
+ truncate-linesがnilの時、(window-width)以上の文字列があると次の行へつづけて
+表示される.通常、カーソルを移動するとこの行は飛びこされてしまう.
+ それを、ビジュアル的に次の行となる位置へカーソルを移動する."
    (let ((cur_col (- (current-column)
                      (save-excursion (vertical-motion 0) (current-column)))))
      (vertical-motion (- n))
      (km:move-to-column-force (+ (current-column) cur_col))))
 
 (defun keisen-beginning-of-line () ;-- Based by S.Kobayashi -------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+%l%s%H9T$N$=$l$>$l$N@hF,$X%+!<%=%k$r0\F0$9$k(B.
- keisen-move-level$B$,(B0$B$N;~$O!"%+%l%s%H9T$N@hF,$X0\F0$9$k(B.
-                    1$B$N;~$O!"%+%l%s%H%]%$%s%H$K6a$$7S@~$X0\F0$9$k(B.$B$?$@$7!"4{$K(B
-                             $B%+%l%s%H%]%$%s%H$N$9$0:8NY$K7S@~$,$"$C$?>l9g$O$=(B
-                             $B$l$rHt$S1[$($k(B.
-                    2$B$N;~$O!"J8;zNs$N@hF,$X0\F0$9$k(B.$B3:Ev$9$kJ8;zNs$,L5$$>l9g$O(B
-                             keisen-move-level$B$,(B1$B$N;~$HF1MM(B.
- $B%+%l%s%H%]%$%s%H$,4{$K9T$N@hF,$N>l9g$O!"$J$K$b$7$J$$(B."
+  "[罫線モード機能]
+ カレント行のそれぞれの先頭へカーソルを移動する.
+ keisen-move-levelが0の時は、カレント行の先頭へ移動する.
+                    1の時は、カレントポイントに近い罫線へ移動する.ただし、既に
+                             カレントポイントのすぐ左隣に罫線があった場合はそ
+                             れを飛び越える.
+                    2の時は、文字列の先頭へ移動する.該当する文字列が無い場合は
+                             keisen-move-levelが1の時と同様.
+ カレントポイントが既に行の先頭の場合は、なにもしない."
   (interactive)
   (if (= keisen-move-level 0)
       (km:beginning-of-line-hscroll)
@@ -797,23 +797,23 @@ See also documentation for variable  keisen-picture-tab-chars."
                    (km:beginning-of-line)))
         (if (= keisen-move-level 2)
             (progn (setq cur-pos (point))
-                   (while (and (looking-at "[ $B!!(B]") (not (bolp)))
+                   (while (and (looking-at "[ 　]") (not (bolp)))
                      (keisen-forward-char-hscroll 1))
                    (if (and (> sta-pos (point))
-                            (looking-at "[^$B("('(-(2(7(<()(4(9(>(B]"))
+                            (looking-at "[^│├┃┣┠┝┤┫┨┥]"))
                        nil
                      (goto-char cur-pos))))))))
 
 (defun keisen-end-of-line () ;-- Based by S.Kobayashi -------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+%l%s%H9T$N$=$l$>$l$N:G8e$X%+!<%=%k$r0\F0$9$k(B.
- keisen-move-level$B$,(B0$B$N;~$O!"%+%l%s%H9T$N:G8e$X0\F0$9$k(B.
-                    1$B$N;~$O!"%+%l%s%H%]%$%s%H$K6a$$7S@~$X0\F0$9$k(B.$B$?$@$7!"4{$K(B
-                             $B%+%l%s%H%]%$%s%H$N$9$01&NY$K7S@~$,$"$C$?>l9g$O$=(B
-                             $B$l$rHt$S1[$($k(B.
-                    2$B$N;~$O!"J8;zNs$N:G8e$X0\F0$9$k(B.$B3:Ev$9$kJ8;zNs$,L5$$>l9g$O(B
-                             keisen-move-level$B$,(B1$B$N;~$HF1MM(B.
- $B%+%l%s%H%]%$%s%H$,4{$K9T$N:G8e$N>l9g$O!"$J$K$b$7$J$$(B."
+  "[罫線モード機能]
+ カレント行のそれぞれの最後へカーソルを移動する.
+ keisen-move-levelが0の時は、カレント行の最後へ移動する.
+                    1の時は、カレントポイントに近い罫線へ移動する.ただし、既に
+                             カレントポイントのすぐ右隣に罫線があった場合はそ
+                             れを飛び越える.
+                    2の時は、文字列の最後へ移動する.該当する文字列が無い場合は
+                             keisen-move-levelが1の時と同様.
+ カレントポイントが既に行の最後の場合は、なにもしない."
   (interactive)
   (if (= keisen-move-level 0)
       (km:end-of-line-hscroll)
@@ -826,45 +826,45 @@ See also documentation for variable  keisen-picture-tab-chars."
                    (km:end-of-line)))
         (if (= keisen-move-level 2)
             (progn (setq cur-pos (point))
-                   (while (and (looking-at "[ $B!!(B]") (not (eolp)))
+                   (while (and (looking-at "[ 　]") (not (eolp)))
                      (keisen-backward-char-hscroll 1))
                    (if (and (< sta-pos (point))
-                            (looking-at "[^$B("('(-(2(7(<()(4(9(>(B]"))
+                            (looking-at "[^│├┃┣┠┝┤┫┨┥]"))
                        nil
                      (goto-char cur-pos))))))))
 
 (defun km:beginning-of-line () ;-- Changed by M.Ozawa -------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%HOHFb$N@hF,$X%+!<%=%k$r0\F0$9$k(B."
+  "[罫線モード関数]
+ カレント枠内の先頭へカーソルを移動する."
   (let* (pos (point))
     (if (bolp)
 	nil
-      (if (looking-at "[$B("()(-(4(9(>('(2(7(<(B]")
+      (if (looking-at "[│┤┃┫┨┥├┣┠┝]")
 	  (keisen-backward-char-hscroll 1))
-      (while (and (or (looking-at "[^$B("()(-(4(9(>('(2(7(<(B]") (eobp))
+      (while (and (or (looking-at "[^│┤┃┫┨┥├┣┠┝]") (eobp))
 		  (not (bolp)))
 	(keisen-backward-char-hscroll 1))
-      (if (looking-at "[$B("()(-(4(9(>('(2(7(<(B]")
+      (if (looking-at "[│┤┃┫┨┥├┣┠┝]")
 	  (keisen-forward-char-hscroll 1))
       (if (eq pos (point))
 	  (keisen-backward-char-hscroll 1))
       )))
 
 (defun km:end-of-line () ;-- Chenged by M.Ozawa -------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%HOHFb$N:G8e$X%+!<%=%k$r0\F0$9$k(B."
-  (if (looking-at "[$B("()(-(4(9(>('(2(7(<(B]")
+  "[罫線モード関数]
+ カレント枠内の最後へカーソルを移動する."
+  (if (looking-at "[│┤┃┫┨┥├┣┠┝]")
       (keisen-forward-char-hscroll 1))
-  (while (and (looking-at "[^$B("()(-(4(9('(-(2(7(<(B]") (not (eolp)))
+  (while (and (looking-at "[^│┤┃┫┨├┃┣┠┝]") (not (eolp)))
     (keisen-forward-char-hscroll 1))
   (if (not (eolp))
       (keisen-backward-char-hscroll 1)))
 
 (defun keisen-forward-char-hscroll (arg) ;-------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%b!<%I$G%+!<%=%k$r1&$X0\F0$7$?;~$K%&%#%s%I%&$r%*!<%P!<$7$?$i!"1&$X<+F0E*(B
-$B$K?eJ?%9%/%m!<%k$9$k(B.
- $B$?$@$7!"(Btruncate-lines$B$,(Bt$B$N;~$N$_$G$"$k(B."
+  "[罫線モード機能]
+ 罫線モードでカーソルを右へ移動した時にウィンドウをオーバーしたら、右へ自動的
+に水平スクロールする.
+ ただし、truncate-linesがtの時のみである."
   (interactive "p")
   (if (eq truncate-lines nil)
       (km:picture-forward-column arg nil)
@@ -873,14 +873,14 @@ See also documentation for variable  keisen-picture-tab-chars."
               (- (window-width) 4)) ; patch 92.09.25 "2 -> 4"
           (scroll-left (+ arg 10))) ; patch 92.09.25 "arg -> (+ arg 10)"
       (km:picture-forward-column arg nil)
-      ;$B"-"-"-"-"-(B
+      ;↓↓↓↓↓
       (km:sync-hscroll))))
 
 (defun keisen-backward-char-hscroll (arg) ;------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%b!<%I$G%+!<%=%k$r:8$X0\F0$7$?;~$K%&%#%s%I%&$r%*!<%P!<$7$?$i!":8$X<+F0E*(B
-$B$K?eJ?%9%/%m!<%k$9$k(B.
- $B$?$@$7!"(Btruncate-lines$B$,(Bt$B$N;~$N$_$G$"$k(B."
+  "[罫線モード機能]
+ 罫線モードでカーソルを左へ移動した時にウィンドウをオーバーしたら、左へ自動的
+に水平スクロールする.
+ ただし、truncate-linesがtの時のみである."
   (interactive "p")
   (if (eq truncate-lines nil)
       (backward-char arg)
@@ -888,114 +888,114 @@ See also documentation for variable  keisen-picture-tab-chars."
       (if (< (- (- (current-column) arg) (window-hscroll)) 0)
           (scroll-right (+ arg 10))) ; patch 92.09.25 "arg -> (+ arg 10)"
       (backward-char arg)
-      ;$B"-"-"-"-"-(B
+      ;↓↓↓↓↓
       (km:sync-hscroll))))
 
 (defun km:end-of-line-hscroll () ;---------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~%b!<%I$G%+%l%s%H9T$N=*$j$,%&%#%s%I%&30$G$"$l$P!"1&$X<+F0E*$K?eJ?%9%/%m!<%k(B
-$B$9$k!#$?$@$7!"(Btruncate-lines$B$,(Bt$B$N;~$N$_$G$"$k!#(B"
+  "[罫線モード関数]
+ 罫線モードでカレント行の終りがウィンドウ外であれば、右へ自動的に水平スクロール
+する。ただし、truncate-linesがtの時のみである。"
   (if (eq truncate-lines nil)
       (end-of-line)
     (end-of-line)
     (if (> (current-column) (+ (window-width) (window-hscroll)))
         (scroll-left (+ 2 (- (current-column) (window-width))))))
-  ;$B"-"-"-"-"-(B
+  ;↓↓↓↓↓
   (km:sync-hscroll))
 
 (defun km:beginning-of-line-hscroll () ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~%b!<%I$G%+%l%s%H9T$N@hF,$,%&%#%s%I%&30$G$"$l$P!":8$X<+F0E*$K?eJ?%9%/%m!<%k(B
-$B$9$k!#$?$@$7!"(Btruncate-lines$B$,(Bt$B$N;~$N$_$G$"$k!#(B"
+  "[罫線モード関数]
+ 罫線モードでカレント行の先頭がウィンドウ外であれば、左へ自動的に水平スクロール
+する。ただし、truncate-linesがtの時のみである。"
   (if (window-hscroll)
       (scroll-right 5000))
   (beginning-of-line)
-  ;$B"-"-"-"-"-(B
+  ;↓↓↓↓↓
   (km:sync-hscroll))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B0\F05!G=DI2C(B Part2 [picture.el$B$h$jH4?h(B] $B!](B 1993.09.14
+;;   移動機能追加 Part2 [picture.elより抜粋] − 1993.09.14
 ;;
-(defconst km:vertical-step   0 "$B=DJ}8~$X$N%+!<%=%k0\F0%9%F%C%W?t(B")
-(defconst km:horizontal-step 1 "$B2#J}8~$X$N%+!<%=%k0\F0%9%F%C%W?t(B")
+(defconst km:vertical-step   0 "縦方向へのカーソル移動ステップ数")
+(defconst km:horizontal-step 1 "横方向へのカーソル移動ステップ数")
 
 (defun keisen-movement-right () ;----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B1&J}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 右方向への文字入力を指定"
   (interactive)
   (km:set-motion 0 1))
 
 (defun keisen-movement-left () ;-----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B:8J}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 左方向への文字入力を指定"
   (interactive)
   (km:set-motion 0 -1))
 
 (defun keisen-movement-up () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B>eJ}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 上方向への文字入力を指定"
   (interactive)
   (km:set-motion -1 0))
 
 (defun keisen-movement-down () ;-----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B2<J}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 下方向への文字入力を指定"
   (interactive)
   (km:set-motion 1 0))
 
 (defun keisen-movement-nw () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B:8>eJ}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 左上方向への文字入力を指定"
   (interactive)
   (km:set-motion -1 -1))
 
 (defun keisen-movement-ne () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B1&>eJ}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 右上方向への文字入力を指定"
   (interactive)
   (km:set-motion -1 1))
 
 (defun keisen-movement-sw () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B:82<J}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 左下方向への文字入力を指定"
   (interactive)
   (km:set-motion 1 -1))
 
 (defun keisen-movement-se () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B1&2<J}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 右下方向への文字入力を指定"
   (interactive)
   (km:set-motion 1 1))
 
 (defun keisen-movement-wnw () ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B:8>e(B($B:8$X$O(B2$B%+%i%`(B)$BJ}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 左上(左へは2カラム)方向への文字入力を指定"
   (interactive)
   (km:set-motion -1 -2))
 
 (defun keisen-movement-ene () ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B1&>e(B($B1&$X$O(B2$B%+%i%`(B)$BJ}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 右上(右へは2カラム)方向への文字入力を指定"
   (interactive)
   (km:set-motion -1 2))
 
 (defun keisen-movement-wsw () ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B:82<(B($B:8$X$O(B2$B%+%i%`(B)$BJ}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 左下(左へは2カラム)方向への文字入力を指定"
   (interactive)
   (km:set-motion 1 -2))
 
 (defun keisen-movement-ese () ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B1&2<(B($B1&$X$O(B2$B%+%i%`(B)$BJ}8~$X$NJ8;zF~NO$r;XDj(B"
+  "[罫線モード機能]
+ 右下(右へは2カラム)方向への文字入力を指定"
   (interactive)
   (km:set-motion 1 2))
 
 (defun km:set-motion (vert horiz) ;--------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3F%9%F%C%W?t$N@_Dj$r9T$J$&(B($B%*!<%P%i%$%H%b!<%I;~$N$_M-8z(B)"
-  (if (not keisen-overwrite-mode) ; $B%*!<%P%i%$%H%b!<%I!)(B
+  "[罫線モード関数]
+ 各ステップ数の設定を行なう(オーバライトモード時のみ有効)"
+  (if (not keisen-overwrite-mode) ; オーバライトモード？
       (ding)
     (setq km:vertical-step   vert
           km:horizontal-step horiz)
@@ -1003,25 +1003,25 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B0\F05!G=DI2C(B Part3 $B!](B 1993.10.18
+;;   移動機能追加 Part3 − 1993.10.18
 ;;
 (defconst km:vertically-regexp
-  "[$B("(#($(%(&('((()(*(+(-(.(/(0(1(2(3(4(5(6(7(8(9(:(;(<(=(>(?(@(B]")
+  "[│┌┐┘└├┬┤┴┼┃┏┓┛┗┣┳┫┻╋┠┯┨┷┿┝┰┥┸╂]")
 (defconst km:horizontally-regexp
-  "[$B(!(#($(%(&('((()(*(+(,(.(/(0(1(2(3(4(5(6(7(8(9(:(;(<(=(>(?(@(B]")
+  "[─┌┐┘└├┬┤┴┼━┏┓┛┗┣┳┫┻╋┠┯┨┷┿┝┰┥┸╂]")
 
 (defun keisen-forward-jump-frame () ;-- Changed by M.Ozawa --------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
 "
    (interactive)
-   (if (eolp) ;$B:G=*%+%i%`$+!)(B
+   (if (eolp) ;最終カラムか？
        nil
      (if (looking-at km:vertically-regexp)
          (keisen-forward-char-hscroll 1)
        (while (if (and (not (looking-at km:vertically-regexp)) (not (eolp)))
                   (progn (keisen-forward-char-hscroll 1) t)
                 (if (not (eolp)) (keisen-forward-char-hscroll 1)) nil))))
-   (if (or (km:boblp) (eolp)) ;$B@hF,%i%$%s$^$?$O:G=*%+%i%`$+!)(B
+   (if (or (km:boblp) (eolp)) ;先頭ラインまたは最終カラムか？
        nil
      (if (looking-at km:horizontally-regexp)
          (km:picture-move-up 1))
@@ -1031,10 +1031,10 @@ See also documentation for variable  keisen-picture-tab-chars."
               (km:picture-move-down 1) nil))))
 
 (defun keisen-backward-jump-frame () ;-- Changed by M.Ozawa -------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
 "
   (interactive)
-  (if (bolp) ;$B@hF,%+%i%`$+!)(B
+  (if (bolp) ;先頭カラムか？
       nil
     (if (looking-at km:vertically-regexp)
         (progn (keisen-backward-char-hscroll 1)
@@ -1046,7 +1046,7 @@ See also documentation for variable  keisen-picture-tab-chars."
     (while (if (and (not (looking-at km:vertically-regexp)) (not (bolp)))
                (progn (keisen-backward-char-hscroll 1) t)
              (keisen-forward-char-hscroll 1) nil)))
-  (if (or (km:boblp) (bolp)) ;$B@hF,%i%$%s$^$?$O@hF,%+%i%`$+!)(B
+  (if (or (km:boblp) (bolp)) ;先頭ラインまたは先頭カラムか？
       nil
     (if (looking-at km:horizontally-regexp)
         (km:picture-move-up 1)
@@ -1056,10 +1056,10 @@ See also documentation for variable  keisen-picture-tab-chars."
                (km:picture-move-down 1) nil)))))
 
 (defun keisen-previous-jump-frame () ;-----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
 "
   (interactive)
-  (if (km:boblp) ;$B@hF,%i%$%s$+!)(B
+  (if (km:boblp) ;先頭ラインか？
       nil
     (if (looking-at km:horizontally-regexp)
         (km:picture-move-up 1)
@@ -1071,17 +1071,17 @@ See also documentation for variable  keisen-picture-tab-chars."
                     (not (km:boblp)))
                (progn (km:picture-move-up 1) t)
              (km:picture-move-down 1) nil)))
-  (if (bolp) ;$B@hF,%+%i%`$+!)(B
+  (if (bolp) ;先頭カラムか？
       nil
     (while (if (and (not (looking-at km:vertically-regexp)) (not (bolp)))
                (progn (keisen-backward-char-hscroll 1) t)
              (keisen-forward-char-hscroll 1) nil))))
 
 (defun keisen-next-jump-frame () ;---------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
 "
   (interactive)
-  (if (km:eoblp) ;$B:G=*%i%$%s$+!)(B
+  (if (km:eoblp) ;最終ラインか？
       nil
     (if (looking-at km:horizontally-regexp)
         (km:picture-move-up 1)
@@ -1089,7 +1089,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                       (not (km:eoblp)))
                  (progn (km:picture-move-down 1) t)
                (km:picture-move-down 1) nil))))
-  (if (bolp) ;$B@hF,%+%i%`$+!)(B
+  (if (bolp) ;先頭カラムか？
       nil
     (while (if (and (not (looking-at km:vertically-regexp)) (not (bolp)))
                (progn (keisen-backward-char-hscroll 1) t)
@@ -1097,14 +1097,14 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $BF14|%9%/%m!<%k5!G=DI2C(B $B!](B 1994.02.23 Based by M.Ozawa
+;;   同期スクロール機能追加 − 1994.02.23 Based by M.Ozawa
 ;;
 (make-variable-buffer-local 'km:sync-buffer)
 (make-variable-buffer-local 'km:sync-height)
 
 (defun km:sync-set-region () ;-------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%7%s%/%m%V%C%U%!$KI=<($9$kHO0O$N@_Dj$9$k(B"
+  "[罫線モード関数]
+ シンクロブッファに表示する範囲の設定する"
   (let ((loop     t)
         (b_line nil)
         (e_line nil)
@@ -1113,12 +1113,12 @@ See also documentation for variable  keisen-picture-tab-chars."
 	begin end)
     (point-to-register 'pos)
     (vertical-motion 0)
-    (message "$BI=<(HO0O$r@_Dj$7$F2<$5$$(B")
+    (message "表示範囲を設定して下さい")
     (sit-for 1)
     (while loop
       (if b_line
-	  (message "[C-p:$B>e(B C-n:$B2<(B RET:$B@hF,@_Dj(B C-c:$BD{@5(B C-g:$B<h>C(B]")
-	(message "[C-p:$B>e(B C-n:$B2<(B RET:$B7hDj(B C-c:$BD{@5(B C-g:$B<h>C(B]"))
+	  (message "[C-p:上 C-n:下 RET:先頭設定 C-c:訂正 C-g:取消]")
+	(message "[C-p:上 C-n:下 RET:決定 C-c:訂正 C-g:取消]"))
       (setq chr (read-quoted-char))
       (cond ((= chr ?\C-p)
              (vertical-motion -1)
@@ -1141,7 +1141,7 @@ See also documentation for variable  keisen-picture-tab-chars."
 		 (progn (setq begin (km:sync-point-eol b_line))
 			(setq end   (km:sync-point-bol e_line))))
                (if (>= (count-lines begin end) (- (screen-height) 2))
-                   (progn (message "$B;XDjHO0O$,Bg$-2a$.$^$9(B")
+                   (progn (message "指定範囲が大き過ぎます")
                           (sit-for 2))
 		 (km:sync-reverse-off-region)
                  (copy-to-register 'sync begin end)
@@ -1172,24 +1172,24 @@ See also documentation for variable  keisen-picture-tab-chars."
     (if flag t nil)))
 
 (defun km:sync-point-bol (line) ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?9T$N@hF,$N%]%$%s%H$rJV$9(B"
+  "[罫線モード関数]
+ 指定された行の先頭のポイントを返す"
   (save-excursion
     (goto-line line)
     (beginning-of-line)
     (point)))
 
 (defun km:sync-point-eol (line) ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?9T$N:G=*$N%]%$%s%H$rJV$9(B"
+  "[罫線モード関数]
+ 指定された行の最終のポイントを返す"
   (save-excursion
     (goto-line line)
     (end-of-line)
     (point)))
 
 (defun km:sync-reverse-region (b_line e_line) ;--------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDjHO0O$r$^$G$rH?E>$5$;$k(B"
+  "[罫線モード関数]
+ 指定範囲をまでを反転させる"
   (let ((buffer-read-only nil)
 	begin end)
     (km:inverse-off-region (point-min) (point-max))
@@ -1202,8 +1202,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     ))
 
 (defun km:sync-reverse-off-region () ;-----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $BI=<($,H?E>$7$F$$$k$N$r$b$H$KLa$9(B"
+  "[罫線モード関数]
+ 表示が反転しているのをもとに戻す"
   (let ((old-buffer-read-only buffer-read-only))
     (if old-buffer-read-only
         (toggle-read-only))
@@ -1212,7 +1212,7 @@ See also documentation for variable  keisen-picture-tab-chars."
         (toggle-read-only))))
 
 (defun km:pop-up-sync-window () ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
  "
   (let* ((old-window-min-height window-min-height)
 	 (current-start (window-start (selected-window)))
@@ -1230,8 +1230,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (select-window (next-window))))
 
 (defun keisen-sync-mode () ;---------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%7%s%/%m%b!<%I$K$9$k(B"
+  "[罫線モード機能]
+ シンクロモードにする"
   (interactive)
   (if km:sync-buffer
       (if (not (get-buffer-window km:sync-buffer))
@@ -1260,8 +1260,8 @@ See also documentation for variable  keisen-picture-tab-chars."
       )))
 
 (defun keisen-sync-mode-exit () ;----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%7%s%/%m%b!<%I$rH4$1$k(B"
+  "[罫線モード機能]
+ シンクロモードを抜ける"
   (interactive)
   (if (not km:sync-buffer)
       (ding)
@@ -1277,8 +1277,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     ))
 
 (defun keisen-sync-change-region () ;------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $BI=<(HO0O$NJQ99(B"
+  "[罫線モード機能]
+ 表示範囲の変更"
   (interactive)
   (if (or (not km:sync-buffer) (not (km:sync-set-region)))
       (ding)
@@ -1291,8 +1291,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (km:pop-up-sync-window)))
 
 (defun km:sync-hscroll () ;----------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%9%/%m!<%k%+%i%`?t$r9g$o$;$k(B"
+  "[罫線モード関数]
+ スクロールカラム数を合わせる"
   (if km:sync-buffer
       (let ((km:root-window (get-buffer-window (current-buffer)))
             (km:sync-window (get-buffer-window km:sync-buffer)))
@@ -1301,7 +1301,7 @@ See also documentation for variable  keisen-picture-tab-chars."
 				(window-hscroll km:root-window))))))
 
 (defun keisen-sync-other-window (arg) ;----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive "p")
   (while (> arg 0)
@@ -1311,7 +1311,7 @@ See also documentation for variable  keisen-picture-tab-chars."
       (select-window (next-window))))
 
 (defun km:count-window () ;----------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
  "
   (let* ((current (selected-window))
 	 (next (next-window current 'no-minibuf))
@@ -1324,7 +1324,7 @@ See also documentation for variable  keisen-picture-tab-chars."
     count))
 
 (defun keisen-sync-delete-window () ;------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive)
   (if km:sync-buffer
@@ -1340,7 +1340,7 @@ See also documentation for variable  keisen-picture-tab-chars."
     (km:old-delete-window (selected-window))))
 
 (defun keisen-sync-delete-other-windows () ;-----------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive)
   (if km:sync-buffer
@@ -1353,29 +1353,29 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $BJ8;zNsJT=85!G=(B
+;;   文字列編集機能
 ;;
 (defun keisen-center-line () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+%l%s%H%]%$%s%H$NA08e$N7S@~$H7S@~$N4V$K$"$kJ8;zNs$r$=$NCf1{$X0\F0$9$k(B"
+  "[罫線モード機能]
+ カレントポイントの前後の罫線と罫線の間にある文字列をその中央へ移動する"
   (interactive)
   (km:control-line 'km:control-center-line))
 
 (defun keisen-right-line () ;--------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+%l%s%H%]%$%s%H$NA08e$N7S@~$H7S@~$N4V$K$"$kJ8;zNs$r$=$N1&B&$N7S@~$X5M$k(B"
+  "[罫線モード機能]
+ カレントポイントの前後の罫線と罫線の間にある文字列をその右側の罫線へ詰る"
   (interactive)
   (km:control-line 'km:control-right-line))
 
 (defun keisen-left-line () ;---------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+%l%s%H%]%$%s%H$NA08e$N7S@~$H7S@~$N4V$K$"$kJ8;zNs$r$=$N:8B&$N7S@~$X5M$k(B"
+  "[罫線モード機能]
+ カレントポイントの前後の罫線と罫線の間にある文字列をその左側の罫線へ詰る"
   (interactive)
   (km:control-line 'km:control-left-line))
 
 (defun km:control-line (function) ;--------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $BOHFb$NJ8;zNsJT=8$r@)8f$9$k(B"
+  "[罫線モード関数]
+ 枠内の文字列編集を制御する"
   (save-excursion
     (let (begin end fil len)
       (km:end-of-line)
@@ -1383,16 +1383,16 @@ See also documentation for variable  keisen-picture-tab-chars."
       (setq end (point))
       (km:beginning-of-line)
       (setq begin (point))
-      (setq fil (km:buffer-column begin end)) ; $BOH$N%+%i%`?t$r5a$a$k(B
+      (setq fil (km:buffer-column begin end)) ; 枠のカラム数を求める
       (km:delete-horizontal-space-and-ZenkakuSpace)
       (km:end-of-line)
       (forward-char 1)
       (km:delete-horizontal-space-and-ZenkakuSpace)
-      (setq len (km:buffer-column begin (point))) ; $BJ8;zNs$N%+%i%`?t$r5a$a$k(B
+      (setq len (km:buffer-column begin (point))) ; 文字列のカラム数を求める
       (funcall function begin fil len))))
 
 (defun km:control-center-line (begin fil len) ;--------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let (lp1 lp2)
     (setq lp1 (/ (- fil len) 2)
@@ -1402,23 +1402,23 @@ See also documentation for variable  keisen-picture-tab-chars."
     (insert (make-string lp1 (string-to-char " ")))))
 
 (defun km:control-right-line (begin fil len) ;---------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (goto-char begin)
   (insert (make-string (- fil len) (string-to-char " "))))
 
 (defun km:control-left-line (begin fil len) ;----------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (insert (make-string (- fil len) (string-to-char " "))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B7S@~IA2h5!G=(B
+;;   罫線描画機能
 ;;
 (defun km:opposite-direction (dir) ;-------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $BH?BP$NJ}8~$rJV$9(B"
+  "[罫線モード関数]
+ 反対の方向を返す"
   (cond ((= dir keisen-right) keisen-left)
         ((= dir keisen-left)  keisen-right)
         ((= dir keisen-up)    keisen-down)
@@ -1426,8 +1426,8 @@ See also documentation for variable  keisen-picture-tab-chars."
         (t 0)))
 
 (defun km:direction (command) ;------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~$NJ}8~$rJV$9(B"
+  "[罫線モード関数]
+ 罫線の方向を返す"
   (cond ((eq command 'keisen-draw-right) keisen-right)
         ((eq command 'keisen-draw-left)  keisen-left)
         ((eq command 'keisen-draw-up)    keisen-up)
@@ -1435,8 +1435,8 @@ See also documentation for variable  keisen-picture-tab-chars."
         (t 0)))
 
 (defun km:new-keisen-string () ;-----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B=q$-9~$`$?$a$N?7$7$$7S@~AGJR$r:n$k(B"
+  "[罫線モード関数]
+ 書き込むための新しい罫線素片を作る"
   (let (pos factor str old-direction new-direction)
     (setq old-direction (km:direction last-command))
     (setq new-direction (km:direction this-command))
@@ -1450,7 +1450,7 @@ See also documentation for variable  keisen-picture-tab-chars."
       (if (= old-direction 0)
           (setq old-direction new-direction)))
     (if keisen-draw-force
-        ;;$B:Y$$7S@~$O:Y$$7S@~!"B@$$7S@~$OB@$$7S@~(B
+        ;;細い罫線は細い罫線、太い罫線は太い罫線
         (progn
           (setq pos (logand pos
                             (lognot (* (km:opposite-direction old-direction)
@@ -1463,7 +1463,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                             (* (km:opposite-direction old-direction)
                                factor)
                             (* new-direction factor)))))
-      ;;$BB@$$7S@~$N>e$K:Y$$7S@~$r0z$$$F$bB@$$7S@~(B
+      ;;太い罫線の上に細い罫線を引いても太い罫線
       (if (/= keisen-width 0)
           (setq pos (logior pos
                             (* (km:opposite-direction old-direction)
@@ -1477,15 +1477,15 @@ See also documentation for variable  keisen-picture-tab-chars."
     (char-to-string (aref keisen-table (* pos keisen-unit-length)))))
 
 (defun km:write-keisen (v h) ;-------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~$rIA$/(B"
+  "[罫線モード関数]
+ 罫線を描く"
   (setq keisen-vertical-move-count   v)
   (setq keisen-horizontal-move-count h)
   (km:insert-keisen (km:new-keisen-string)))
 
 (defun km:insert-keisen (str) ;------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~$r%]%$%s%H$K%*!<%P!<%i%$%H$7$F%+!<%=%k$r0\F0$9$k(B"
+  "[罫線モード関数]
+ 罫線をポイントにオーバーライトしてカーソルを移動する"
   (let ((pos (point)))
     (km:move-to-column-force (+ (current-column) 2) t)
     (delete-region pos (point)))
@@ -1502,8 +1502,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (km:move-to-column-force (+ col (* keisen-horizontal-move-count 2)) t)))
 
 (defun keisen-draw-right (arg) ;-----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$r0z$-$J$,$i1&J}8~$K0\F0$9$k(B"
+  "[罫線モード機能]
+ 罫線を引きながら右方向に移動する"
   (interactive "*p")
   (km:adjust-current-column t)
   ;; 94.04.19 by M.I
@@ -1519,8 +1519,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq arg (1- arg))))
 
 (defun keisen-draw-left (arg) ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$r0z$-$J$,$i:8J}8~$K0\F0$9$k(B"
+  "[罫線モード機能]
+ 罫線を引きながら左方向に移動する"
   (interactive "*p")
   (km:adjust-current-column t)
   ;; 94.04.19 by M.I
@@ -1535,8 +1535,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq arg (1- arg))))
 
 (defun keisen-draw-up (arg) ;--------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$r0z$-$J$,$i>eJ}8~$K0\F0$9$k(B"
+  "[罫線モード機能]
+ 罫線を引きながら上方向に移動する"
   (interactive "*p")
   (km:adjust-current-column t)
   (while (< 0 arg)
@@ -1545,8 +1545,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq arg (1- arg))))
 
 (defun keisen-draw-down (arg) ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$r0z$-$J$,$i2<J}8~$K0\F0$9$k(B"
+  "[罫線モード機能]
+ 罫線を引きながら下方向に移動する"
   (interactive "*p")
   (km:adjust-current-column t)
   (while (< 0 arg)
@@ -1555,8 +1555,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq arg (1- arg))))
 
 (defun keisen-square-line () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$G;M3Q$rIA$/(B.$B%]%$%s%H$H%^!<%/$,0lD>@~>e$K$"$k$H$-$OD>@~$r0z$/(B"
+  "[罫線モード機能]
+ 罫線で四角を描く.ポイントとマークが一直線上にあるときは直線を引く"
   (interactive)
   (let* ((begin (km:what-mark-point))
 	 (end (point))
@@ -1578,8 +1578,8 @@ See also documentation for variable  keisen-picture-tab-chars."
               (min endy))
           (setq beginy min endy max)))
     ;; draw line
-    (cond ((= begin end))             ;$B$J$7(B
-          ((= beginx endx)            ;$B=D@~(B
+    (cond ((= begin end))             ;なし
+          ((= beginx endx)            ;縦線
            (let ((len (- endy beginy)))
              (goto-char begin)
              (while (< 0 len)
@@ -1589,7 +1589,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                (setq len (1- len)))
              (setq this-command 'keisen-draw-up)
              (km:write-keisen -1 0)))
-          ((= beginy endy)            ;$B2#@~(B
+          ((= beginy endy)            ;横線
            (let ((len (/ (- endx beginx) 2)))
              (goto-char begin)
              (setq this-command 'keisen-draw-right)
@@ -1599,7 +1599,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                (setq len (1- len)))
                (setq this-command 'keisen-draw-left)
                (km:write-keisen 0 -1)))
-          (t                          ;$B;M3Q(B
+          (t                          ;四角
            (goto-line beginy)
            (km:move-to-column-force beginx t)
            (let ((lenx (/ (- endx beginx) 2))
@@ -1633,67 +1633,67 @@ See also documentation for variable  keisen-picture-tab-chars."
     (goto-line oldy)
     (km:move-to-column-force oldx)))
 
-;;$B$*$^$1%3!<%J!<(B(?)     by M.Iwamoto
-;;  $B$3$N4X?t$O!"(Bkeisen-square-line$B4X?t$r85$K;d$,M7$SH>J,$K:n$C$F$_$?$b$N$G$9(B.
-;;  $B8D?ME*$K!"7k9=5$$K$$$C$F$k4X?t$J$N$G;H$C$F$d$C$F$/$@$5$$(B.
+;;おまけコーナー(?)     by M.Iwamoto
+;;  この関数は、keisen-square-line関数を元に私が遊び半分に作ってみたものです.
+;;  個人的に、結構気にいってる関数なので使ってやってください.
 (defun keisen-square-line2 () ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B;OE@$H=*E@$rG$0U$KA*Br$77S@~$K$h$k;M3Q$rIA2h$9$k(B."
+  "[罫線モード機能]
+ 始点と終点を任意に選択し罫線による四角を描画する."
   (interactive)
-  (let ((sta_col (* (/ (current-column) 2) 2))  ;$B;OE@7e?t(B
-        (sta_lin (km:what-current-line))        ;$B;OE@9T?t(B
-        (sta_chr nil)                           ;$B;OE@J8;z(B
-        (end_col 0)                             ;$B=*E@7e?t(B
-        (end_lin 0)                             ;$B=*E@9T?t(B
-        (end_chr nil)                           ;$B=*E@J8;z(B
-        (hor_chr nil)                           ;$B;OE@2#$H=*E@=D$N8r:9ItJ8;z(B
-        (ver_chr nil)                           ;$B;OE@=D$H=*E@2#$N8r:9ItJ8;z(B
-        (loop    t)                             ;$B%k!<%W%U%i%0(B
+  (let ((sta_col (* (/ (current-column) 2) 2))  ;始点桁数
+        (sta_lin (km:what-current-line))        ;始点行数
+        (sta_chr nil)                           ;始点文字
+        (end_col 0)                             ;終点桁数
+        (end_lin 0)                             ;終点行数
+        (end_chr nil)                           ;終点文字
+        (hor_chr nil)                           ;始点横と終点縦の交差部文字
+        (ver_chr nil)                           ;始点縦と終点横の交差部文字
+        (loop    t)                             ;ループフラグ
         (old-keisen-width keisen-width)
 	ch)
-    ;$B3FJQ?t$N=i4|2=(B
+    ;各変数の初期化
     (setq sta_chr (km:get-two-column-string sta_col sta_lin))
     (setq hor_chr sta_chr ver_chr sta_chr end_chr sta_chr
           end_col sta_col end_lin sta_lin)
-    ;$B5/E@%^!<%/=q$-9~$_(B
-    (km:change-string sta_col sta_lin "$B!&(B")
-    ;$B%a%$%s=hM}(B
+    ;起点マーク書き込み
+    (km:change-string sta_col sta_lin "・")
+    ;メイン処理
     (while loop
-      (message "keisen-square-line2[C-p:$B>e(B C-n:$B2<(B C-f:$B1&(B C-b:$B:8(B w:$B7S@~@ZBX(B RET:$B7hDj(B ESC:$B<h>C(B]")
+      (message "keisen-square-line2[C-p:上 C-n:下 C-f:右 C-b:左 w:罫線切替 RET:決定 ESC:取消]")
       (setq ch (km:read-char))
-      ;$B=*E@$r>e$K(B1$B9T0\F0$9$k(B[Ctrl-p]
+      ;終点を上に1行移動する[Ctrl-p]
       (cond ((= ch ?\C-p)
-             ;$B=*E@$,$3$l0J>e>e$K0\F0$G$-$J$$(B
+             ;終点がこれ以上上に移動できない
              (cond ((= end_lin 1)
                     (message "Can't move")
                     (sit-for 1))
-                   ;$B;OE@$H=*E@$,0lCW$7$?(B
+                   ;始点と終点が一致した
                    ((and (= sta_lin (1- end_lin))(= sta_col end_col))
                     (km:change-string end_col end_lin end_chr)
-                    (km:change-string sta_col sta_lin "$B!&(B")
+                    (km:change-string sta_col sta_lin "・")
                     (setq hor_chr sta_chr ver_chr sta_chr end_chr sta_chr
                           end_col sta_col end_lin sta_lin))
-                   ;$B;OE@%i%$%s$H=*E@%i%$%s$,0lCW$7$?(B
+                   ;始点ラインと終点ラインが一致した
                    ((= sta_lin (1- end_lin))
                     (km:change-string sta_col end_lin ver_chr)
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_col end_col) "$B(2(B" "$B(4(B"))
+                                      (if (< sta_col end_col) "┣" "┫"))
                     (km:change-string end_col end_lin end_chr)
                     (setq end_lin sta_lin end_chr hor_chr ver_chr sta_chr)
                     (km:change-string end_col end_lin
-                                      (if (< sta_col end_col) "$B(4(B" "$B(2(B")))
-                   ;$B;OE@%+%i%`$H=*E@%+%i%`$,0lCW$7$?(B
+                                      (if (< sta_col end_col) "┫" "┣")))
+                   ;始点カラムと終点カラムが一致した
                    ((= sta_col end_col)
                     (if (/= sta_lin end_lin)
                         (km:change-string end_col end_lin end_chr))
                     (setq end_lin (1- end_lin)
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_lin end_lin)
-                                                        "$B(5(B" "$B(3(B")))
+                                                        "┻" "┳")))
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_lin end_lin) "$B(3(B" "$B(5(B"))
+                                      (if (< sta_lin end_lin) "┳" "┻"))
                     (setq hor_chr end_chr))
-                   ;$B;OE@$H=*E@$,BP3Q@~>e$K$"$C$?(B
+                   ;始点と終点が対角線上にあった
                    (t
                     (if (= sta_lin end_lin)
                         nil
@@ -1703,48 +1703,48 @@ See also documentation for variable  keisen-picture-tab-chars."
                           ver_chr (km:change-string sta_col end_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(1(B" "$B(0(B")
+                                                            "┗" "┛")
                                                       (if (< sta_col end_col)
-                                                          "$B(.(B" "$B(/(B")))
+                                                          "┏" "┓")))
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(0(B" "$B(1(B")
+                                                            "┛" "┗")
                                                       (if (< sta_col end_col)
-                                                          "$B(/(B" "$B(.(B"))))
+                                                          "┓" "┏"))))
                     (km:change-string end_col sta_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(/(B" "$B(.(B")
-                                        (if (< sta_col end_col) "$B(0(B" "$B(1(B")))
+                                          (if (< sta_col end_col) "┓" "┏")
+                                        (if (< sta_col end_col) "┛" "┗")))
                     (km:change-string sta_col sta_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(.(B" "$B(/(B")
-                                        (if (< sta_col end_col) "$B(1(B" "$B(0(B")))))
+                                          (if (< sta_col end_col) "┏" "┓")
+                                        (if (< sta_col end_col) "┗" "┛")))))
              (km:cursol-move end_col end_lin t))
-            ;$B=*E@$r2<$K(B1$B9T0\F0$9$k(B[Ctrl-n]
+            ;終点を下に1行移動する[Ctrl-n]
             ((= ch ?\C-n)
              (cond ((and (= sta_lin (1+ end_lin))(= sta_col end_col))
                     (km:change-string end_col end_lin end_chr)
-                    (km:change-string sta_col sta_lin "$B!&(B")
+                    (km:change-string sta_col sta_lin "・")
                     (setq hor_chr sta_chr ver_chr sta_chr end_chr sta_chr
                           end_col sta_col end_lin sta_lin))
                    ((= sta_lin (1+ end_lin))
                     (km:change-string sta_col end_lin ver_chr)
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_col end_col) "$B(2(B" "$B(4(B"))
+                                      (if (< sta_col end_col) "┣" "┫"))
                     (km:change-string end_col end_lin end_chr)
                     (setq end_lin sta_lin end_chr hor_chr ver_chr sta_chr)
                     (km:change-string end_col end_lin
-                                      (if (< sta_col end_col) "$B(4(B" "$B(2(B")))
+                                      (if (< sta_col end_col) "┫" "┣")))
                    ((= sta_col end_col)
                     (if (/= sta_lin end_lin)
                         (km:change-string end_col end_lin end_chr))
                     (setq end_lin (1+ end_lin)
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_lin end_lin)
-                                                        "$B(5(B" "$B(3(B")))
+                                                        "┻" "┳")))
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_lin end_lin) "$B(3(B" "$B(5(B"))
+                                      (if (< sta_lin end_lin) "┳" "┻"))
                     (setq hor_chr end_chr))
                    (t
                     (if (= sta_lin end_lin)
@@ -1755,29 +1755,29 @@ See also documentation for variable  keisen-picture-tab-chars."
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(0(B" "$B(1(B")
+                                                            "┛" "┗")
                                                       (if (< sta_col end_col)
-                                                          "$B(/(B" "$B(.(B")))
+                                                          "┓" "┏")))
                           ver_chr (km:change-string sta_col end_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(1(B" "$B(0(B")
+                                                            "┗" "┛")
                                                       (if (< sta_col end_col)
-                                                          "$B(.(B" "$B(/(B"))))
+                                                          "┏" "┓"))))
                     (km:change-string end_col sta_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(/(B" "$B(.(B")
-                                        (if (< sta_col end_col) "$B(0(B" "$B(1(B")))
+                                          (if (< sta_col end_col) "┓" "┏")
+                                        (if (< sta_col end_col) "┛" "┗")))
                     (km:change-string sta_col sta_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(.(B" "$B(/(B")
-                                        (if (< sta_col end_col) "$B(1(B" "$B(0(B")))))
+                                          (if (< sta_col end_col) "┏" "┓")
+                                        (if (< sta_col end_col) "┗" "┛")))))
              (km:cursol-move end_col end_lin t))
-            ;$B=*E@$r1&$K(B2$B7e0\F0$9$k(B[Ctrl-f]
+            ;終点を右に2桁移動する[Ctrl-f]
             ((= ch ?\C-f)
              (cond ((and (= sta_lin end_lin)(= sta_col (+ end_col 2)))
                     (km:change-string end_col end_lin end_chr)
-                    (km:change-string sta_col sta_lin "$B!&(B")
+                    (km:change-string sta_col sta_lin "・")
                     (setq hor_chr sta_chr ver_chr sta_chr end_chr sta_chr
                           end_col sta_col end_lin sta_lin))
                    ((= sta_lin end_lin)
@@ -1786,18 +1786,18 @@ See also documentation for variable  keisen-picture-tab-chars."
                     (setq end_col (+ end_col 2)
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_col end_col)
-                                                        "$B(4(B" "$B(2(B")))
+                                                        "┫" "┣")))
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_col end_col) "$B(2(B" "$B(4(B"))
+                                      (if (< sta_col end_col) "┣" "┫"))
                     (setq hor_chr end_chr))
                    ((= sta_col (+ end_col 2))
                     (km:change-string end_col sta_lin hor_chr)
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_lin end_lin) "$B(3(B" "$B(5(B"))
+                                      (if (< sta_lin end_lin) "┳" "┻"))
                     (km:change-string end_col end_lin end_chr)
                     (setq end_col sta_col end_chr ver_chr hor_chr sta_chr)
                     (km:change-string end_col end_lin
-                                      (if (< sta_lin end_lin) "$B(5(B" "$B(3(B")))
+                                      (if (< sta_lin end_lin) "┻" "┳")))
                    (t
                     (if (= sta_col end_col)
                         nil
@@ -1807,32 +1807,32 @@ See also documentation for variable  keisen-picture-tab-chars."
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(0(B" "$B(1(B")
+                                                            "┛" "┗")
                                                       (if (< sta_col end_col)
-                                                          "$B(/(B" "$B(.(B")))
+                                                          "┓" "┏")))
                           hor_chr (km:change-string end_col sta_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(/(B" "$B(.(B")
+                                                            "┓" "┏")
                                                       (if (< sta_col end_col)
-                                                          "$B(0(B" "$B(1(B"))))
+                                                          "┛" "┗"))))
                     (km:change-string sta_col end_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(1(B" "$B(0(B")
-                                        (if (< sta_col end_col) "$B(.(B" "$B(/(B")))
+                                          (if (< sta_col end_col) "┗" "┛")
+                                        (if (< sta_col end_col) "┏" "┓")))
                     (km:change-string sta_col sta_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(.(B" "$B(/(B")
-                                        (if (< sta_col end_col) "$B(1(B" "$B(0(B")))))
+                                          (if (< sta_col end_col) "┏" "┓")
+                                        (if (< sta_col end_col) "┗" "┛")))))
              (km:cursol-move end_col end_lin t))
-            ;$B=*E@$r:8$K(B2$B7e0\F0$9$k(B[Ctrl-b]
+            ;終点を左に2桁移動する[Ctrl-b]
             ((= ch ?\C-b)
              (cond ((= end_col 0)
                     (message "Can't move!")
                     (sit-for 1))
                    ((and (= sta_lin end_lin)(= sta_col (- end_col 2)))
                     (km:change-string end_col end_lin end_chr)
-                    (km:change-string sta_col sta_lin "$B!&(B")
+                    (km:change-string sta_col sta_lin "・")
                     (setq hor_chr sta_chr ver_chr sta_chr end_chr sta_chr
                           end_col sta_col end_lin sta_lin))
                    ((= sta_lin end_lin)
@@ -1841,18 +1841,18 @@ See also documentation for variable  keisen-picture-tab-chars."
                     (setq end_col (- end_col 2)
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_col end_col)
-                                                        "$B(4(B" "$B(2(B")))
+                                                        "┫" "┣")))
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_col end_col) "$B(2(B" "$B(4(B"))
+                                      (if (< sta_col end_col) "┣" "┫"))
                     (setq hor_chr end_chr))
                    ((= sta_col (- end_col 2))
                     (km:change-string end_col sta_lin hor_chr)
                     (km:change-string sta_col sta_lin
-                                      (if (< sta_lin end_lin) "$B(3(B" "$B(5(B"))
+                                      (if (< sta_lin end_lin) "┳" "┻"))
                     (km:change-string end_col end_lin end_chr)
                     (setq end_col sta_col end_chr ver_chr hor_chr sta_chr)
                     (km:change-string end_col end_lin
-                                      (if (< sta_lin end_lin) "$B(5(B" "$B(3(B")))
+                                      (if (< sta_lin end_lin) "┻" "┳")))
                    (t
                     (if (= sta_col end_col)
                         nil
@@ -1862,28 +1862,28 @@ See also documentation for variable  keisen-picture-tab-chars."
                           hor_chr (km:change-string end_col sta_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(/(B" "$B(.(B")
+                                                            "┓" "┏")
                                                       (if (< sta_col end_col)
-                                                          "$B(0(B" "$B(1(B")))
+                                                          "┛" "┗")))
                           end_chr (km:change-string end_col end_lin
                                                     (if (< sta_lin end_lin)
                                                         (if (< sta_col end_col)
-                                                            "$B(0(B" "$B(1(B")
+                                                            "┛" "┗")
                                                       (if (< sta_col end_col)
-                                                          "$B(/(B" "$B(.(B"))))
+                                                          "┓" "┏"))))
                     (km:change-string sta_col end_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(1(B" "$B(0(B")
-                                        (if (< sta_col end_col) "$B(.(B" "$B(/(B")))
+                                          (if (< sta_col end_col) "┗" "┛")
+                                        (if (< sta_col end_col) "┏" "┓")))
                     (km:change-string sta_col sta_lin
                                       (if (< sta_lin end_lin)
-                                          (if (< sta_col end_col) "$B(.(B" "$B(/(B")
-                                        (if (< sta_col end_col) "$B(1(B" "$B(0(B")))))
+                                          (if (< sta_col end_col) "┏" "┓")
+                                        (if (< sta_col end_col) "┗" "┛")))))
              (km:cursol-move end_col end_lin t))
-            ;$B7S@~$N<oN`$rJQ99$9$k(B[w]
+            ;罫線の種類を変更する[w]
             ((= ch ?w)
              (keisen-toggle-width))
-            ;$B;OE@$H=*E@$r7k$s$GBP3Q@~$H$J$k;M3Q$r=q$/(B[RET]
+            ;始点と終点を結んで対角線となる四角を書く[RET]
             ((= ch ?\C-m)
              (if (and (= sta_col end_col)(= sta_lin end_lin))
                  (km:change-string sta_col sta_lin sta_chr)
@@ -1894,12 +1894,12 @@ See also documentation for variable  keisen-picture-tab-chars."
                  (km:change-string end_col sta_lin hor_chr)
                  (km:change-string sta_col end_lin ver_chr)
                  (km:change-string end_col end_lin end_chr))
-               ;$B7S@~MQ%^!<%/$N@_Dj(B
+               ;罫線用マークの設定
                (setq keisen-mark-column sta_col
                      keisen-mark-line   sta_lin)
                (km:cursol-move end_col end_lin t)
                (keisen-square-line))
-             ;$B7S@~$N<oN`$r85$KLa$9(B
+             ;罫線の種類を元に戻す
              (if (= old-keisen-width keisen-width)
                  nil
                (setq keisen-width (cond ((= old-keisen-width 0) 2)
@@ -1907,7 +1907,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                                         ((= old-keisen-width 2) 1)))
                (keisen-toggle-width))
              (setq loop nil))
-            ;$B$d!A$a$?!*(B[ESC]
+            ;や〜めた！[ESC]
             ((= ch ?\e)
              (if (and (= sta_col end_col)(= sta_lin end_lin))
                  (km:change-string sta_col sta_lin sta_chr)
@@ -1918,7 +1918,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                  (km:change-string end_col sta_lin hor_chr)
                  (km:change-string sta_col end_lin ver_chr)
                  (km:change-string end_col end_lin end_chr)))
-             ;$B7S@~$N<oN`$r85$KLa$9(B
+             ;罫線の種類を元に戻す
              (if (= old-keisen-width keisen-width)
                  nil
                (setq keisen-width (cond ((= old-keisen-width 0) 2)
@@ -1926,23 +1926,23 @@ See also documentation for variable  keisen-picture-tab-chars."
                                         ((= old-keisen-width 2) 1)))
                (keisen-toggle-width))
              (setq loop nil))
-            ;$BL$Dj5A%-!<$,2!2<$5$l$?(B
+            ;未定義キーが押下された
             (t
              (message "Undefine key!")
              (sit-for 1))))))
 
 (defun km:get-two-column-string (col lin) ;------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?0LCV$N(B2$B%+%i%`J,$NJ8;zNs$r<hF@$9$k(B.$BNc$r0J2<$K<($9(B.
+  "[罫線モード関数]
+ 指定された位置の2カラム分の文字列を取得する.例を以下に示す.
 
  column:0    5    10
         +----+----+----
-        aaa$B$"(Baa$B$"$"(Ba
+        aaaあaaああa
 
   ex.1 (km:get-two-column-string 0 lin) --> \"aa\"
-  ex.2 (km:get-two-column-string 2 lin) --> \"a$B$"(B\"
-  ex.3 (km:get-two-column-string 4 lin) --> \"$B$"(Ba\"
-  ex.4 (km:get-two-column-string 8 lin) --> \"$B$"$"(B\"
+  ex.2 (km:get-two-column-string 2 lin) --> \"aあ\"
+  ex.3 (km:get-two-column-string 4 lin) --> \"あa\"
+  ex.4 (km:get-two-column-string 8 lin) --> \"ああ\"
 "
   (save-excursion
     (km:cursol-move col lin)
@@ -1971,11 +1971,11 @@ See also documentation for variable  keisen-picture-tab-chars."
                      (char-to-string (following-char))))))))
 
 (defun km:change-string (col lin str1) ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?0LCV$N(B2$B%+%i%`J,$NJ8;zNs$r;XDjJ8;zNs$KCV49$9$k(B"
+  "[罫線モード関数]
+ 指定された位置の2カラム分の文字列を指定文字列に置換する"
   (let (str2 len1 len2)
     (save-excursion
-      (setq str2 (km:get-two-column-string col lin) ;$BCV49A0$NJ8;z$r<hF@(B
+      (setq str2 (km:get-two-column-string col lin) ;置換前の文字を取得
             len1 (km:string-column str1)
             len2 (km:string-column str2))
       (cond ((= len1 len2)
@@ -2000,10 +2000,10 @@ See also documentation for variable  keisen-picture-tab-chars."
                (km:cursol-move (1- col) lin)
                (delete-text-in-column (1- col) (+ (1- col) len1)))
              (insert str1))))
-    str2)) ;$BJQ99A0$NJ8;zNs$rJV5Q(B
+    str2)) ;変更前の文字列を返却
 
 (defun km:cursol-move (col lin &optional asf) ;--------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (km:picture-move-down (- lin (km:what-current-line)))
   (km:picture-forward-column (- col (current-column)))
@@ -2013,33 +2013,33 @@ See also documentation for variable  keisen-picture-tab-chars."
             (scroll-left (+ (- cwc (window-width)) 4))
           (if (< cwc 0)
               (scroll-left cwc))))))
-;;$B$($s$I(B $B$*$V(B $B$*$^$1%3!<%J!<(B
+;;えんど おぶ おまけコーナー
 
 (defun km:extend-regexp (course) ;---------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- extend$B%3%^%s%I$N@55,I=8=(B
- keisen-extend-regexp-flag$B$,(Bnil$B$N$H$-!"$9$Y$F$N7S@~(B
-                             $B#1$N$H$-!":Y$$7S@~(B
-                             $B#2$N$H$-!"B@$$7S@~(B"
-  (cond ((null keisen-extend-regexp-flag) ;$B$9$Y$F$N7S@~(B
+  "[罫線モード関数]
+ extendコマンドの正規表現
+ keisen-extend-regexp-flagがnilのとき、すべての罫線
+                             １のとき、細い罫線
+                             ２のとき、太い罫線"
+  (cond ((null keisen-extend-regexp-flag) ;すべての罫線
          (if (or (= course keisen-right) (= course keisen-left))
-             "[$B("(#($(%(&('((()(*(+(-(.(/(0(1(2(3(4(5(6(7(8(9(:(;(<(=(>(?(@(B]"
-           "[$B(!(#($(%(&('((()(*(+(,(.(/(0(1(2(3(4(5(6(7(8(9(:(;(<(=(>(?(@(B]"))
-        ((= keisen-extend-regexp-flag 1) ;$B:Y$$7S@~(B
+             "[│┌┐┘└├┬┤┴┼┃┏┓┛┗┣┳┫┻╋┠┯┨┷┿┝┰┥┸╂]"
+           "[─┌┐┘└├┬┤┴┼━┏┓┛┗┣┳┫┻╋┠┯┨┷┿┝┰┥┸╂]"))
+        ((= keisen-extend-regexp-flag 1) ;細い罫線
          (if (or (= course keisen-right) (= course keisen-left))
-             "[$B("(#($(%(&('((()(*(+(7(8(9(:(;(<(=(>(?(@(B]"
-           "[$B(!(#($(%(&('((()(*(+(7(8(9(:(;(<(=(>(?(@(B]"))
-        (t ;(= keisen-extend-regexp-flag 2) ;$BB@$$7S@~(B
+             "[│┌┐┘└├┬┤┴┼┠┯┨┷┿┝┰┥┸╂]"
+           "[─┌┐┘└├┬┤┴┼┠┯┨┷┿┝┰┥┸╂]"))
+        (t ;(= keisen-extend-regexp-flag 2) ;太い罫線
          (if (or (= course keisen-right) (= course keisen-left))
-             "[$B(-(.(/(0(1(2(3(4(5(6(7(8(9(:(;(<(=(>(?(@(B]"
-           "[$B(,(.(/(0(1(2(3(4(5(6(7(8(9(:(;(<(=(>(?(@(B]"))))
+             "[┃┏┓┛┗┣┳┫┻╋┠┯┨┷┿┝┰┥┸╂]"
+           "[━┏┓┛┗┣┳┫┻╋┠┯┨┷┿┝┰┥┸╂]"))))
 
 (defun keisen-extend-right () ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B<!$N7S@~$K$V$D$+$k$^$G7S@~$r1&$K?-$P$7$F0z$/(B"
+  "[罫線モード機能]
+ 次の罫線にぶつかるまで罫線を右に伸ばして引く"
   (interactive "*")
   (km:adjust-current-column)
-                                        ; t $B$rF~$l$k$H0c$C$F$$$F$b>C$($F$7$^$&(B
+                                        ; t を入れると違っていても消えてしまう
   (let ((pos (point))
         (len))
     (if (eolp)
@@ -2066,11 +2066,11 @@ See also documentation for variable  keisen-picture-tab-chars."
 	    )))))
 
 (defun keisen-extend-left () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B<!$N7S@~$K$V$D$+$k$^$G7S@~$r:8$K?-$P$7$F0z$/(B"
+  "[罫線モード機能]
+ 次の罫線にぶつかるまで罫線を左に伸ばして引く"
   (interactive "*")
   (km:adjust-current-column)
-                                        ; t $B$rF~$l$k$H0c$C$F$$$F$b>C$($F$7$^$&(B
+                                        ; t を入れると違っていても消えてしまう
   (let ((pos (point))
         (len))
     (if (re-search-backward (km:extend-regexp keisen-left) (km:bol) t)
@@ -2092,11 +2092,11 @@ See also documentation for variable  keisen-picture-tab-chars."
 	  ))))
 
 (defun keisen-extend-up () ;---------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B<!$N7S@~$K$V$D$+$k$^$G7S@~$r>e$K?-$P$7$F0z$/(B"
+  "[罫線モード機能]
+ 次の罫線にぶつかるまで罫線を上に伸ばして引く"
   (interactive "*")
   (km:adjust-current-column)
-                                        ; t $B$rF~$l$k$H0c$C$F$$$F$b>C$($F$7$^$&(B
+                                        ; t を入れると違っていても消えてしまう
   (let ((pos (point))
         (col (current-column))
         (count 0))
@@ -2118,11 +2118,11 @@ See also documentation for variable  keisen-picture-tab-chars."
                (km:move-to-column-force col)))))
 
 (defun keisen-extend-down () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F0z$/(B"
+  "[罫線モード機能]
+ 次の罫線にぶつかるまで罫線を下に伸ばして引く"
   (interactive "*")
   (km:adjust-current-column)
-                                        ; t $B$rF~$l$k$H0c$C$F$$$F$b>C$($F$7$^$&(B
+                                        ; t を入れると違っていても消えてしまう
   (let ((pos (point))
         (col (current-column))
         (count 0))
@@ -2145,47 +2145,47 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B7S@~IA2h5!G=DI2C(B
+;;   罫線描画機能追加
 ;;
 (defun keisen-arrow () ;-------------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%^!<%/%]%$%s%H$+$i%+%l%s%H0LCV$^$GLp0u$r0z$/(B"
+  "[罫線モード機能]
+ 罫線マークポイントからカレント位置まで矢印を引く"
   (interactive)
   (save-excursion
     (let ((begin (km:what-mark-point))
           (end   (point)))
       (if (/= begin end)
-          (cond ((= (km:what-column begin) (km:what-column end)) ;$B=D@~(B
+          (cond ((= (km:what-column begin) (km:what-column end)) ;縦線
                  (if (< begin end)
-                     (km:down-arrow-line end begin) ;$B2<$X(B
-                   (km:up-arrow-line begin end))) ;$B>e$X(B
-                ((= (km:what-line begin) (km:what-line end)) ;$B2#@~(B
+                     (km:down-arrow-line end begin) ;下へ
+                   (km:up-arrow-line begin end))) ;上へ
+                ((= (km:what-line begin) (km:what-line end)) ;横線
                  (if (< begin end)
-                     (km:right-arrow-line begin end) ;$B1&$X(B
-                   (km:left-arrow-line end begin))) ;$B:8$X(B
-                (t nil)))))) ;$B<P@~!)(B
+                     (km:right-arrow-line begin end) ;右へ
+                   (km:left-arrow-line end begin))) ;左へ
+                (t nil)))))) ;斜線？
 
 (defun keisen-line () ;--------------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%^!<%/%]%$%s%H$+$i%+%l%s%H0LCV$^$G7S@~$r0z$/(B"
+  "[罫線モード機能]
+ 罫線マークポイントからカレント位置まで罫線を引く"
   (interactive)
   (save-excursion
     (let ((begin (km:what-mark-point))
           (end   (point)))
       (if (/= begin end)
-          (cond ((= (km:what-column begin) (km:what-column end)) ;$B=D@~(B
+          (cond ((= (km:what-column begin) (km:what-column end)) ;縦線
                  (if (< begin end)
-                     (km:vertically-line-region end begin) ;$B2<$X(B
-                   (km:vertically-line-region begin end))) ;$B>e$X(B
-                ((= (km:what-line begin) (km:what-line end)) ;$B2#@~(B
+                     (km:vertically-line-region end begin) ;下へ
+                   (km:vertically-line-region begin end))) ;上へ
+                ((= (km:what-line begin) (km:what-line end)) ;横線
                  (if (< begin end)
-                     (km:horizontally-line-region begin end) ;$B1&$X(B
-                   (km:horizontally-line-region end begin))) ;$B:8$X(B
-                (t nil)))))) ;$B<P@~!)(B
+                     (km:horizontally-line-region begin end) ;右へ
+                   (km:horizontally-line-region end begin))) ;左へ
+                (t nil)))))) ;斜線？
 
 (defun km:horizontally-line-region (begin end) ;-------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3+;O%]%$%s%H(Bbegin$B$+$i=*E@%]%$%s%H(Bend$B$^$G7S@~$r2#J}8~$X0z$/(B"
+  "[罫線モード関数]
+ 開始ポイントbeginから終点ポイントendまで罫線を横方向へ引く"
   (save-excursion
     (goto-char begin)
     (km:adjust-current-column)
@@ -2201,8 +2201,8 @@ See also documentation for variable  keisen-picture-tab-chars."
           (setq len (1- len)))))))
 
 (defun km:vertically-line-region (begin end) ;---------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3+;O%]%$%s%H(Bbegin$B$+$i=*E@%]%$%s%H(Bend$B$^$G7S@~$r=DJ}8~$X0z$/(B"
+  "[罫線モード関数]
+ 開始ポイントbeginから終点ポイントendまで罫線を縦方向へ引く"
   (save-excursion
     (goto-char begin)
     (km:adjust-current-column)
@@ -2217,8 +2217,8 @@ See also documentation for variable  keisen-picture-tab-chars."
         (setq len (1- len))))))
 
 (defun km:right-arrow-line (begin end) ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3+;O%]%$%s%H(Bbegin$B$+$i=*E@%]%$%s%H(Bend$B$^$G1&Lp0u$r0z$/(B"
+  "[罫線モード関数]
+ 開始ポイントbeginから終点ポイントendまで右矢印を引く"
   (let ((end_pos (km:what-point (km:adjusted-column end)))
         (end_col (km:adjusted-column end))
         (old-keisen-width keisen-width))
@@ -2228,11 +2228,11 @@ See also documentation for variable  keisen-picture-tab-chars."
       (km:horizontally-line-region begin end_pos)
       (setq keisen-width old-keisen-width))
     (km:move-to-column-force end_col nil)
-    (keisen-overwrite-string "$B"*(B")))
+    (keisen-overwrite-string "→")))
 
 (defun km:left-arrow-line (begin end) ;----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3+;O%]%$%s%H(Bbegin$B$+$i=*E@%]%$%s%H(Bend$B$^$G:8Lp0u$r0z$/(B"
+  "[罫線モード関数]
+ 開始ポイントbeginから終点ポイントendまで左矢印を引く"
   (let ((sta_pos (km:what-point (+ (km:adjusted-column begin) 2)))
         (sta_col (km:adjusted-column begin))
         (old-keisen-width keisen-width))
@@ -2242,11 +2242,11 @@ See also documentation for variable  keisen-picture-tab-chars."
       (km:horizontally-line-region sta_pos end)
       (setq keisen-width old-keisen-width))
     (km:move-to-column-force sta_col nil)
-    (keisen-overwrite-string "$B"+(B")))
+    (keisen-overwrite-string "←")))
 
 (defun km:up-arrow-line (begin end) ;------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3+;O%]%$%s%H(Bbegin$B$+$i=*E@%]%$%s%H(Bend$B$^$G>eLp0u$r0z$/(B"
+  "[罫線モード関数]
+ 開始ポイントbeginから終点ポイントendまで上矢印を引く"
   (let ((end_pos (km:what-point (km:adjusted-column end)))
         (end_col (km:adjusted-column end))
         (old-keisen-width keisen-width))
@@ -2260,11 +2260,11 @@ See also documentation for variable  keisen-picture-tab-chars."
                                    (point)))
       (setq keisen-width old-keisen-width))
     (km:move-to-column-force end_col nil)
-    (keisen-overwrite-string "$B",(B")))
+    (keisen-overwrite-string "↑")))
 
 (defun km:down-arrow-line (begin end) ;----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3+;O%]%$%s%H(Bbegin$B$+$i=*E@%]%$%s%H(Bend$B$^$G2<Lp0u$r0z$/(B"
+  "[罫線モード関数]
+ 開始ポイントbeginから終点ポイントendまで下矢印を引く"
   (let ((sta_pos (km:what-point (km:adjusted-column begin)))
         (sta_col (km:adjusted-column begin))
         (old-keisen-width keisen-width))
@@ -2278,18 +2278,18 @@ See also documentation for variable  keisen-picture-tab-chars."
                                  end)
       (setq keisen-width old-keisen-width))
     (km:move-to-column-force sta_col nil)
-    (keisen-overwrite-string "$B"-(B")))
+    (keisen-overwrite-string "↓")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B7S@~IA2h5!G=DI2C(B Part2
+;;   罫線描画機能追加 Part2
 ;;
 (defun keisen-line-horizontally () ;-- Based by M.Ozawa -----------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B=D@~4V$K7S@~$r0z$/(B"
+  "[罫線モード機能]
+ 縦線間に罫線を引く"
   (interactive)
   (km:end-of-line)
-  (if (and (not (looking-at km:horizontally-regexp)) (looking-at "[^$B"*"+(B]"))
+  (if (and (not (looking-at km:horizontally-regexp)) (looking-at "[^→←]"))
       (progn
 	(keisen-set-mark)
 	(km:beginning-of-line)
@@ -2305,11 +2305,11 @@ See also documentation for variable  keisen-picture-tab-chars."
     (keisen-line)))
 
 (defun keisen-line-vertically () ;-- Based by M.Ozawa -------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B2#@~4V$K7S@~$r0z$/(B"
+  "[罫線モード機能]
+ 横線間に罫線を引く"
   (interactive)
   (km:top-of-frame)
-  (if (and (not (looking-at km:vertically-regexp)) (looking-at "[^$B","-(B]"))
+  (if (and (not (looking-at km:vertically-regexp)) (looking-at "[^↑↓]"))
       (progn
 	(keisen-set-mark)
 	(km:bottom-of-frame)
@@ -2325,11 +2325,11 @@ See also documentation for variable  keisen-picture-tab-chars."
     (keisen-line)))
 
 (defun keisen-arrow-down () ;-- Based by M.Ozawa ------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B2#@~4V$K2<8~$-Lp0u$r0z$/(B"
+  "[罫線モード機能]
+ 横線間に下向き矢印を引く"
   (interactive)
   (km:top-of-frame)
-  (if (and (not (looking-at km:vertically-regexp)) (looking-at "[^$B","-(B]"))
+  (if (and (not (looking-at km:vertically-regexp)) (looking-at "[^↑↓]"))
       (progn
 	(keisen-set-mark)
 	(km:bottom-of-frame)
@@ -2350,11 +2350,11 @@ See also documentation for variable  keisen-picture-tab-chars."
     (keisen-arrow)))
 
 (defun keisen-arrow-up () ;-- Based by M.Ozawa --------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B2#@~4V$K>e8~$-Lp0u$r0z$/(B"
+  "[罫線モード機能]
+ 横線間に上向き矢印を引く"
   (interactive)
   (km:bottom-of-frame)
-  (if (and (not (looking-at km:vertically-regexp)) (looking-at "[^$B","-(B]"))
+  (if (and (not (looking-at km:vertically-regexp)) (looking-at "[^↑↓]"))
       (progn
 	(keisen-set-mark)
 	(km:top-of-frame)
@@ -2375,10 +2375,10 @@ See also documentation for variable  keisen-picture-tab-chars."
     (keisen-arrow)))
 
 (defun keisen-arrow-left () ;-- Based by M.Ozawa ------------------------------
-  "$B=D@~4V$K:88~$-Lp0u$r0z$/(B"
+  "縦線間に左向き矢印を引く"
   (interactive)
   (km:end-of-line)
-  (if (and (not (looking-at km:horizontally-regexp)) (looking-at "[^$B"*"+(B]"))
+  (if (and (not (looking-at km:horizontally-regexp)) (looking-at "[^→←]"))
       (progn
 	(keisen-set-mark)
 	(km:beginning-of-line)
@@ -2394,11 +2394,11 @@ See also documentation for variable  keisen-picture-tab-chars."
     (keisen-arrow)))
 
 (defun keisen-arrow-right () ;-- Based by M.Ozawa -----------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B=D@~4V$K1&8~$-Lp0u$r0z$/(B"
+  "[罫線モード機能]
+ 縦線間に右向き矢印を引く"
   (interactive)
   (km:beginning-of-line)
-  (if (and (not (looking-at km:horizontally-regexp)) (looking-at "[^$B"*"+(B]"))
+  (if (and (not (looking-at km:horizontally-regexp)) (looking-at "[^→←]"))
       (progn
 	(keisen-set-mark)
 	(km:end-of-line)
@@ -2415,11 +2415,11 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $BA^F~5!G=(B
+;;   挿入機能
 ;;
 (defun keisen-self-insert-internal (str) ;-------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- self-insert-iso$B4X?t$+$iEO$5$l$?J8;zNs$r%$%s%5!<%H$9$k(B"
+  "[罫線モード機能]
+ self-insert-iso関数から渡された文字列をインサートする"
   (interactive)
   (if keisen-overwrite-mode
       (keisen-overwrite-string str)
@@ -2431,15 +2431,15 @@ See also documentation for variable  keisen-picture-tab-chars."
       (funcall self-insert-after-hook beg end)))
 
 (defun km:self-insert-after-overwrite-hook (begin end) ;-----------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~%b!<%I$N(Bself-insert-after-hook$B%*!<%P!<%i%$%H%b!<%I$GJ8;z$rA^F~$9$k(B"
+  "[罫線モード関数]
+ 罫線モードのself-insert-after-hookオーバーライトモードで文字を挿入する"
   (let ((str (buffer-substring begin end)))
     (delete-region begin end)
     (keisen-overwrite-string str)))
 
 (defun keisen-overwrite-string (str) ;-----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%*!<%P!<%i%$%H$GJ8;z$rA^F~$9$k(B"
+  "[罫線モード機能]
+ オーバーライトで文字を挿入する"
   (interactive "*sInsert string: ")
   (let ((lis (string-to-char-list str))
 	chr wth col)
@@ -2453,16 +2453,16 @@ See also documentation for variable  keisen-picture-tab-chars."
 	(delete-text-in-column col (+ col wth))
 	(insert chr)
 	(forward-char -1)
-	(if (/= km:vertical-step 0) ; $B$J$J$aJ}8~(B
+	(if (/= km:vertical-step 0) ; ななめ方向
 	    (km:picture-move nil)
-	  (if (> km:horizontal-step 0) ; $B1&J}8~(B
+	  (if (> km:horizontal-step 0) ; 右方向
 	      (forward-char 1)
-	    (km:move-to-column-force (- col wth)))) ; $B:8J}8~(B
+	    (km:move-to-column-force (- col wth)))) ; 左方向
 	))))
 
 (defun km:picture-move (&optional force) ;-- Based by K.Handa -----------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%k$r$=$l$>$l(Bkm:horizontal-step/km:vertical-step$BJ,0\F0$9$k(B"
+  "[罫線モード関数]
+ カーソルをそれぞれkm:horizontal-step/km:vertical-step分移動する"
   (let ((h_flg (and (< km:horizontal-step 0)
                     (bolp)))
         (v_flg (and (< km:vertical-step 0)
@@ -2473,8 +2473,8 @@ See also documentation for variable  keisen-picture-tab-chars."
         (km:picture-forward-column km:horizontal-step force)))))
 
 (defun km:self-insert-after-insert-hook (begin end) ;--------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~%b!<%I$N(Bself-insert-after-hook$B%$%s%5!<%H%b!<%I$GJ8;z$rA^F~$9$k(B"
+  "[罫線モード関数]
+ 罫線モードのself-insert-after-hookインサートモードで文字を挿入する"
   (let ((pos (point)) end_col end_pos str)
     (if (re-search-forward keisen-regexp (km:eol) t)
         (progn
@@ -2508,8 +2508,8 @@ See also documentation for variable  keisen-picture-tab-chars."
           ))))
 
 (defun km:auto-line-feed (begin end) ;-----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B<+F02~9T$r9T$J$&(B."
+  "[罫線モード関数]
+ 自動改行を行なう."
   (let ((str (buffer-substring begin end)) sta)
     (delete-region begin end)
     (if (keisen-locked-forward-line)
@@ -2526,16 +2526,16 @@ See also documentation for variable  keisen-picture-tab-chars."
         (goto-char begin)))))
 
 (defun keisen-insert-string (str) ;--------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%$%s%5!<%H$GJ8;z$rA^F~$9$k(B"
+  "[罫線モード機能]
+ インサートで文字を挿入する"
   (interactive "*sInsert string: ")
   (let ((begin (point)))
     (insert str)
     (km:self-insert-after-insert-hook begin (point))))
 
 (defun keisen-insert-blank (arg) ;---------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%]%$%s%H$N8e$N6uGr$rA^F~$9$k(B.$B7S@~$OF0$+$J$$(B"
+  "[罫線モード機能]
+ ポイントの後の空白を挿入する.罫線は動かない"
   (interactive "*p")
   (if (< 0 arg)
       (let ((pos (point)))
@@ -2543,10 +2543,10 @@ See also documentation for variable  keisen-picture-tab-chars."
         (km:self-insert-after-insert-hook pos (point)))))
 
 (defun keisen-enlarge-vertically (arg) ;---------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%]%$%s%H$N0LCV$G=DJ}8~$K7S@~$r?-$P$9(B.
- $B%+%l%s%H%i%$%s$N0l9T>e$N9T$+$i$N$D$J$,$j$r8+$F%+%l%s%H%i%$%s$NA0$K0l9TA^F~$9(B
-$B$k(B."
+  "[罫線モード機能]
+ ポイントの位置で縦方向に罫線を伸ばす.
+ カレントラインの一行上の行からのつながりを見てカレントラインの前に一行挿入す
+る."
   (interactive "*p")
   (save-excursion
     (if (and (< 0 arg)
@@ -2559,8 +2559,8 @@ See also documentation for variable  keisen-picture-tab-chars."
 	    (setq str
 		  (concat str
 			  (make-string (- (current-column) col) ? )
-			  (cond ((looking-at "[$B("(#($('((()(+(8(;(<(>(B]") "$B("(B")
-				((looking-at "[$B(-(.(/(2(3(4(6(7(9(=(@(B]") "$B(-(B")
+			  (cond ((looking-at "[│┌┐├┬┤┼┯┿┝┥]") "│")
+				((looking-at "[┃┏┓┣┳┫╋┠┨┰╂]") "┃")
 				(t "  "))))
 	    (forward-char 1)
 	    (setq col (current-column)))
@@ -2573,9 +2573,9 @@ See also documentation for variable  keisen-picture-tab-chars."
 		(setq count (1- count))))))))
 
 (defun keisen-enlarge-horizontally (arg) ;-------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%]%$%s%H$N0LCV$G2#J}8~$K7S@~$r?-$P$9(B.
- $B%+%l%s%H%+%i%`$NA0$X$N$D$J$,$j$r8+$F%+%l%s%H%+%i%`$NA0$K0l7eA^F~$9$k(B."
+  "[罫線モード機能]
+ ポイントの位置で横方向に罫線を伸ばす.
+ カレントカラムの前へのつながりを見てカレントカラムの前に一桁挿入する."
   (interactive "*p")
   (let* ((col  (current-column))
          (oldline (+ (count-lines (point-min) (point))
@@ -2586,12 +2586,12 @@ See also documentation for variable  keisen-picture-tab-chars."
       (move-to-column col)
       (if (<= (1- col) (current-column))
           (while (< 0 len)
-            (cond ((looking-at "[$B(!($(%((()(*(+(9(?(=(@(B]") (insert "$B(!(B"))
-                  ((looking-at "[$B(,(/(0(3(4(5(6(8(:(;(>(B]") (insert "$B(,(B"))
+            (cond ((looking-at "[─┐┘┬┤┴┼┨┸┰╂]") (insert "─"))
+                  ((looking-at "[━┓┛┳┫┻╋┯┷┿┥]") (insert "━"))
                   (t
                    (indent-to (+ 2 (current-column))))
                   ;;(indent-to (+ (* 2 arg) (current-column)))
-                  ;;(insert-char ? (* arg 2));$BH>3Q!"A43Q$N$I$A$i$G$b$h$$(B($BA43Q(B)
+                  ;;(insert-char ? (* arg 2));半角、全角のどちらでもよい(全角)
                   )
             (setq len (1- len))))
       (forward-line 1)
@@ -2601,9 +2601,9 @@ See also documentation for variable  keisen-picture-tab-chars."
     (move-to-column col)))
 
 (defun km:check-vertically (old) ;---------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B=DJ}8~$N7S@~$NHO0O$rD4$Y!"%]%$%s%H$r7S@~$N;O$^$j$N%i%$%s$N:G=i$K7S@~$NHO0O$r(B
-$BCM$H$7$FJV$9(B."
+  "[罫線モード関数]
+ 縦方向の罫線の範囲を調べ、ポイントを罫線の始まりのラインの最初に罫線の範囲を
+値として返す."
   (let ((end (1- old))
         (begin (1+ old)))
     (beginning-of-line)
@@ -2618,22 +2618,22 @@ See also documentation for variable  keisen-picture-tab-chars."
     (1+ (- end begin))))
 
 (defun keisen-newline () ;-----------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%]%$%s%H$N0LCV$G9T$rJ,3d$7$F?7$7$$9T$rA^F~$9$k(B.$B7S@~$OJ,3d$G$-$J$$(B."
+  "[罫線モード機能]
+ ポイントの位置で行を分割して新しい行を挿入する.罫線は分割できない."
   (interactive "*")
   (if (or
-       ;;$B%P%C%U%!$N:G=i(B
+       ;;バッファの最初
        (bobp)
-       ;;$B%i%$%s$N:G=i$GA0$N9T$K7S@~$,$J$$$H$-(B
+       ;;ラインの最初で前の行に罫線がないとき
        (and (bolp)
             (not (save-excursion
                    (forward-line -1)
                    (re-search-forward keisen-regexp (km:eol) t))))
-       ;;$B%+%l%s%H%i%$%s$K7S@~$,$J$$$H$-(B
+       ;;カレントラインに罫線がないとき
        (not (save-excursion
               (beginning-of-line)
               (re-search-forward keisen-regexp (km:eol) t)))
-       ;;$B%]%$%s%H0J9_$D$.$N9T$N:G8e$^$G7S@~$,$J$$$H$-(B
+       ;;ポイント以降つぎの行の最後まで罫線がないとき
        (not (save-excursion
               (re-search-forward keisen-regexp
                                  (save-excursion (forward-line 1)
@@ -2644,9 +2644,9 @@ See also documentation for variable  keisen-picture-tab-chars."
     (forward-line 1)))
 
 (defun keisen-yank () ;--------------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $BJ]B8$7$F$*$$$?J8;zNs$r%]%$%s%H$NA0$KA^F~$9$k(B.
- $BJ8;zNs$O7S@~$r1[$($k$3$H$O$G$-$J$$(B."
+  "[罫線モード機能]
+ 保存しておいた文字列をポイントの前に挿入する.
+ 文字列は罫線を越えることはできない."
   (interactive "*")
   (if (looking-at keisen-regexp)
       nil
@@ -2668,10 +2668,10 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B:o=|!JJ]B8!K5!G=(B
+;;   削除（保存）機能
 ;;
 (defun keisen-kill-line () ;-- Based by M.Ozawa -------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive)
   (let ((begin (point)))
@@ -2681,7 +2681,7 @@ See also documentation for variable  keisen-picture-tab-chars."
 	(km:kill-extract-rectangle begin (point))))))
 
 (defun keisen-clear-keisen (arg) ;-- Based by M.Ozawa -------------------------
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive "p")
   (save-excursion
@@ -2693,8 +2693,8 @@ See also documentation for variable  keisen-picture-tab-chars."
       (setq arg (1- arg)))))
 
 (defun keisen-clear-frame (&optional save) ;-- Based by M.Ozawa ---------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%U%l!<%`Fb$NJ8;z$r:o=|$9$k(B"
+  "[罫線モード機能]
+ フレーム内の文字を削除する"
   (interactive "P")
   (let (begin)
     (save-excursion (km:top-of-frame)
@@ -2711,7 +2711,7 @@ See also documentation for variable  keisen-picture-tab-chars."
 		    )))
 
 (defun km:top-of-frame () ;-- Based by M.Ozawa --------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (while (and (not (looking-at km:horizontally-regexp)) (not (km:boblp)))
     (keisen-previous-line))
@@ -2719,7 +2719,7 @@ See also documentation for variable  keisen-picture-tab-chars."
       (keisen-next-line)))
 
 (defun km:bottom-of-frame () ;-- Based by M.Ozawa -----------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (while (and (not (looking-at km:horizontally-regexp)) (not (km:eoblp)))
     (keisen-next-line))
@@ -2727,34 +2727,34 @@ See also documentation for variable  keisen-picture-tab-chars."
       (keisen-previous-line)))
 
 (defun keisen-clear-line () ;--------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+%l%s%H%i%$%s$N%]%$%s%H$+$i<!$N7S@~$^$?$O9TC<$^$G$r:o=|$9$k(B
- $B7S@~$OF0$+$J$$(B"
+  "[罫線モード機能]
+ カレントラインのポイントから次の罫線または行端までを削除する
+ 罫線は動かない"
   (interactive "*")
   (let ((pos (point))
         (col))
-    (cond ((looking-at keisen-regexp))                  ;$B7S@~>e(B
-          ((re-search-forward keisen-regexp (km:eol) t) ;$B%]%$%s%H0J8e$K7S@~(B
+    (cond ((looking-at keisen-regexp))                  ;罫線上
+          ((re-search-forward keisen-regexp (km:eol) t) ;ポイント以後に罫線
            (goto-char (match-beginning 0))
            (setq col (current-column))
-           ;;(skip-chars-backward " $B!!(B\t" pos)
+           ;;(skip-chars-backward " 　\t" pos)
            (kill-region pos (match-beginning 0))
            ;;(kill-region pos (+ (point) (get-code-type (point)) 1))
            ;;(re-search-forward keisen-regexp)
            ;;(goto-char (match-beginning 0))
            (indent-to col)
            (goto-char pos))
-          ;$B"-%+%l%s%H%i%$%s$N@hF,%]%$%s%H$+$i8=%]%$%s%H$^$G7S@~$b4^$a$F:o=|(B
-          ;  $B$7$F$7$^$&$N$G!"$3$N=hM}$O>J$/(B
-          ;((re-search-backward keisen-regexp (km:bol) t);$B%]%$%s%H0JA0$K7S@~(B
+          ;↓カレントラインの先頭ポイントから現ポイントまで罫線も含めて削除
+          ;  してしまうので、この処理は省く
+          ;((re-search-backward keisen-regexp (km:bol) t);ポイント以前に罫線
           ; (kill-region pos (km:bol)))
           (t                                            ;
            (kill-line)))))
 
 (defun keisen-clear-char () ;--------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%]%$%s%H$N8e$m$N%-%c%i%/%?!<$r#1J8;z>C$9(B.$B$=$N8e$m$N%-%c%i%/%?!<$O:8$K$D$a$i$l(B
-$B$k(B.$B7S@~$OF0$+$J$$(B"
+  "[罫線モード機能]
+ ポイントの後ろのキャラクターを１文字消す.その後ろのキャラクターは左につめられ
+る.罫線は動かない"
   (interactive "*")
   (save-excursion
     (cond ((eobp) nil)
@@ -2778,7 +2778,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                        (km:clear-char-on-text pos ch)))))))))
 
 (defun km:clear-char-on-text (pos ch) ;----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (goto-char pos)
   (if (keisen-locked-forward-line)
@@ -2795,9 +2795,9 @@ See also documentation for variable  keisen-picture-tab-chars."
                 (setq cnt (1+ cnt))))))))
 
 (defun keisen-clear-backward-char () ;-----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%]%$%s%H$NA0$N%-%c%i%/%?!<$r#1J8;z>C$9(B.$B$=$N8e$m$N%-%c%i%/%?!<$O:8$K$D$a$i$l$k(B.
- $B$7$+$77S@~$OF0$+$:>C$9$3$H$b$G$-$J$$(B"
+  "[罫線モード機能]
+ ポイントの前のキャラクターを１文字消す.その後ろのキャラクターは左につめられる.
+ しかし罫線は動かず消すこともできない"
   (interactive "*")
   (if (bolp)
       nil
@@ -2809,8 +2809,8 @@ See also documentation for variable  keisen-picture-tab-chars."
   (keisen-clear-char))
 
 (defun keisen-shrink-vertically (arg) ;----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$r=DJ}8~$K=L$a$k(B.$B%+%l%s%H%i%$%s$r0l9T:o=|$7$F7S@~$r0l9T=L$a$k(B"
+  "[罫線モード機能]
+ 罫線を縦方向に縮める.カレントラインを一行削除して罫線を一行縮める"
   (interactive "*p")
   (let ((col (current-column)))
     (beginning-of-line)
@@ -2822,8 +2822,8 @@ See also documentation for variable  keisen-picture-tab-chars."
     (move-to-column col)))
 
 (defun keisen-shrink-horizontally (arg) ;--------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$r2#J}8~$K=L$a$k(B.$B%]%$%s%H$N8e$N0l7e$r:o=|$7$F7S@~$r0l9T=L$a$k(B"
+  "[罫線モード機能]
+ 罫線を横方向に縮める.ポイントの後の一桁を削除して罫線を一行縮める"
   (interactive "*p")
   (let* ((col (km:adjusted-current-column))
          (oldline (+ (count-lines (point-min) (point))
@@ -2845,125 +2845,125 @@ See also documentation for variable  keisen-picture-tab-chars."
     (move-to-column col)))
 
 (defun keisen-clean () ;-------------------------------------------------------
- "[$B7S@~%b!<%I5!G=(B]
- $B9TKv$NL50UL#$J%?%V$d%9%Z!<%9$r<h$j=|$/(B"
+ "[罫線モード機能]
+ 行末の無意味なタブやスペースを取り除く"
  (interactive "*")
  (save-excursion
    (goto-char (point-min))
-   (while (re-search-forward "[$B!!(B \t]+$" nil t)
+   (while (re-search-forward "[　 \t]+$" nil t)
      (delete-region (match-beginning 0) (point))))
  (message "done"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B:o=|!JJ]B8!K5!G=DI2C(B [rect.el$B!"(Bregister.el$B$h$jH4?h(B]
+;;   削除（保存）機能追加 [rect.el、register.elより抜粋]
 ;;
-(defvar km:rectangle-save-buffer nil "$B6k7A%P%C%U%!(B")
-(defvar km:rectangle-save-register-alist nil "$B6k7A%P%C%U%!%l%8%9%?(B")
+(defvar km:rectangle-save-buffer nil "矩形バッファ")
+(defvar km:rectangle-save-register-alist nil "矩形バッファレジスタ")
 
 (defun keisen-kill-rectangle () ;----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$r6k7A%P%C%U%!(B(km:rectangle-save-buffer)$B$KJ]B8$7!"$=$N(B
-$BOHFb$NJ8;zNs$O:o=|$9$k!#:o=|$7$?ItJ,$O6uGr$K$h$C$FKd$a$i$l$k!#(B
-  $BOHFb$K7S@~$,B8:_$7$?>l9g!"6uGr$H$7$FJ]B8$5$l$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内を矩形バッファ(km:rectangle-save-buffer)に保存し、その
+枠内の文字列は削除する。削除した部分は空白によって埋められる。
+  枠内に罫線が存在した場合、空白として保存される。
+  罫線は動いたり消えたりしない。"
   (interactive)
   (let ((start (km:what-mark-point))
         (end   (point)))
     (setq km:rectangle-save-buffer (km:kill-extract-rectangle start end))))
 
 (defun keisen-kill-rectangle-to-register (char) ;------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$r6k7A%P%C%U%!%l%8%9%?(B(km:rectangle-save-register
--alist)$B$K;XDj$7$?%l%8%9%?L>$GJ]B8$7!"$=$NOHFb$NJ8;zNs$O:o=|$9$k!#:o=|$7$?ItJ,(B
-$B$O6uGr$K$h$C$FKd$a$i$l$k!#(B
-  $BOHFb$K7S@~$,B8:_$7$?>l9g!"6uGr$H$7$FJ]B8$5$l$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内を矩形バッファレジスタ(km:rectangle-save-register
+-alist)に指定したレジスタ名で保存し、その枠内の文字列は削除する。削除した部分
+は空白によって埋められる。
+  枠内に罫線が存在した場合、空白として保存される。
+  罫線は動いたり消えたりしない。"
   (interactive "cKeisen kill rectangle to register: \n")
   (let ((start (km:what-mark-point))
         (end   (point)))
     (km:set-register char (km:kill-extract-rectangle start end))))
 
 (defun keisen-delete-rectangle () ;--------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$r6k7A%P%C%U%!(B(km:rectangle-save-buffer)$B$KJ]B8$7!"$=$N(B
-$BOHFb$NJ8;zNs$O:o=|$9$k!#(B
-  $BOHFb$K7S@~$,B8:_$7$?>l9g!"6uGr$H$7$FJ]B8$5$l$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内を矩形バッファ(km:rectangle-save-buffer)に保存し、その
+枠内の文字列は削除する。
+  枠内に罫線が存在した場合、空白として保存される。
+  罫線は動いたり消えたりしない。"
   (interactive)
   (let ((start (km:what-mark-point))
         (end   (point)))
     (setq km:rectangle-save-buffer (km:delete-extract-rectangle start end))))
 
 (defun keisen-delete-rectangle-to-register (char) ;----------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$r6k7A%P%C%U%!%l%8%9%?(B(km:rectangle-save-register
--alist)$B$K;XDj$7$?%l%8%9%?L>$GJ]B8$7!"$=$NOHFb$NJ8;zNs$O:o=|$9$k!#(B
-  $BOHFb$K7S@~$,B8:_$7$?>l9g!"6uGr$H$7$FJ]B8$5$l$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内を矩形バッファレジスタ(km:rectangle-save-register
+-alist)に指定したレジスタ名で保存し、その枠内の文字列は削除する。
+  枠内に罫線が存在した場合、空白として保存される。
+  罫線は動いたり消えたりしない。"
   (interactive "cKeisen delete rectangle to register: \n")
   (let ((start (km:what-mark-point))
         (end   (point)))
     (km:set-register char (km:delete-extract-rectangle start end))))
 
 (defun keisen-save-rectangle () ;----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$r6k7A%P%C%U%!(B(km:rectangle-save-buffer)$B$KJ]B8$9$k!#(B
-  $BOHFb$NJ8;zNs$O:o=|$7$J$$!#(B
-  $BOHFb$K7S@~$,B8:_$7$?>l9g!"6uGr$H$_$J$7$FJ]B8$5$l$k!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内を矩形バッファ(km:rectangle-save-buffer)に保存する。
+  枠内の文字列は削除しない。
+  枠内に罫線が存在した場合、空白とみなして保存される。"
   (interactive)
   (let ((start (km:what-mark-point))
         (end   (point)))
     (setq km:rectangle-save-buffer (km:save-extract-rectangle start end))))
 
 (defun keisen-save-rectangle-to-register (char) ;------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$r6k7A%P%C%U%!%l%8%9%?(B(km:rectangle-save-buffer-alist)
-$B$K;XDj$7$?%l%8%9%?L>$GJ]B8$9$k!#(B
-  $BOHFb$NJ8;zNs$O:o=|$7$J$$!#(B
-  $BOHFb$K7S@~$,B8:_$7$?>l9g!"6uGr$H$_$J$7$FJ]B8$5$l$k!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内を矩形バッファレジスタ(km:rectangle-save-buffer-alist)
+に指定したレジスタ名で保存する。
+  枠内の文字列は削除しない。
+  枠内に罫線が存在した場合、空白とみなして保存される。"
   (interactive "cKeisen save rectangle to register: \n")
   (let ((start (km:what-mark-point))
         (end   (point)))
     (km:set-register char (km:save-extract-rectangle start end))))
 
 (defun keisen-yank-rectangle () ;----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B%+%l%s%H%]%$%s%H(B(point)$B$r;OE@$H$7$F!"6k7A%P%C%U%!(B(km:rectangle-save-buffer)
-$B$KJ]B8$5$l$F$$$kJ8;zNs$r%+%l%s%H%P%C%U%!$KA^F~$9$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B
-  $B$J$*!"3F@)8f%U%i%0$K@)8B;v9`$,$"$k$N$GCm0U$9$k$3$H!#(B
-    1. keisen-overwrite-mode$B$OM-8z(B
-    2. keisen-auto-line-feed-flag$B$OL58z(B
-    3. keisen-auto-enlarge-vertically-flag$B$OL58z(B
-    4. keisen-auto-enlarge-horizontally-flag$B$OM-8z(B"
+  "[罫線モード機能]
+  カレントポイント(point)を始点として、矩形バッファ(km:rectangle-save-buffer)
+に保存されている文字列をカレントバッファに挿入する。
+  罫線は動いたり消えたりしない。
+  なお、各制御フラグに制限事項があるので注意すること。
+    1. keisen-overwrite-modeは有効
+    2. keisen-auto-line-feed-flagは無効
+    3. keisen-auto-enlarge-vertically-flagは無効
+    4. keisen-auto-enlarge-horizontally-flagは有効"
   (interactive)
   (km:insert-rectangle km:rectangle-save-buffer))
 
 (defun keisen-yank-rectangle-from-register (char) ;----------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B%+%l%s%H%]%$%s%H(B(point)$B$r;OE@$H$7$F!"6k7A%P%C%U%!%l%8%9%?(B(km:rectangle-save
--register-alist)$B$N;XDj$5$l$?%l%8%9%?L>$KJ]B8$5$l$F$$$kJ8;zNs$r%+%l%s%H%P%C%U%!(B
-$B$KA^F~$9$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B
-  $B$J$*!"3F@)8f%U%i%0$K@)8B;v9`$,$"$k$N$GCm0U$9$k$3$H!#(B
-    1. keisen-overwrite-mode$B$OM-8z(B
-    2. keisen-auto-line-feed-flag$B$OL58z(B
-    3. keisen-auto-enlarge-vertically-flag$B$OL58z(B
-    4. keisen-auto-enlarge-horizontally-flag$B$OM-8z(B"
+  "[罫線モード機能]
+  カレントポイント(point)を始点として、矩形バッファレジスタ(km:rectangle-save
+-register-alist)の指定されたレジスタ名に保存されている文字列をカレントバッファ
+に挿入する。
+  罫線は動いたり消えたりしない。
+  なお、各制御フラグに制限事項があるので注意すること。
+    1. keisen-overwrite-modeは有効
+    2. keisen-auto-line-feed-flagは無効
+    3. keisen-auto-enlarge-vertically-flagは無効
+    4. keisen-auto-enlarge-horizontally-flagは有効"
   (interactive "cKeisen yank rectangle from register: \n")
   (km:insert-rectangle (km:get-register char)))
 
 (defun keisen-view-rectangle-register (char) ;---------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B6k7A%P%C%U%!%l%8%9%?(B(km:rectangle-save-register-alist)$B$N;XDj$5$l$?%l%8%9%?L>(B
-$B$KJ]B8$5$l$F$$$kJ8;zNs$rI=<($9$k!#(B"
+  "[罫線モード機能]
+  矩形バッファレジスタ(km:rectangle-save-register-alist)の指定されたレジスタ名
+に保存されている文字列を表示する。"
   (interactive "cKeisen view rectangle register: \n")
   (let ((val (km:get-register char)))
     (if (null val)
@@ -2991,11 +2991,11 @@ See also documentation for variable  keisen-picture-tab-chars."
               (princ val))))))))
 
 (defun keisen-open-rectangle () ;----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$K6uGr$rA^F~$9$k!#(B
-  $BOH$N1&B&$NJ8;zNs$O6uGr$,A^F~$5$l$?J,!"1&$X%7%U%H$5$l$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内に空白を挿入する。
+  枠の右側の文字列は空白が挿入された分、右へシフトされる。
+  罫線は動いたり消えたりしない。"
   (interactive)
   (let ((start (km:what-mark-point))
         (end   (point))
@@ -3005,31 +3005,31 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq keisen-auto-line-feed-flag old_flag)))
 
 (defun keisen-clear-rectangle () ;---------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
-  $B7S@~%^!<%/@_Dj%]%$%s%H(B(km:what-mark-point)$B$H%+%l%s%H%]%$%s%H(B(point)$B$r7k$s$G(B
-$BBP3Q@~$H$J$k;M3Q7A$NOHFb$r>C5n$9$k!#(B
-  $BOH$N1&B&$NJ8;zNs$O6uGr$,>C5n$5$l$?J,!":8$X%7%U%H$5$l$k!#(B
-  $B7S@~$OF0$$$?$j>C$($?$j$7$J$$!#(B"
+  "[罫線モード機能]
+  罫線マーク設定ポイント(km:what-mark-point)とカレントポイント(point)を結んで
+対角線となる四角形の枠内を消去する。
+  枠の右側の文字列は空白が消去された分、左へシフトされる。
+  罫線は動いたり消えたりしない。"
   (interactive)
   (let ((start (km:what-mark-point))
         (end   (point)))
     (km:operate-on-rectangle 'km:clear-rectangle-line start end t)))
 
 (defun km:operate-on-rectangle (function start end coerce-tabs) ;--------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let (sta_col sta_pos end_col end_pos)
     (save-excursion
       (goto-char start)
-      (setq sta_col (current-column))  ;$B3+;O%+%i%`(B
+      (setq sta_col (current-column))  ;開始カラム
       (beginning-of-line)
-      (setq sta_pos (point)))          ;$B3+;O%i%$%s$N@hF,%]%$%s%H(B
+      (setq sta_pos (point)))          ;開始ラインの先頭ポイント
     (save-excursion
       (goto-char end)
-      (setq end_col (current-column))  ;$B=*N;%+%i%`(B
+      (setq end_col (current-column))  ;終了カラム
       (forward-line 1)
-      (setq end_pos (point-marker)))   ;$B=*N;%+%i%`$N<!%+%i%`%]%$%s%H(B
-    ;$B%+%i%`$NBg>.%A%'%C%/(B
+      (setq end_pos (point-marker)))   ;終了カラムの次カラムポイント
+    ;カラムの大小チェック
     (if (< end_col sta_col)
         (let ((temp sta_col))
           (setq sta_col end_col end_col temp)))
@@ -3062,46 +3062,46 @@ See also documentation for variable  keisen-picture-tab-chars."
     (- end_col sta_col)))
 
 (defun km:kill-extract-rectangle (start end) ;---------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let (lines)
     (km:operate-on-rectangle 'km:kill-extract-rectangle-line start end t)
     (nreverse lines)))
 
 (defun km:kill-extract-rectangle-line (startdelpos begextra endextra) ;--------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (save-excursion
     (km:extract-rectangle-line startdelpos begextra endextra 2)))
 
 (defun km:delete-extract-rectangle (start end) ;-------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let (lines)
     (km:operate-on-rectangle 'km:delete-extract-rectangle-line start end t)
     (nreverse lines)))
 
 (defun km:delete-extract-rectangle-line (startdelpos begextra endextra) ;------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (save-excursion
     (km:extract-rectangle-line startdelpos begextra endextra 1)))
 
 (defun km:save-extract-rectangle (start end) ;---------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let (lines)
     (km:operate-on-rectangle 'km:save-extract-rectangle-line start end t)
     (nreverse lines)))
 
 (defun km:save-extract-rectangle-line (startdelpos begextra endextra) ;--------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (save-excursion
    (km:extract-rectangle-line startdelpos begextra endextra 0)))
 
 (defun km:extract-rectangle-line (startdelpos begextra endextra delete_type) ;-
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let ((line "")
         (endcol (current-column))
@@ -3109,7 +3109,7 @@ See also documentation for variable  keisen-picture-tab-chars."
     (goto-char startdelpos)
     (while (> endcol (current-column))
       (let ((ch (char-to-string (following-char))))
-        (if (string-match keisen-regexp ch) ;$B7S@~!)(B
+        (if (string-match keisen-regexp ch) ;罫線？
             (progn (setq line
                          (concat line
                                  (make-string (char-width (string-to-char ch))
@@ -3129,7 +3129,7 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq lines (cons line lines))))
 
 (defun km:insert-rectangle (rectangle) ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let ((lines rectangle)
         (insertcolumn (current-column))
@@ -3154,19 +3154,19 @@ See also documentation for variable  keisen-picture-tab-chars."
     (setq keisen-auto-line-feed-flag old_flag)))
 
 (defun km:open-rectangle-line (startpos begextra endextra)
-  "[$B7S@~%b!<%I4X?t(B]
-  $B%+%l%s%H%i%$%s$N;XDj%]%$%s%H(B(startpos)$B$+$i%+%l%s%H%]%$%s%H(B(point)$B$^$G6uGr$rA^(B
-$BF~$9$k!#J8;zNs$OA^F~$7$?J,!"1&$X%7%U%H$5$l$k!#(B
-  $B7S@~$OF0$+$7$?$j>C$7$?$j$O$7$J$$!#(B"
+  "[罫線モード関数]
+  カレントラインの指定ポイント(startpos)からカレントポイント(point)まで空白を挿
+入する。文字列は挿入した分、右へシフトされる。
+  罫線は動かしたり消したりはしない。"
   (let ((num (km:buffer-column startpos (point))))
     (goto-char startpos)
     (keisen-insert-string (make-string num (string-to-char " ")))))
 
 (defun km:clear-rectangle-line (startpos begextra endextra) ;------------------
-  "[$B7S@~%b!<%I4X?t(B]
-  $B%+%l%s%H%i%$%s$N;XDj%]%$%s%H(B(startpos)$B$+$i%+%l%s%H%]%$%s%H(B(point)$B$^$G:o=|$7!"(B
-$B6uGr$GKd$a$k!#(B
-  $B7S@~$OF0$+$7$?$j>C$7$?$j$O$7$J$$!#(B"
+  "[罫線モード関数]
+  カレントラインの指定ポイント(startpos)からカレントポイント(point)まで削除し、
+空白で埋める。
+  罫線は動かしたり消したりはしない。"
   (let ((end (point)))
     (goto-char startpos)
     (while (> end (point))
@@ -3178,7 +3178,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                                              (string-to-char " "))))))))
 
 (defun km:rectangle-coerce-tab (column) ;--------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let ((aftercol (current-column))
         (indent-tabs-mode nil))
@@ -3187,15 +3187,15 @@ See also documentation for variable  keisen-picture-tab-chars."
     (backward-char (- aftercol column))))
 
 (defun km:get-register (char) ;------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
-  $B;XDj$5$l$?%l%8%9%?L>(B(char)$B$NFbMF$r6k7A%P%C%U%!%l%8%9%?(B(km:rectangle-save
--register-alist)$B$+$i<h$j=P$9!#(B"
+  "[罫線モード関数]
+  指定されたレジスタ名(char)の内容を矩形バッファレジスタ(km:rectangle-save
+-register-alist)から取り出す。"
   (cdr (assq char km:rectangle-save-register-alist)))
 
 (defun km:set-register (char value) ;------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
-  $B;XDj$5$l$?%l%8%9%?L>(B(char)$B$GJ8;zNs(B(value)$B$r6k7A%P%C%U%!%l%8%9%?(B(km:rectangle
--save-register-alist)$B$KEPO?$9$k!#(B"
+  "[罫線モード関数]
+  指定されたレジスタ名(char)で文字列(value)を矩形バッファレジスタ(km:rectangle
+-save-register-alist)に登録する。"
   (let ((aelt (assq char km:rectangle-save-register-alist)))
     (if aelt
         (setcdr aelt value)
@@ -3203,34 +3203,34 @@ See also documentation for variable  keisen-picture-tab-chars."
       (setq km:rectangle-save-register-alist
             (cons aelt km:rectangle-save-register-alist)))))
 
-;;$B$*$^$1%3!<%J!<Bh(B2$BCF(B
-;;  keisen-square-line2$B4X?t$GL#$r$7$a$F$7$^$C$?;d$O!"$H$&$H$&$3$s$J4X?t$^$G(B
-;;  $B:n$C$F$7$^$C$?(B...
-;;  $B$O$C$-$j8@$C$F!"BgJQ$G$7$?(B.$B$G$b!"JXMx(B($B$+$J(B?)$B$@$H;W$&$N$G;H$C$F$M!*(B
+;;おまけコーナー第2弾
+;;  keisen-square-line2関数で味をしめてしまった私は、とうとうこんな関数まで
+;;  作ってしまった...
+;;  はっきり言って、大変でした.でも、便利(かな?)だと思うので使ってね！
 (defun keisen-rectangle () ;---------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B;OE@$H=*E@$rG$0U$KA*Br$7OHFb$NJ8;zNs$rJ]B8!":o=|$J$I@)8f$9$k(B."
+  "[罫線モード機能]
+ 始点と終点を任意に選択し枠内の文字列を保存、削除など制御する."
   (interactive)
-  (let ((sta_pos (point))       ;$B;OE@%]%$%s%H(B
-        (sta_col 0)             ;$B;OE@%+%i%`(B
-        (sta_lin 0)             ;$B;OE@%i%$%s(B
-        (end_col 0)             ;$B=*E@%+%i%`(B
-        (end_lin 0)             ;$B=*E@%i%$%s(B
-        (loop1   t)             ;$B%k!<%W%U%i%0(B $B$=$N(B1
-        (loop2   t)             ;$B%k!<%W%U%i%0(B $B$=$N(B2
-        (ch      nil))          ;$BF~NO%-!<(B
-    ;$B3FJQ?t$N=i4|2=(B
+  (let ((sta_pos (point))       ;始点ポイント
+        (sta_col 0)             ;始点カラム
+        (sta_lin 0)             ;始点ライン
+        (end_col 0)             ;終点カラム
+        (end_lin 0)             ;終点ライン
+        (loop1   t)             ;ループフラグ その1
+        (loop2   t)             ;ループフラグ その2
+        (ch      nil))          ;入力キー
+    ;各変数の初期化
     (setq sta_col (km:what-column sta_pos)
           sta_lin (km:what-line   sta_pos))
     (setq end_col sta_col end_lin sta_lin)
-    ;$B%+!<%=%kE@LG3+;O(B
+    ;カーソル点滅開始
     (km:cursol-flash-start)
-    ;$B%a%$%s=hM}(B
+    ;メイン処理
     (while loop1
       (message
-       "keisen-rectangle[C-p:$B>e(B C-n:$B2<(B C-f:$B1&(B C-b:$B:8(B RET:$B7hDj(B ESC:$B<h>C(B]")
+       "keisen-rectangle[C-p:上 C-n:下 C-f:右 C-b:左 RET:決定 ESC:取消]")
       (setq ch (km:read-char))
-      ;$B=*E@$r>e$K(B1$B9T0\F0$9$k(B[Ctrl-p]
+      ;終点を上に1行移動する[Ctrl-p]
       (cond ((= ch ?\C-p)
              (if (= end_lin 1)
                  (progn (message "Can't move")
@@ -3250,7 +3250,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                       (if (/= sta_col end_col)
                           (km:inverse-on-horizontal sta_col end_lin))))
                (km:cursol-flash-start)))
-            ;$B=*E@$r2<$K(B1$B9T0\F0$9$k(B[Ctrl-n]
+            ;終点を下に1行移動する[Ctrl-n]
             ((= ch ?\C-n)
              (km:cursol-flash-stop)
              (cond ((> sta_lin end_lin)
@@ -3277,7 +3277,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                     (if (/= sta_col end_col)
                         (km:inverse-on-horizontal sta_col end_lin))))
              (km:cursol-flash-start))
-            ;$B=*E@$r1&$K0\F0$9$k(B[Ctrl-f]
+            ;終点を右に移動する[Ctrl-f]
             ((= ch ?\C-f)
              (km:cursol-flash-stop)
              (cond ((> sta_col end_col)
@@ -3293,7 +3293,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                     (if (/= sta_lin end_lin)
                         (km:inverse-on-vertical sta_lin end_lin))))
              (km:cursol-flash-start))
-            ;$B=*E@$r:8$K0\F0$9$k(B[Ctrl-b]
+            ;終点を左に移動する[Ctrl-b]
             ((= ch ?\C-b)
              (if (bolp)
                  (progn (message "Can't move")
@@ -3312,15 +3312,15 @@ See also documentation for variable  keisen-picture-tab-chars."
                       (if (/= sta_lin end_lin)
                           (km:inverse-on-vertical sta_lin end_lin))))
                (km:cursol-flash-start)))
-            ;$B7hDj%-!<(B[RET]$B$,2!2<$5$l$?(B
+            ;決定キー[RET]が押下された
             ((= ch ?\C-m)
              (while loop2
                (message
-                "keisen-rectangle[k:$B:o=|(B&$BJ]B8(B d:$B:o=|(B($B:85M(B)&$BJ]B8(B s:$BJ]B8(B o:$B%*!<%W%s(B c:$B%/%j%"(B]")
+                "keisen-rectangle[k:削除&保存 d:削除(左詰)&保存 s:保存 o:オープン c:クリア]")
 	       (setq ch (km:read-char))
                (cond ((= ch ?k)
                       (km:cursol-flash-stop)
-                      ;$B7S@~MQ%^!<%/$N@_Dj(B
+                      ;罫線用マークの設定
                       (setq keisen-mark-column sta_col
                             keisen-mark-line   sta_lin)
                       (km:inverse-off-square sta_col sta_lin end_col end_lin)
@@ -3331,7 +3331,7 @@ See also documentation for variable  keisen-picture-tab-chars."
                      ((= ch ?s))
                      ((= ch ?o)
                       (km:cursol-flash-stop)
-                      ;$B7S@~MQ%^!<%/$N@_Dj(B
+                      ;罫線用マークの設定
                       (setq keisen-mark-column sta_col
                             keisen-mark-line   sta_lin)
                       (km:inverse-off-square sta_col sta_lin end_col end_lin)
@@ -3340,31 +3340,31 @@ See also documentation for variable  keisen-picture-tab-chars."
                       (setq loop2 nil))
                      ((= ch ?c)
                       (km:cursol-flash-stop)
-                      ;$B7S@~MQ%^!<%/$N@_Dj(B
+                      ;罫線用マークの設定
                       (setq keisen-mark-column sta_col
                             keisen-mark-line   sta_lin)
                       (km:inverse-off-square sta_col sta_lin end_col end_lin)
                       (km:cursol-move end_col end_lin t)
                       (keisen-clear-rectangle)
                       (setq loop2 nil))
-                     ;$BL$Dj5A%-!<$,2!2<$5$l$?(B
+                     ;未定義キーが押下された
                      (t
                       (message "Undefine key!")
                       (sit-for 1))))
              (setq loop1 nil))
-            ;$B<h>C%-!<(B[ESC]$B$,2!2<$5$l$?(B
+            ;取消キー[ESC]が押下された
             ((= ch ?\e)
              (km:cursol-flash-stop)
              (km:inverse-off-square sta_col sta_lin end_col end_lin)
              (km:cursol-move sta_col sta_lin t)
              (setq loop1 nil))
-            ;$BL$Dj5A%-!<$,2!2<$5$l$?(B
+            ;未定義キーが押下された
             (t
              (message "Undefine key!")
              (sit-for 1))))))
 
 (defun km:inverse-off-square (sta_col sta_lin end_col end_lin) ;---------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (save-excursion
     (let ((max_col (max sta_col end_col))
@@ -3378,8 +3378,8 @@ See also documentation for variable  keisen-picture-tab-chars."
         (setq cur_lin (1+ cur_lin))))))
 
 (defun km:inverse-on-horizontal (sta_col sta_lin) ;----------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H9T(B($B2#(B)$B$N;XDj%+%i%`4V$NJ8;zNs$NB0@-$r!VH?E>!W$K$9$k(B"
+  "[罫線モード関数]
+ カレント行(横)の指定カラム間の文字列の属性を「反転」にする"
   (save-excursion
     (let ((pos (point)))
       (km:cursol-move sta_col sta_lin)
@@ -3391,8 +3391,8 @@ See also documentation for variable  keisen-picture-tab-chars."
 				(point)))))))
 
 (defun km:inverse-off-horizontal (sta_col sta_lin) ;---------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H9T(B($B2#(B)$B$N;XDj%+%i%`4V$NJ8;zNs$NB0@-$r!VH?E>!W$+$i85$KLa$9(B"
+  "[罫線モード関数]
+ カレント行(横)の指定カラム間の文字列の属性を「反転」から元に戻す"
   (save-excursion
     (let ((pos (point)))
       (km:cursol-move sta_col sta_lin)
@@ -3401,8 +3401,8 @@ See also documentation for variable  keisen-picture-tab-chars."
 	(km:inverse-off-region pos (progn (forward-char) (point)))))))
 
 (defun km:inverse-on-vertical (sta_lin end_lin) ;------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H7e(B($B=D(B)$B$N;XDj%i%$%s4V$NJ8;zNs$NB0@-$r!VH?E>!W$K$9$k(B"
+  "[罫線モード関数]
+ カレント桁(縦)の指定ライン間の文字列の属性を「反転」にする"
   (let ((col (current-column))
         (lin (min sta_lin end_lin))
         (stp (max sta_lin end_lin)))
@@ -3411,8 +3411,8 @@ See also documentation for variable  keisen-picture-tab-chars."
       (setq lin (+ lin 1)))))
 
 (defun km:inverse-off-vertical (sta_lin end_lin) ;-----------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H7e(B($B=D(B)$B$N;XDj%i%$%s4V$NJ8;zNs$NB0@-$r!VH?E>!W$+$i85$KLa$9(B"
+  "[罫線モード関数]
+ カレント桁(縦)の指定ライン間の文字列の属性を「反転」から元に戻す"
   (let ((col (current-column))
         (lin (min sta_lin end_lin))
         (stp (max sta_lin end_lin)))
@@ -3421,8 +3421,8 @@ See also documentation for variable  keisen-picture-tab-chars."
       (setq lin (+ lin 1)))))
 
 (defun km:inverse-on-string (col lin) ;----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj0LCV$N(B1$BJ8;z$@$1B0@-$r!VH?E>!W$K$9$k(B"
+  "[罫線モード関数]
+ 指定位置の1文字だけ属性を「反転」にする"
   (save-excursion
     (km:cursol-move col lin)
     (km:inverse-on-region (point)
@@ -3431,24 +3431,24 @@ See also documentation for variable  keisen-picture-tab-chars."
 			    (point)))))
 
 (defun km:inverse-off-string (col lin) ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj0LCV$N(B1$BJ8;z$@$1B0@-$r!VH?E>!W$+$i85$KLa$9(B"
+  "[罫線モード関数]
+ 指定位置の1文字だけ属性を「反転」から元に戻す"
   (save-excursion
     (km:cursol-move col lin)
     (km:inverse-off-region (point) (progn (forward-char) (point)))))
 
-(defvar km:cursol-flash-process nil "$B%+!<%=%kE@LG%W%m%;%9(B")
-(defvar km:cursol-flash-interval 1 "$B%+!<%=%kE@LG4V3V(B")
-(defvar km:cursol-flash-flag nil "$B%+!<%=%kE@LG%U%i%0(B")
+(defvar km:cursol-flash-process nil "カーソル点滅プロセス")
+(defvar km:cursol-flash-interval 1 "カーソル点滅間隔")
+(defvar km:cursol-flash-flag nil "カーソル点滅フラグ")
 
 (defun km:cursol-flash-start () ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%kE@LG%W%m%;%9$r5/F0$9$k(B"
+  "[罫線モード関数]
+ カーソル点滅プロセスを起動する"
   (let ((live (and km:cursol-flash-process
 		   (eq (process-status km:cursol-flash-process) 'run))))
     (if (not live)
 	(progn
-	  (if km:cursol-flash-process ;2$B=E5/F0$G$"$k(B
+	  (if km:cursol-flash-process ;2重起動である
 	      (delete-process km:cursol-flash-process))
 	  (let ((process-connection-type nil))
 	    (setq km:cursol-flash-process
@@ -3459,32 +3459,32 @@ See also documentation for variable  keisen-picture-tab-chars."
 	  (set-process-filter   km:cursol-flash-process 'km:cursol-flash)))))
 
 (defun km:cursol-flash-stop () ;-----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+!<%=%kE@LG%W%m%;%9$r=*N;$9$k(B"
-  (if km:cursol-flash-process ;$B%W%m%;%95/F0Cf(B?
+  "[罫線モード関数]
+ カーソル点滅プロセスを終了する"
+  (if km:cursol-flash-process ;プロセス起動中?
       (progn ;Yes
-	(delete-process km:cursol-flash-process) ;$B%+!<%=%kE@LG%W%m%;%9:o=|(B
-	(if (not km:cursol-flash-flag) ;$B%+!<%=%k>C5nCf(B?
-	    ;; $B%+!<%=%kE@Et(B
+	(delete-process km:cursol-flash-process) ;カーソル点滅プロセス削除
+	(if (not km:cursol-flash-flag) ;カーソル消去中?
+	    ;; カーソル点灯
 	    (km:inverse-off-region (point) (progn (forward-char) (point))))
 	(setq km:cursol-flash-flag    nil
 	      km:cursol-flash-process nil))))
 
 (defun km:cursol-flash (proc string) ;-----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (let ((sta (point))
         (end (progn
 	       (if (eolp) (insert " ") (forward-char))
 	       (point))))
     (if km:cursol-flash-flag
-	(km:inverse-on-region sta end) ;$B%+!<%=%k>C5n(B
-      (km:inverse-off-region sta end)) ;$B%+!<%=%kE@Et(B
+	(km:inverse-on-region sta end) ;カーソル消去
+      (km:inverse-off-region sta end)) ;カーソル点灯
     (setq km:cursol-flash-flag (not km:cursol-flash-flag))))
-;$B$($s$I(B $B$*$V(B $B$*$^$1%3!<%J!<(B
+;えんど おぶ おまけコーナー
 
 (defun keisen-insert-register (char &optional arg) ;-- Changed by M.Ozawa -----
-  "[$B7S@~%b!<%I5!G=(B]
+  "[罫線モード機能]
  "
   (interactive "cInsert register: \nP")
   (push-mark)
@@ -3506,18 +3506,18 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;  $B!J$*$^$1!K(B
+;;  （おまけ）
 ;;      for laser printer in nasu lab.
 ;;
 (defun zenkaku-space-current-buffer () ;---------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+%l%s%H%P%C%U%!Fb$NO"B3$7$?Fs$D$NH>3Q%9%Z!<%9$r0l$D$NA43Q%9%Z!<%9$KJQ49$9$k(B"
+  "[罫線モード機能]
+ カレントバッファ内の連続した二つの半角スペースを一つの全角スペースに変換する"
   (interactive "*")
   (zenkaku-space-region (point-min) (point-max)))
 
 (defun zenkaku-space-region (begin end) ;--------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%j!<%8%g%sFb$NO"B3$7$?Fs$D$NH>3Q%9%Z!<%9$r0l$D$NA43Q%9%Z!<%9$KJQ49$9$k(B"
+  "[罫線モード機能]
+ リージョン内の連続した二つの半角スペースを一つの全角スペースに変換する"
   (interactive "*r")
   (save-excursion
     (goto-char begin)
@@ -3527,26 +3527,26 @@ See also documentation for variable  keisen-picture-tab-chars."
                  (insert ? tab-width)
                  (backward-char (1+ tab-width)))
         (delete-backward-char 2)
-        (insert "$B!!(B")))))              ;$BA43Q%9%Z!<%9(B
+        (insert "　")))))              ;全角スペース
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B%^!<%/@_Dj(B
+;;   マーク設定
 ;;
-(defvar keisen-mark-column nil "$B7S@~MQ%^!<%/@_Dj%+%i%`0LCV(B")
-(defvar keisen-mark-line nil "$B7S@~MQ%^!<%/@_Dj%i%$%s0LCV(B")
+(defvar keisen-mark-column nil "罫線用マーク設定カラム位置")
+(defvar keisen-mark-line nil "罫線用マーク設定ライン位置")
 
 (defun keisen-set-mark () ;----------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%b!<%IMQ$N%^!<%/@_Dj%3%^%s%I(B"
+  "[罫線モード機能]
+ 罫線モード用のマーク設定コマンド"
   (interactive)
   (set-mark-command nil)
-  (setq keisen-mark-column (current-column)         ; $B%^!<%/%+%i%`@_Dj(B
-        keisen-mark-line   (km:what-current-line))) ; $B%^!<%/%i%$%s@_Dj(B
+  (setq keisen-mark-column (current-column)         ; マークカラム設定
+        keisen-mark-line   (km:what-current-line))) ; マークライン設定
 
 (defun km:what-mark-point () ;-------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~%b!<%IMQ$N%^!<%/@_Dj0LCV$r5a$a$k(B"
+  "[罫線モード関数]
+ 罫線モード用のマーク設定位置を求める"
   (save-excursion
     (goto-line keisen-mark-line)
     (km:move-to-column-force keisen-mark-column nil)
@@ -3554,58 +3554,58 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B%b!<%I(B
+;;   モード
 ;;
 (defun keisen-toggle-line () ;-- Based by S.Kobayashi -------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+!<%=%k0\F0%b!<%I$N@Z$j49$($k(B."
+  "[罫線モード機能]
+ カーソル移動モードの切り換える."
   (interactive)
   (setq keisen-move-mode (not keisen-move-mode))
   (if keisen-move-mode
-      (message "$B%+!<%=%k0\F0%b!<%I(B:Keisen")
-    (message "$B%+!<%=%k0\F0%b!<%I(B:Major")))
+      (message "カーソル移動モード:Keisen")
+    (message "カーソル移動モード:Major")))
 
 (defun keisen-toggle-move () ;-------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%+!<%=%k0\F0%l%Y%k$r@Z$j49$($k(B."
+  "[罫線モード機能]
+ カーソル移動レベルを切り換える."
   (interactive)
   (cond ((= keisen-move-level 0)
          (setq keisen-move-level 1)
-         (message "$B%+!<%=%k0\F0%l%Y%k(B:Level1"))
+         (message "カーソル移動レベル:Level1"))
         ((= keisen-move-level 1)
          (setq keisen-move-level 2)
-         (message "$B%+!<%=%k0\F0%l%Y%k(B:Level2"))
+         (message "カーソル移動レベル:Level2"))
         ((= keisen-move-level 2)
          (setq keisen-move-level 0)
-         (message "$B%+!<%=%k0\F0%l%Y%k(B:Normal"))))
+         (message "カーソル移動レベル:Normal"))))
 
 (defun keisen-toggle-auto-enlarge () ;-----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$N<+F03HD%%b!<%I$r@Z$j49$($k(B."
+  "[罫線モード機能]
+ 罫線の自動拡張モードを切り換える."
   (interactive)
   (cond (keisen-auto-enlarge-vertically-flag
          (setq keisen-auto-enlarge-vertically-flag nil
                keisen-auto-enlarge-horizontally-flag t)
-         (message "$B<+F03HD%%b!<%I(B:ON[$B2#J}8~(B]"))
+         (message "自動拡張モード:ON[横方向]"))
         (keisen-auto-enlarge-horizontally-flag
          (setq keisen-auto-enlarge-horizontally-flag nil)
-         (message "$B<+F03HD%%b!<%I(B:OFF"))
+         (message "自動拡張モード:OFF"))
         (t
          (setq keisen-auto-enlarge-vertically-flag t)
-         (message "$B<+F03HD%%b!<%I(B:ON[$B=DJ}8~(B]"))))
+         (message "自動拡張モード:ON[縦方向]"))))
 
 (defun keisen-toggle-auto-line-feed () ;---------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$N<+F02~9T%b!<%I$r@Z$j49$($k(B."
+  "[罫線モード機能]
+ 罫線の自動改行モードを切り換える."
   (interactive)
   (setq keisen-auto-line-feed-flag (not keisen-auto-line-feed-flag))
   (if keisen-auto-line-feed-flag
-      (message "$B<+F02~9T%b!<%I(B:ON")
-    (message "$B<+F02~9T%b!<%I(B:OFF")))
+      (message "自動改行モード:ON")
+    (message "自動改行モード:OFF")))
 
 (defun keisen-overwrite-mode () ;----------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%b!<%I$G$N%$%s%5!<%H%b!<%I$H%*!<%P!<%i%$%H%b!<%I$r@Z$jBX$($k(B."
+  "[罫線モード機能]
+ 罫線モードでのインサートモードとオーバーライトモードを切り替える."
   (interactive)
   (if keisen-overwrite-mode
       (setq self-insert-after-hook 'km:self-insert-after-insert-hook)
@@ -3614,290 +3614,290 @@ See also documentation for variable  keisen-picture-tab-chars."
   (km:update-mode-line))
 
 (defun keisen-toggle-width () ;------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~$NB@$5$r@Z$j49$($k(B."
+  "[罫線モード機能]
+ 罫線の太さを切り換える."
   (interactive)
-  (setq keisen-width (cond ((= keisen-width 0) 1)   ;$B>C5n"*:Y@~(B
-                           ((= keisen-width 1) 2)   ;$B:Y@~"*B@@~(B
-                           ((= keisen-width 2) 0))) ;$BB@@~"*>C5n(B
+  (setq keisen-width (cond ((= keisen-width 0) 1)   ;消去→細線
+                           ((= keisen-width 1) 2)   ;細線→太線
+                           ((= keisen-width 2) 0))) ;太線→消去
   (km:update-mode-line))
 
 (defun km:update-mode-line () ;------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%b!<%I%i%$%s$r?7$7$/=q$-49$($k(B."
+  "[罫線モード関数]
+ モードラインを新しく書き換える."
   (let ((v km:vertical-step)
         (h km:horizontal-step))
-    (setq mode-name (format "$B7S@~(B:%s:%s:%s"
+    (setq mode-name (format "罫線:%s:%s:%s"
                             (car (nthcdr (+ 2 (% h 3) (* 5 (1+ (% v 2))))
-                                         '(wnw $B"+",(B $B",(B $B","*(B ene
-                                               Left $B"+(B none $B"*(B
-                                               Right wsw $B"+"-(B $B"-(B $B"-"*(B ese)))
-                            (nth  keisen-width '($B!!(B $B(+(B $B(6(B))
+                                         '(wnw ←↑ ↑ ↑→ ene
+                                               Left ← none →
+                                               Right wsw ←↓ ↓ ↓→ ese)))
+                            (nth  keisen-width '(　 ┼ ╋))
                             (if (eq self-insert-after-hook
                                     'km:self-insert-after-overwrite-hook)
-                                '$B#O(B
-                              '$B#I(B)))
+                                'Ｏ
+                              'Ｉ)))
     (set-buffer-modified-p (buffer-modified-p))))
 
 ;;;###autoload
 (defun keisen-mode () ;--------------------------------------------------------
-  "[$B7S@~%b!<%I(B]
+  "[罫線モード]
 
-$B!&7S@~%b!<%I$G$O7S@~$OJ8;z$r%G%j!<%H$7$F$bF0$+$:7S@~$KBP$9$k%3%^%s%I0J30$G$O(B
-  $BF0$+$9$3$H$b>C$9$3$H$b$G$-$J$$(B.
-$B!&%*!<%P!<%i%$%H$G$b%$%s%5!<%H$G$b$I$A$i$G$bF~NO$G$-$k(B.
-  $B!J(Boverwrite$B$O7S@~%b!<%I$N(Bkeisen-overwrite-mode$B$r;HMQ$9$k!K(B
-$B!&7S@~$NB@$5$O#2<oN`!">C5nMQ$N@~#1<oN`(B.
-$B!&%?%V$O7S@~%b!<%I$K$O$$$k;~$K%9%Z!<%9$KJQ49$9$k(B.
-$B!&(B()$B$N$D$$$F$$$k%3%^%s%I$O(BC-u$B$G0z?t$rM?$($k$3$H$,$G$-$k(B.
+・罫線モードでは罫線は文字をデリートしても動かず罫線に対するコマンド以外では
+  動かすことも消すこともできない.
+・オーバーライトでもインサートでもどちらでも入力できる.
+  （overwriteは罫線モードのkeisen-overwrite-modeを使用する）
+・罫線の太さは２種類、消去用の線１種類.
+・タブは罫線モードにはいる時にスペースに変換する.
+・()のついているコマンドはC-uで引数を与えることができる.
 
-$B(#(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!($(B
-$B("7S@~%b!<%I5!G=0lMwI=!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B('(!(((!(!(((!(!(!(!(!(!(!(!(!(!(!(((!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("%-!<("4X?tL>>N!!!!!!!!!!!!!!("@bL@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B(<(,(;(,(,(;(,(,(,(,(,(,(,(,(,(,(,(;(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(>(B
-$B("0\("(BC-j $B("(Bkeisen-locked         $B("7S@~$rHt$S1[$($J$$HO0O$G2~9T(B            $B("(B
-$B("F0("(B    $B("(B     -forward-line-ext$B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(B  $B("(BC-oj$B("(Bkeisen-change-locked  $B("7S@~$rHt$S1[$($J$$HO0O$G2~9T(B            $B("(B
-$B("(B  $B("(B    $B("(B        -forward-after$B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(B  $B("(BLFD $B("(Bkeisen-half-locked $B!!(B $B("=DJ}8~$N7S@~$rHt$S1[$($J$$HO0O$G2~9T(B $B!!(B $B("(B
-$B("!!("(B    $B("(B         -forward-line$B("(B $B!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(B $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(B  $B("(BC-e $B("(Bkeisen-end-of-line    $B("%+%l%s%H9T$G6uGr$G$J$$0lHV:G8e$NJ8;z$K0\("(B
-$B("!!("!!!!("!!!!!!!!!!!!!!!!!!!!!!("F0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-forward-jump$B!!(B $B("%+%l%s%HOH$+$i1&OH$X0\F0!!!!!!!!!!!!!!!!("(B
-$B("!!("(B C-f$B("!!!!!!!!!!!!!!!!(B-frame$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-backward-jump  $B("%+%l%s%HOH$+$i:8OH$X0\F0!!!!!!!!!!!!!!!!("(B
-$B("!!("(B C-b$B("!!!!!!!!!!!!!!!!(B-frame$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-previous-jump$B!!("%+%l%s%HOH$+$i>e$NOH$X0\F0!!!!!!!!!!!!!!("(B
-$B("!!("(B C-p$B("!!!!!!!!!!!!!!!!(B-frame$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-next-jump-frame$B("%+%l%s%HOH$+$i2<$NOH$X0\F0!!!!!!!!!!!!!!("(B
-$B("!!("(B C-n$B("!!!!!!!!!!!!!!!!!!!!!!("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B('(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("IA("(BM-OC$B("(Bkeisen-draw-right ()$B!!("7S@~$r0z$-$J$,$i1&J}8~$K0\F0$9$k!!!!!!!!("(B
-$B("2h("(B    $B("(B                    $B!!("(B(keisen-key-flag$B$,(Bnil$B$N;~(B)              $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(B  $B("(BM-OD$B("(Bkeisen-draw-left ()$B!!(B $B("7S@~$r0z$-$J$,$i:8J}8~$K0\F0$9$k!!!!!!!!("(B
-$B("!!("(B    $B("(B                   $B!!(B $B("(B(keisen-key-flag$B$,(Bnil$B$N;~(B)              $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-OA$B("(Bkeisen-draw-up ()     $B("7S@~$r0z$-$J$,$i>eJ}8~$K0\F0$9$k!!!!!!!!("(B
-$B("!!("(B    $B("(B                      $B("(B(keisen-key-flag$B$,(Bnil$B$N;~(B)              $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-OB$B("(Bkeisen-draw-down ()   $B("7S@~$r0z$-$J$,$i2<J}8~$K0\F0$9$k!!!!!!!!("(B
-$B("!!("(B    $B("(B                      $B("(B(keisen-key-flag$B$,(Bnil$B$N;~(B)              $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-f $B("(Bkeisen-draw-right ()  $B("7S@~$r0z$-$J$,$i1&J}8~$K0\F0$9$k!!(B $B!!!!(B $B("(B
-$B("!!("(B    $B("(B                      $B("(B(keisen-key-flag$B$,(Bt$B$N;~(B)                $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-b $B("(Bkeisen-draw-left ()   $B("7S@~$r0z$-$J$,$i:8J}8~$K0\F0$9$k(B $B!!!!!!(B $B("(B
-$B("!!("(B    $B("(B                      $B("(B(keisen-key-flag$B$,(Bt$B$N;~(B) $B!!!!!!!!!!!!!!(B $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-p $B("(Bkeisen-draw-up ()$B!!!!(B $B("7S@~$r0z$-$J$,$i>eJ}8~$K0\F0$9$k!!!!!!!!("(B
-$B("!!("(B    $B("(B                 $B!!!!(B $B("(B(keisen-key-flag$B$,(Bt$B$N;~(B) $B!!!!!!!!!!!!!!(B $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-n $B("(Bkeisen-draw-down ()$B!!(B $B("7S@~$r0z$-$J$,$i2<J}8~$K0\F0$9$k!!!!!!!!("(B
-$B("!!("(B    $B("(B                   $B!!(B $B("(B(keisen-key-flag$B$,(Bt$B$N;~(B) $B!!!!!!!!!!!!!!(B $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-r $B("(Bkeisen-square-line$B!!!!("%j!<%8%g%s$rBP3Q@~$H8+$F7S@~$G;M3Q$rIA$/("(B
-$B("!!("(B    $B("(B                  $B!!!!("%j!<%8%g%s$,0lD>@~>e$K$"$k$H$-$OD>@~$r0z("(B
-$B("!!("(B    $B("(B                  $B!!!!("$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-s $B("(Bkeisen-square-line2   $B("%]%$%s%H$N0L0LCV$r;OE@$H$7$F!"%_%K%P%C%U("(B
-$B("!!("(B    $B("(B                      $B("%!$K=>$$=*E@$rDj$a(BRET$B%-!<$r2!2<$9$k$H;O(B $B("(B
-$B("!!("(B    $B("(B                      $B("E@$H=*E@$rBP3Q@~$H8+$F7S@~$G;M3Q$rIA$/(B  $B("(B
-$B("!!("(B    $B("(B                      $B(";OE@$H=*E@$,0lD>@~>e$K$"$k$H$-$OD>@~$r0z("(B
-$B("!!("(B    $B("(B                      $B("$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!("(B    $B("(B                      $B("(BESC$B%-!<$G%-%c%s%;%k$9$k$3$H$b=PMh$k!!!!(B $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cf$B("(Bkeisen-extend-right   $B("<!$N7S@~$K$V$D$+$k$^$G7S@~$r1&$K?-$P$7$F("(B
-$B("!!("(B    $B("(B                      $B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cb$B("(Bkeisen-extend-left    $B("<!$N7S@~$K$V$D$+$k$^$G7S@~$r:8$K?-$P$7$F("(B
-$B("!!("(B    $B("(B                      $B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cp$B("(Bkeisen-extend-up$B!!!!!!("<!$N7S@~$K$V$D$+$k$^$G7S@~$r>e$K?-$P$7$F("(B
-$B("!!("(B    $B("(B                $B!!!!!!("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cn$B("(Bkeisen-extend-down$B!!!!("<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F("(B
-$B("!!("(B    $B("(B                  $B!!!!("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-line       $B!!!!("<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F("(B
-$B("!!("(B C-h$B("(B         -horizontally$B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-line-vertically$B("<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F("(B
-$B("!!("(B C-v$B("(B                      $B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-arrow-down     $B("<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F("(B
-$B("!!("(B C-d$B("(B                      $B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-arrow-up       $B("<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F("(B
-$B("!!("(B C-u$B("(B                      $B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-arrow-right    $B("<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F("(B
-$B("!!("(B C-r$B("(B                      $B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-o $B("(Bkeisen-arrow-left     $B("<!$N7S@~$K$V$D$+$k$^$G7S@~$r2<$K?-$P$7$F("(B
-$B("!!("(B C-l$B("(B                      $B("0z$/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B('(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("A^("!!!!("(Bkeisen-overwrite      $B("J8;zNs$r%*!<%P!<%i%$%H$9$k!!!!!!!!!!!!!!("(B
-$B("F~("!!!!("!!!!!!!!!!(B     -string$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("!!!!("(Bkeisen-insert-string$B!!("J8;zNs$r%$%s%5!<%H$9$k!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("!!!!("(Bkeisen-insert-register$B("J8;zNs$r%$%s%5!<%H$9$k!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BRET $B("(Bkeisen-newline$B!!!!!!!!("%]%$%s%H$N0LCV$G9T$rJ,3d$7$F?7$7$$9T$rA^("(B
-$B("!!("(B    $B("(B              $B!!!!!!!!("F~$9$k!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-sp$B("(Bkeisen-insert-blank ()$B("%]%$%s%H$N8e$N6uGr$rA^F~$9$k!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cv$B("(Bkeisen-enlarge$B!!!!!!(B  $B("%]%$%s%H$N0LCV$G=DJ}8~$K7S@~$r?-$P$9!!!!("(B
-$B("!!("(B    $B("(B         -vertically()$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-ch$B("(Bkeisen-enlarge$B!!!!!!!!("%]%$%s%H$N0LCV$G2#J}8~$K7S@~$r?-$P$9!!!!("(B
-$B("!!("(B    $B("!!!!!!(B -horizontally()$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-y $B("(Bkeisen-yank$B!!!!!!!!!!(B $B("J]B8$7$F$*$$$?J8;zNs$r%]%$%s%H$NA0$KA^F~("(B
-$B("!!("(B    $B("(B           $B!!!!!!!!!!(B $B("$9$k!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c>$B("(Bkeisen-movement-right $B("1&J}8~$XJ8;zNs$r%*!<%P!<%i%$%H$9$k!!!!!!("(B
-$B("!!("(B    $B("(B                      $B("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c<$B("(Bkeisen-movement-left  $B(":8J}8~$XJ8;zNs$r%*!<%P!<%i%$%H$9$k!!!!!!("(B
-$B("!!("(B    $B("(B                      $B("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c^$B("(Bkeisen-movement-up    $B(">eJ}8~$XJ8;zNs$r%*!<%P!<%i%$%H$9$k!!!!!!("(B
-$B("!!("(B    $B("(B                      $B("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c.$B("(Bkeisen-movement-down$B!!("2<J}8~$XJ8;zNs$r%*!<%P!<%i%$%H$9$k!!!!!!("(B
-$B("!!("(B    $B("(B                    $B!!("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c`$B("(Bkeisen-movement-nw$B!!!!(":8>e(B($BKL@>(B:NorthWest)$BJ}8~$XJ8;zNs$r%*!<%P("(B
-$B("!!("(B    $B("(B                  $B!!!!("!<%i%$%H$9$k!!!!(B $B!!!!(B           $B!!!!!!!!("(B
-$B("!!("(B    $B("(B                  $B!!!!("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c'$B("(Bkeisen-movement-ne$B!!!!("1&>e(B($BKLEl(B:NorthEast)$BJ}8~$XJ8;zNs$r%*!<%P("(B
-$B("!!("(B    $B("(B                  $B!!!!("!<%i%$%H$9$k!!!!(B $B!!!!(B           $B!!!!!!!!("(B
-$B("!!("(B    $B("(B                  $B!!!!("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c/$B("(Bkeisen-movement-sw$B!!!!(":82<(B($BFn@>(B:SouthWest)$BJ}8~$XJ8;zNs$r%*!<%P("(B
-$B("!!("(B    $B("(B                  $B!!!!("!<%i%$%H$9$k!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!("(B    $B("(B                  $B!!!!("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c\\$B("(Bkeisen-movement-se$B!!!!("1&2<(B($BFnEl(B:SouthEast)$BJ}8~$XJ8;zNs$r%*!<%P("(B
-$B("!!("(B    $B("(B                  $B!!!!("%i%$%H$9$k!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!("(B    $B("(B                  $B!!!!("(B(keisen-overwrite-mode$B$,(Bnon-nil$B$N;~(B)$B!!!!("(B
-$B('(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B(":o("(BC-k $B("(Bkeisen-clear-line$B!!!!(B $B("%]%$%s%H$+$i<!$N7S@~$^$?$O9TC<$^$G$r:o=|("(B
-$B("=|("!!!!("!!!!!!!!!!!!!!!!!!!!!!("!&J]B8$9$k!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-d $B("(Bkeisen-clear-char$B!!!!(B $B("%]%$%s%H$N8e$m$N%-%c%i%/%?!<$r#1J8;z>C5n("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-of$B("(Bkeisen-clear-frame    $B("%]%$%s%H$N8e$m$N%-%c%i%/%?!<$r#1J8;z>C5n("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-od$B("(Bkeisen-clear-keisen   $B("%]%$%s%H$N8e$m$N%-%c%i%/%?!<$r#1J8;z>C5n("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BDEL $B("(Bkeisen-clear-backward $B("%]%$%s%H$NA0$N%-%c%i%/%?!<$r#1J8;z>C5n!!("(B
-$B("!!("(B    $B("(B                 -char$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c $B("(Bkeisen-shrink$B!!!!!!!!(B $B("7S@~$r=DJ}8~$K=L$a$k!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!("(B C-v$B("!!!!!!!!(B -vertically()$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c $B("(Bkeisen-shrink$B!!!!!!!!(B $B("7S@~$r2#J}8~$K=L$a$k!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!("(B C-h$B("(B       -horizontally()$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cc$B("(Bkeisen-clean          $B("9TKv$N%?%V$d%9%Z!<%9$r<h$j=|$/!!!!!!!!!!("(B
-$B('(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("%b("(B    $B("(Bkeisen-mode           $B("7S@~%b!<%I$K$O$$$k!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!C('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("%I("(BC-co$B("(Bkeisen-overwrite-mode $B("%*!<%P!<%i%$%H%b!<%I$N%H%0%k%9%$%C%A!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cl$B("(Bkeisen-toggle-line    $B("%+!<%=%k0\F0%b!<%I$N%H%0%k%9%$%C%A!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cm$B("(Bkeisen-toggle-move    $B("%+!<%=%k0\F0%l%Y%k$N%H%0%k%9%$%C%A!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-ce$B("(Bkeisen-toggle-auto    $B("<+F03HD%%b!<%I$N%H%0%k%9%$%C%A!!!!!!!!!!("(B
-$B("!!("(B    $B("(B              -enlarge$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-cj$B("(Bkeisen-toggle-auto    $B("<+F02~9T%b!<%I$N%H%0%k%9%$%C%A!!!!!!!!!!("(B
-$B("!!("(B    $B("(B            -line-feed$B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-\\ $B("(Bkeisen-key-mode       $B("7S@~$NIA2h%-!<$N%H%0%k%9%$%C%A!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-w $B("(Bkeisen-toggle-width   $B("7S@~$NB@$5$r@Z$j49$($k!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-c $B("(Bkeisen-mode-exit      $B("7S@~%b!<%I$+$iH4$1$F85$N%b!<%I$KLa$k!!!!("(B
-$B("!!("(B C-c$B("(B                      $B("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BC-om$B("(Bkeisen-status         $B("7S@~%b!<%I>uBV;2>H(B                      $B("(B
-$B('(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("$*("(BC-ck$B("(Bzenkaku-space-current $B("%+%l%s%H%P%C%U%!Fb$NO"B3$7$?Fs$D$NH>3Q%9("(B
-$B("$^("(B    $B("(B               -buffer$B("%Z!<%9$rA43Q%9%Z!<%9$KJQ49$9$k!!!!!!!!!!("(B
-$B("$1('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bzenkaku-space-region  $B("%j!<%8%g%sFb$NO"B3$7$?Fs$D$NH>3Q%9%Z!<%9("(B
-$B("!!("(B    $B("(B                      $B("$rA43Q%9%Z!<%9$KJQ49$9$k!!!!!!!!!!!!!!!!("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-center-line    $B("7S@~$NOHFb$GJ8;zNs$rCf1{$X0\F0$9$k(B      $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-right-line     $B("7S@~$NOHFb$GJ8;zNs$r1&5M$K$9$k(B          $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-left-line      $B("7S@~$NOHFb$GJ8;zNs$r:85M$K$9$k(B          $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(BM-h $B("(Bkeisen-rectangle      $B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-kill-rectangle $B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-kill           $B("(B                                        $B("(B
-$B("!!("(B    $B("(B-rectangle-to-register$B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-delete         $B("(B                                        $B("(B
-$B("!!("(B    $B("(B-rectangle-to-register$B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-save-rectangle $B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-save-rectangle $B("(B                                        $B("(B
-$B("!!("(B    $B("(B-rectangle-to-register$B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-yank-rectangle $B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-yank-rectangle $B("(B                                        $B("(B
-$B("!!("(B    $B("(B        -from-register$B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-view-rectangle $B("(B                                        $B("(B
-$B("!!("(B    $B("(B             -register$B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-open-rectangle $B("(B                                        $B("(B
-$B("!!('(!(!(+(!(!(!(!(!(!(!(!(!(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("!!("(B    $B("(Bkeisen-clear-rectangle$B("(B                                        $B("(B
-$B(&(!(*(!(!(*(!(!(!(!(!(!(!(!(!(!(!(*(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(%(B
-$B(#(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!($(B
-$B("7S@~%b!<%IJQ?t0lMwI=(B                                                      $B("(B
-$B('(!(!(!(!(!(!(!(!(!(!(!(!(!(((!(!(((!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("JQ?tL>>N!!!!!!!!!!!!!!!!!!("=i4|("@bL@(B                                    $B("(B
-$B(<(,(,(,(,(,(,(,(,(,(,(,(,(,(;(,(,(;(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(>(B
-$B("(Bkeisen-version$B!!!!!!!!!!!!("!!!!("7S@~$N%P!<%8%g%s(B                        $B("(B
-$B('(!(!(!(!(!(!(!(!(!(!(!(!(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(Bkeisen-extend-regexp-flag $B("(Bnil $B("3HD%%3%^%s%I$,%A%'%C%/$9$k7S@~!!!!!!!!(B  $B("(B
-$B("!!!!!!!!!!!!!!!!!!!!!!!!!!("!!!!("(B nil$B$N$H$-$9$Y$F$N7S@~!!!!!!!!!!!!!!!!!!("(B
-$B("!!!!!!!!!!!!!!!!!!!!!!!!!!("!!!!("(B $B#1$N$H$-:Y$$7S@~!!!!!!!!!!!!!!!!!!!!!!(B $B("(B
-$B("!!!!!!!!!!!!!!!!!!!!!!!!!!("!!!!("(B $B#2$N$H$-B@$$7S@~!!!!!!!!!!!!!!!!!!!!!!(B $B("(B
-$B('(!(!(!(!(!(!(!(!(!(!(!(!(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(Bkeisen-draw-force$B!!!!!!!!(B $B("(Bnil $B("(Bnil$B$N$H$-:Y$$7S@~$OB@$$7S@~$K4^$^$l$k!!(B $B("(B
-$B("!!!!!!!!!!!!!!!!!!!!!!!!!!("!!!!("(Bt  $B$N$H$-:Y$$7S@~$O:Y$$7S@~$H$7$FIA2h(B   $B("(B
-$B('(!(!(!(!(!(!(!(!(!(!(!(!(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(Bkeisen-adjust-column-force$B("(Bt$B!!(B $B("(Bnil$B$N$H$-$O7S@~%3%^%s%I$r;H$C$?$H$-%+%i(B $B("(B
-$B("!!!!!!!!!!!!!!!!!!!!!!!!!!("!!!!("%`%A%'%C%/$r$7$J$$!!!!!!!!!!!!!!!!!!!!!!("(B
-$B("!!!!!!!!!!!!!!!!!!!!!!!!!!("!!!!("(Bt  $B$N$H$-6/@)E*$K%]%$%s%H$r6v?t%+%i%`$K(B $B("(B
-$B("!!!!!!!!!!!!!!!!!!!!!!!!!!("!!!!("%]%$%s%H$r0\F0$5$;$k(B   $B!!!!!!!!!!!!!!!!(B $B("(B
-$B('(!(!(!(!(!(!(!(!(!(!(!(!(!(+(!(!(+(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!()(B
-$B("(Bkeisen-mode-hook$B!!!!!!!!!!("(Bnil $B("7S@~%b!<%I$N%U%C%/!!!!!!!!!!!!!!!!!!!!(B  $B("(B
-$B(&(!(!(!(!(!(!(!(!(!(!(!(!(!(*(!(!(*(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(!(%(B
+┌─────────────────────────────────────┐
+│罫線モード機能一覧表　　　　　　　　　　　　　　　　　　　　　　　　　　　│
+├─┬──┬───────────┬────────────────────┤
+│　│キー│関数名称　　　　　　　│説明　　　　　　　　　　　　　　　　　　│
+┝━┿━━┿━━━━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━┥
+│移│C-j │keisen-locked         │罫線を飛び越えない範囲で改行            │
+│動│    │     -forward-line-ext│                                        │
+│　├──┼───────────┼────────────────────┤
+│  │C-oj│keisen-change-locked  │罫線を飛び越えない範囲で改行            │
+│  │    │        -forward-after│                                        │
+│　├──┼───────────┼────────────────────┤
+│  │LFD │keisen-half-locked 　 │縦方向の罫線を飛び越えない範囲で改行 　 │
+│　│    │         -forward-line│ 　　　　　　　　　　　　　　　　　　　 │
+│　├──┼───────────┼────────────────────┤
+│  │C-e │keisen-end-of-line    │カレント行で空白でない一番最後の文字に移│
+│　│　　│　　　　　　　　　　　│動　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-forward-jump　 │カレント枠から右枠へ移動　　　　　　　　│
+│　│ C-f│　　　　　　　　-frame│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-backward-jump  │カレント枠から左枠へ移動　　　　　　　　│
+│　│ C-b│　　　　　　　　-frame│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-previous-jump　│カレント枠から上の枠へ移動　　　　　　　│
+│　│ C-p│　　　　　　　　-frame│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-next-jump-frame│カレント枠から下の枠へ移動　　　　　　　│
+│　│ C-n│　　　　　　　　　　　│　　　　　　　　　　　　　　　　　　　　│
+├─┼──┼───────────┼────────────────────┤
+│描│M-OC│keisen-draw-right ()　│罫線を引きながら右方向に移動する　　　　│
+│画│    │                    　│(keisen-key-flagがnilの時)              │
+│　├──┼───────────┼────────────────────┤
+│  │M-OD│keisen-draw-left ()　 │罫線を引きながら左方向に移動する　　　　│
+│　│    │                   　 │(keisen-key-flagがnilの時)              │
+│　├──┼───────────┼────────────────────┤
+│　│M-OA│keisen-draw-up ()     │罫線を引きながら上方向に移動する　　　　│
+│　│    │                      │(keisen-key-flagがnilの時)              │
+│　├──┼───────────┼────────────────────┤
+│　│M-OB│keisen-draw-down ()   │罫線を引きながら下方向に移動する　　　　│
+│　│    │                      │(keisen-key-flagがnilの時)              │
+│　├──┼───────────┼────────────────────┤
+│　│M-f │keisen-draw-right ()  │罫線を引きながら右方向に移動する　 　　 │
+│　│    │                      │(keisen-key-flagがtの時)                │
+│　├──┼───────────┼────────────────────┤
+│　│M-b │keisen-draw-left ()   │罫線を引きながら左方向に移動する 　　　 │
+│　│    │                      │(keisen-key-flagがtの時) 　　　　　　　 │
+│　├──┼───────────┼────────────────────┤
+│　│M-p │keisen-draw-up ()　　 │罫線を引きながら上方向に移動する　　　　│
+│　│    │                 　　 │(keisen-key-flagがtの時) 　　　　　　　 │
+│　├──┼───────────┼────────────────────┤
+│　│M-n │keisen-draw-down ()　 │罫線を引きながら下方向に移動する　　　　│
+│　│    │                   　 │(keisen-key-flagがtの時) 　　　　　　　 │
+│　├──┼───────────┼────────────────────┤
+│　│M-r │keisen-square-line　　│リージョンを対角線と見て罫線で四角を描く│
+│　│    │                  　　│リージョンが一直線上にあるときは直線を引│
+│　│    │                  　　│く　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│M-s │keisen-square-line2   │ポイントの位位置を始点として、ミニバッフ│
+│　│    │                      │ァに従い終点を定めRETキーを押下すると始 │
+│　│    │                      │点と終点を対角線と見て罫線で四角を描く  │
+│　│    │                      │始点と終点が一直線上にあるときは直線を引│
+│　│    │                      │く　　　　　　　　　　　　　　　　　　　│
+│　│    │                      │ESCキーでキャンセルすることも出来る　　 │
+│　├──┼───────────┼────────────────────┤
+│　│C-cf│keisen-extend-right   │次の罫線にぶつかるまで罫線を右に伸ばして│
+│　│    │                      │引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cb│keisen-extend-left    │次の罫線にぶつかるまで罫線を左に伸ばして│
+│　│    │                      │引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cp│keisen-extend-up　　　│次の罫線にぶつかるまで罫線を上に伸ばして│
+│　│    │                　　　│引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cn│keisen-extend-down　　│次の罫線にぶつかるまで罫線を下に伸ばして│
+│　│    │                  　　│引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-line       　　│次の罫線にぶつかるまで罫線を下に伸ばして│
+│　│ C-h│         -horizontally│引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-line-vertically│次の罫線にぶつかるまで罫線を下に伸ばして│
+│　│ C-v│                      │引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-arrow-down     │次の罫線にぶつかるまで罫線を下に伸ばして│
+│　│ C-d│                      │引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-arrow-up       │次の罫線にぶつかるまで罫線を下に伸ばして│
+│　│ C-u│                      │引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-arrow-right    │次の罫線にぶつかるまで罫線を下に伸ばして│
+│　│ C-r│                      │引く　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-o │keisen-arrow-left     │次の罫線にぶつかるまで罫線を下に伸ばして│
+│　│ C-l│                      │引く　　　　　　　　　　　　　　　　　　│
+├─┼──┼───────────┼────────────────────┤
+│挿│　　│keisen-overwrite      │文字列をオーバーライトする　　　　　　　│
+│入│　　│　　　　　     -string│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│　　│keisen-insert-string　│文字列をインサートする　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│　　│keisen-insert-register│文字列をインサートする　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│RET │keisen-newline　　　　│ポイントの位置で行を分割して新しい行を挿│
+│　│    │              　　　　│入する　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│M-sp│keisen-insert-blank ()│ポイントの後の空白を挿入する　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cv│keisen-enlarge　　　  │ポイントの位置で縦方向に罫線を伸ばす　　│
+│　│    │         -vertically()│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-ch│keisen-enlarge　　　　│ポイントの位置で横方向に罫線を伸ばす　　│
+│　│    │　　　 -horizontally()│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-y │keisen-yank　　　　　 │保存しておいた文字列をポイントの前に挿入│
+│　│    │           　　　　　 │する　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c>│keisen-movement-right │右方向へ文字列をオーバーライトする　　　│
+│　│    │                      │(keisen-overwrite-modeがnon-nilの時)　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c<│keisen-movement-left  │左方向へ文字列をオーバーライトする　　　│
+│　│    │                      │(keisen-overwrite-modeがnon-nilの時)　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c^│keisen-movement-up    │上方向へ文字列をオーバーライトする　　　│
+│　│    │                      │(keisen-overwrite-modeがnon-nilの時)　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c.│keisen-movement-down　│下方向へ文字列をオーバーライトする　　　│
+│　│    │                    　│(keisen-overwrite-modeがnon-nilの時)　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c`│keisen-movement-nw　　│左上(北西:NorthWest)方向へ文字列をオーバ│
+│　│    │                  　　│ーライトする　　 　　           　　　　│
+│　│    │                  　　│(keisen-overwrite-modeがnon-nilの時)　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c'│keisen-movement-ne　　│右上(北東:NorthEast)方向へ文字列をオーバ│
+│　│    │                  　　│ーライトする　　 　　           　　　　│
+│　│    │                  　　│(keisen-overwrite-modeがnon-nilの時)　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c/│keisen-movement-sw　　│左下(南西:SouthWest)方向へ文字列をオーバ│
+│　│    │                  　　│ーライトする　　　　　　　　　　　　　　│
+│　│    │                  　　│(keisen-overwrite-modeがnon-nilの時)　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c\\│keisen-movement-se　　│右下(南東:SouthEast)方向へ文字列をオーバ│
+│　│    │                  　　│ライトする　　　　　　　　　　　　　　　│
+│　│    │                  　　│(keisen-overwrite-modeがnon-nilの時)　　│
+├─┼──┼───────────┼────────────────────┤
+│削│C-k │keisen-clear-line　　 │ポイントから次の罫線または行端までを削除│
+│除│　　│　　　　　　　　　　　│・保存する　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-d │keisen-clear-char　　 │ポイントの後ろのキャラクターを１文字消去│
+│　├──┼───────────┼────────────────────┤
+│　│C-of│keisen-clear-frame    │ポイントの後ろのキャラクターを１文字消去│
+│　├──┼───────────┼────────────────────┤
+│　│C-od│keisen-clear-keisen   │ポイントの後ろのキャラクターを１文字消去│
+│　├──┼───────────┼────────────────────┤
+│　│DEL │keisen-clear-backward │ポイントの前のキャラクターを１文字消去　│
+│　│    │                 -char│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c │keisen-shrink　　　　 │罫線を縦方向に縮める　　　　　　　　　　│
+│　│ C-v│　　　　 -vertically()│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c │keisen-shrink　　　　 │罫線を横方向に縮める　　　　　　　　　　│
+│　│ C-h│       -horizontally()│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cc│keisen-clean          │行末のタブやスペースを取り除く　　　　　│
+├─┼──┼───────────┼────────────────────┤
+│モ│    │keisen-mode           │罫線モードにはいる　　　　　　　　　　　│
+│｜├──┼───────────┼────────────────────┤
+│ド│C-co│keisen-overwrite-mode │オーバーライトモードのトグルスイッチ　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cl│keisen-toggle-line    │カーソル移動モードのトグルスイッチ　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cm│keisen-toggle-move    │カーソル移動レベルのトグルスイッチ　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-ce│keisen-toggle-auto    │自動拡張モードのトグルスイッチ　　　　　│
+│　│    │              -enlarge│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-cj│keisen-toggle-auto    │自動改行モードのトグルスイッチ　　　　　│
+│　│    │            -line-feed│　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│M-\\ │keisen-key-mode       │罫線の描画キーのトグルスイッチ　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│M-w │keisen-toggle-width   │罫線の太さを切り換える　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-c │keisen-mode-exit      │罫線モードから抜けて元のモードに戻る　　│
+│　│ C-c│                      │　　　　　　　　　　　　　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│C-om│keisen-status         │罫線モード状態参照                      │
+├─┼──┼───────────┼────────────────────┤
+│お│C-ck│zenkaku-space-current │カレントバッファ内の連続した二つの半角ス│
+│ま│    │               -buffer│ペースを全角スペースに変換する　　　　　│
+│け├──┼───────────┼────────────────────┤
+│　│    │zenkaku-space-region  │リージョン内の連続した二つの半角スペース│
+│　│    │                      │を全角スペースに変換する　　　　　　　　│
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-center-line    │罫線の枠内で文字列を中央へ移動する      │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-right-line     │罫線の枠内で文字列を右詰にする          │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-left-line      │罫線の枠内で文字列を左詰にする          │
+│　├──┼───────────┼────────────────────┤
+│　│M-h │keisen-rectangle      │                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-kill-rectangle │                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-kill           │                                        │
+│　│    │-rectangle-to-register│                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-delete         │                                        │
+│　│    │-rectangle-to-register│                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-save-rectangle │                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-save-rectangle │                                        │
+│　│    │-rectangle-to-register│                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-yank-rectangle │                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-yank-rectangle │                                        │
+│　│    │        -from-register│                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-view-rectangle │                                        │
+│　│    │             -register│                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-open-rectangle │                                        │
+│　├──┼───────────┼────────────────────┤
+│　│    │keisen-clear-rectangle│                                        │
+└─┴──┴───────────┴────────────────────┘
+┌─────────────────────────────────────┐
+│罫線モード変数一覧表                                                      │
+├─────────────┬──┬────────────────────┤
+│変数名称　　　　　　　　　│初期│説明                                    │
+┝━━━━━━━━━━━━━┿━━┿━━━━━━━━━━━━━━━━━━━━┥
+│keisen-version　　　　　　│　　│罫線のバージョン                        │
+├─────────────┼──┼────────────────────┤
+│keisen-extend-regexp-flag │nil │拡張コマンドがチェックする罫線　　　　  │
+│　　　　　　　　　　　　　│　　│ nilのときすべての罫線　　　　　　　　　│
+│　　　　　　　　　　　　　│　　│ １のとき細い罫線　　　　　　　　　　　 │
+│　　　　　　　　　　　　　│　　│ ２のとき太い罫線　　　　　　　　　　　 │
+├─────────────┼──┼────────────────────┤
+│keisen-draw-force　　　　 │nil │nilのとき細い罫線は太い罫線に含まれる　 │
+│　　　　　　　　　　　　　│　　│t  のとき細い罫線は細い罫線として描画   │
+├─────────────┼──┼────────────────────┤
+│keisen-adjust-column-force│t　 │nilのときは罫線コマンドを使ったときカラ │
+│　　　　　　　　　　　　　│　　│ムチェックをしない　　　　　　　　　　　│
+│　　　　　　　　　　　　　│　　│t  のとき強制的にポイントを偶数カラムに │
+│　　　　　　　　　　　　　│　　│ポイントを移動させる   　　　　　　　　 │
+├─────────────┼──┼────────────────────┤
+│keisen-mode-hook　　　　　│nil │罫線モードのフック　　　　　　　　　　  │
+└─────────────┴──┴────────────────────┘
 "
   (interactive)
   (if (eq major-mode 'keisen-mode)
@@ -3960,8 +3960,8 @@ See also documentation for variable  keisen-picture-tab-chars."
 ;; end of patch
 
 (defun keisen-mode-exit () ;---------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%b!<%I$+$iH4$1$k(B."
+  "[罫線モード機能]
+ 罫線モードから抜ける."
   (interactive)
   (if (not (eq major-mode 'keisen-mode))
       (error "You arenot editing keisen.")
@@ -3970,7 +3970,7 @@ See also documentation for variable  keisen-picture-tab-chars."
     (while
         (let (ch)
           (message
-           "$B9TKv$NL50UL#$J%?%V$d%9%Z!<%9$r<h$j=|$-$^$9$+!)(B [Yes:RET/No:SPC]")
+           "行末の無意味なタブやスペースを取り除きますか？ [Yes:RET/No:SPC]")
 	  (setq ch (km:read-char))
           (cond ((= ch ?\C-m) (keisen-clean) nil)
                 ((= ch 32) nil)
@@ -4005,18 +4005,18 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B7S@~%b!<%I>uBV;2>H(B
+;;   罫線モード状態参照
 ;;
 (defun keisen-status () ;------------------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B7S@~%b!<%I$GDs6!$7$F$$$k3F<o%b!<%IN`$N>uBV$rI=<($9$k(B"
+  "[罫線モード機能]
+ 罫線モードで提供している各種モード類の状態を表示する"
   (interactive)
   (unwind-protect
       (save-window-excursion
         (save-excursion
           (set-buffer (get-buffer-create " *km:status-window*"))
           (erase-buffer)
-          (setq mode-line-format "  --< $B7S@~%b!<%I>uBVI=(B >--")
+          (setq mode-line-format "  --< 罫線モード状態表 >--")
           (km:create-status-table))
         (km:overlay-window 6)
         (switch-to-buffer " *km:status-window*")
@@ -4024,28 +4024,28 @@ See also documentation for variable  keisen-picture-tab-chars."
         (sit-for keisen-status-display-interval-time))))
 
 (defun km:create-status-table () ;---------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B3F<o%b!<%IN`$N>uBV$r%P%C%U%!$K=q$-9~$`(B"
+  "[罫線モード関数]
+ 各種モード類の状態をバッファに書き込む"
   (goto-char (point-min))
-  (insert (format "$B%+!<%=%k0\F0%b!<%I(B : %s\n"
+  (insert (format "カーソル移動モード : %s\n"
                   (if keisen-move-mode "Keisen" "Major")))
-  (insert (format "$B%+!<%=%k0\F0%l%Y%k(B : %s\n"
+  (insert (format "カーソル移動レベル : %s\n"
                   (cond ((= keisen-move-level 0) "Normal")
                         ((= keisen-move-level 1) "Level1")
                         ((= keisen-move-level 2) "Level2"))))
-  (insert (format "$B<+F03HD%%b!<%I(B     : %s\n"
-                  (if keisen-auto-enlarge-vertically-flag "ON[$B=DJ}8~(B]"
-                    (if keisen-auto-enlarge-horizontally-flag "ON[$B2#J}8~(B]"
+  (insert (format "自動拡張モード     : %s\n"
+                  (if keisen-auto-enlarge-vertically-flag "ON[縦方向]"
+                    (if keisen-auto-enlarge-horizontally-flag "ON[横方向]"
                       "OFF"))))
-  (insert (format "$B<+F02~9T%b!<%I(B     : %s\n"
+  (insert (format "自動改行モード     : %s\n"
                   (if keisen-auto-line-feed-flag "ON" "OFF")))
-  (insert (format "$B7S@~$NIA2h%-!<(B     : %s\n"
-                  (if keisen-key-flag "$B%+!<%=%k%-!<(B" "M-[pnbf]$B%-!<(B")))
+  (insert (format "罫線の描画キー     : %s\n"
+                  (if keisen-key-flag "カーソルキー" "M-[pnbf]キー")))
   (goto-char (point-min)))
 
 (defun km:overlay-window (height) ;-- Based by Toshihiko Miyazaki -------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~%b!<%I>uBVI=$NI=<(%&%#%s%I%&$N%5%$%:$rD4@0$9$k(B"
+  "[罫線モード関数]
+ 罫線モード状態表の表示ウィンドウのサイズを調整する"
   (save-excursion
     (let ((oldot (save-excursion (beginning-of-line) (point)))
           (top   (save-excursion (move-to-window-line height) (point)))
@@ -4055,14 +4055,14 @@ See also documentation for variable  keisen-picture-tab-chars."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;   $B7S@~%b!<%IMQ6&DL%k!<%A%s(B
+;;   罫線モード用共通ルーチン
 ;;
 (defun km:adjusted-current-column () ;-----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H%]%$%s%H$N%+%i%`?t$rJV5Q$9$k(B
- $B$?$@$7!"(Bkeisen-adjust-column-force$B$,(Bt$B$N$H$-%+%i%`?t$r6v?t$K$7$FJV5Q$9$k(B
- $B$D$^$j!"%+%l%s%H%]%$%s%H$N%+%i%`?t$,4q?t$J$i(B(- (current-column) 1)$B!"6v?t$J$i(B
- (current-column)$B$rJV$9(B"
+  "[罫線モード関数]
+ カレントポイントのカラム数を返却する
+ ただし、keisen-adjust-column-forceがtのときカラム数を偶数にして返却する
+ つまり、カレントポイントのカラム数が奇数なら(- (current-column) 1)、偶数なら
+ (current-column)を返す"
   (if keisen-adjust-column-force
       (* (/ (current-column) 2) 2)
     (current-column)))
@@ -4071,18 +4071,18 @@ See also documentation for variable  keisen-picture-tab-chars."
   (km:move-to-column-force (km:adjusted-current-column) force))
 
 (defun km:adjusted-column (pos) ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj%]%$%s%H(Bpos$B$N%+%i%`?t$rJV5Q$9$k(B
- $B$?$@$7!"(Bkeisen-adjust-column-force$B$,(Bt$B$N$H$-%+%i%`?t$r6v?t$K$7$FJV5Q$9$k(B
- $B$D$^$j!";XDj%]%$%s%H(Bpos$B$N%+%i%`?t$,4q?t$J$i(B(- (current-column) 1)$B!"6v?t$J$i(B
- (current-column)$B$rJV$9(B"
+  "[罫線モード関数]
+ 指定ポイントposのカラム数を返却する
+ ただし、keisen-adjust-column-forceがtのときカラム数を偶数にして返却する
+ つまり、指定ポイントposのカラム数が奇数なら(- (current-column) 1)、偶数なら
+ (current-column)を返す"
   (save-excursion
     (goto-char pos)
     (km:adjusted-current-column)))
 
 (defun km:what-current-line () ;-----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H0LCV$N9THV9f$rJV$9(B"
+  "[罫線モード関数]
+ カレント位置の行番号を返す"
   (save-restriction
     (widen)
     (save-excursion
@@ -4090,54 +4090,54 @@ See also documentation for variable  keisen-picture-tab-chars."
       (1+ (count-lines (point-min) (point))))))
 
 (defun km:delete-horizontal-space-and-ZenkakuSpace () ;------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H0LCV$NA08e$N6uGr$H%?%V5Z$S!"A43Q$N6uGr$rA4$F:o=|$9$k(B
- simple.el$B$N(Bdelete-horizontal-space$B$rH4?h!"2~B$$7$?(B"
-  (skip-chars-backward "$B!!(B \t")
+  "[罫線モード関数]
+ カレント位置の前後の空白とタブ及び、全角の空白を全て削除する
+ simple.elのdelete-horizontal-spaceを抜粋、改造した"
+  (skip-chars-backward "　 \t")
   (delete-region (point) (progn
-                           (skip-chars-forward "$B!!(B \t")
+                           (skip-chars-forward "　 \t")
                            (point))))
 
 (defun km:what-line (pos) ;----------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?%]%$%s%H(Bpos$B$N%i%$%s?t$rJV5Q$9$k(B"
+  "[罫線モード関数]
+ 指定されたポイントposのライン数を返却する"
   (save-excursion
     (goto-char pos)
     (km:what-current-line)))
 
 (defun km:what-column (pos) ;--------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?%]%$%s%H(Bpos$B$N%+%i%`?t$rJV5Q$9$k(B"
+  "[罫線モード関数]
+ 指定されたポイントposのカラム数を返却する"
   (save-excursion
     (goto-char pos)
     (current-column)))
 
 (defun km:what-point (col) ;---------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H9T$N;XDj%+%i%`(Bcol$B$N%]%$%s%H$rJV5Q$9$k(B"
+  "[罫線モード関数]
+ カレント行の指定カラムcolのポイントを返却する"
   (save-excursion
     (km:move-to-column-force col nil)
     (point)))
 
 (defun km:string-length (str col) ;--------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?J8;zNs(Bstr$B$N@hF,$+$i;XDj%+%i%`(Bcol$B$^$G$N%P%$%H?t$r?t$($k(B"
+  "[罫線モード関数]
+ 指定された文字列strの先頭から指定カラムcolまでのバイト数を数える"
   (length (km:get-string str col nil)))
 
 (defun km:string-column (str) ;------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?J8;zNs(Bstr$B$N%+%i%`?t$r?t$($k(B"
+  "[罫線モード関数]
+ 指定された文字列strのカラム数を数える"
   (string-width str))
 
 (defun km:buffer-column (begin end) ;------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B;XDj$5$l$?(Bbegin$B%]%$%s%H$+$i(Bend$B%]%$%s%H$^$G$N%+%i%`?t$r?t$($k(B"
+  "[罫線モード関数]
+ 指定されたbeginポイントからendポイントまでのカラム数を数える"
   (let ((str (buffer-substring begin end)))
     (km:string-column str)))
 
 (defun km:get-string (str get_col &optional flg) ;-----------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $BJ8;zNs$N@hF,$+$i;XDj%+%i%`?tJ,$H$j$@$9(B"
+  "[罫線モード関数]
+ 文字列の先頭から指定カラム数分とりだす"
   (let* ((cl (string-to-char-list str))
 	 (lis cl)
 	 (col 0)
@@ -4153,21 +4153,21 @@ See also documentation for variable  keisen-picture-tab-chars."
       str)))
 
 (defun km:eol () ;-------------------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H%i%$%s$N:G=*7e$N0LCV$rJV$9(B"
+  "[罫線モード関数]
+ カレントラインの最終桁の位置を返す"
   (save-excursion
     (end-of-line)
     (point)))
 
 (defun km:bol () ;-------------------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H%i%$%s$N:G=i$N7e$N0LCV$rJV$9(B"
+  "[罫線モード関数]
+ カレントラインの最初の桁の位置を返す"
   (save-excursion
     (beginning-of-line)
     (point)))
 
 (defun km:what-window-line (pos) ;---------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
+  "[罫線モード関数]
 "
   (save-excursion
     (let ((top (progn (goto-char pos) (vertical-motion 0) (point)))
@@ -4179,18 +4179,18 @@ See also documentation for variable  keisen-picture-tab-chars."
       cnt)))
 
 (defun km:eoblp () ;-----------------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H%i%$%s$,%P%C%U%!$N:G=*%i%$%s$+%A%'%C%/$9$k(B
- $B%+%l%s%H%i%$%s$,%P%C%U%!$N:G8e$J$i$P(Bt$B!"$=$&$G$J$1$l$P(Bnil$B$rJV5Q$9$k(B"
+  "[罫線モード関数]
+ カレントラインがバッファの最終ラインかチェックする
+ カレントラインがバッファの最後ならばt、そうでなければnilを返却する"
  (if (< (save-excursion                         (vertical-motion 0) (point))
         (save-excursion (goto-char (point-max)) (vertical-motion 0) (point)))
      nil
    t))
 
 (defun km:boblp () ;-----------------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%+%l%s%H%i%$%s$,%P%C%U%!$N@hF,%i%$%s$+%A%'%C%/$9$k(B
- $B%+%l%s%H%i%$%s$,%P%C%U%!$N@hF,$J$i$P(Bt$B!"$=$&$G$J$1$l$P(Bnil$B$rJV5Q$9$k(B"
+  "[罫線モード関数]
+ カレントラインがバッファの先頭ラインかチェックする
+ カレントラインがバッファの先頭ならばt、そうでなければnilを返却する"
  (if (< (point-min) (save-excursion (vertical-motion 0) (point)))
      nil
    t))
@@ -4198,8 +4198,8 @@ See also documentation for variable  keisen-picture-tab-chars."
 ;; alternative function for those in old mule-util.el
 ;;(or (fboundp 'delete-text-in-column)
 ;;    (defun delete-text-in-column(col1 col2) ;-----------------------------------
-;;      "[$B7S@~%b!<%I4X?t(B]
-;; $B;XDj$5$l$?Fs$D$N%+%i%`0LCV$N4V$NJ8;z$r:o=|$9$k(B"
+;;      "[罫線モード関数]
+;; 指定された二つのカラム位置の間の文字を削除する"
 ;;      (let ((pos1 (km:what-point col1))
 ;;	    (pos2 (km:what-point col2)))
 ;;	(delete-region pos1 pos2))))

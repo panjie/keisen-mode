@@ -1,75 +1,75 @@
-;;; -*- Mode: Emacs-Lisp ; Coding: iso-2022-jp -*-
+;;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 ;;
 ;; keisen mode commands for Emacs
 ;; Copyright (C) 1986,1992-1995 Free Software Foundation, Inc.
 ;;
 ;;;
-;; $BK\%W%m%0%i%`$O%U%j!<!&%=%U%H%&%'%"$G$9!#$"$J$?$O!"(BFree Software
-;; Foundation $B$,8xI=$7$?(B GNU $B0lHL8xM-;HMQ5vBz$N!V%P!<%8%g%s(B 1$B!W$"$k$$$O$=$l(B
-;; $B0J9_$N3F%P!<%8%g%s$NCf$+$i$$$:$l$+$rA*Br$7!"$=$N%P!<%8%g%s$,Dj$a$k>r9`$K(B
-;; $B=>$C$FK\%W%m%0%i%`$r:FHRI[$^$?$OJQ99$9$k$3$H$,$G$-$^$9!#(B
+;; 本プログラムはフリー・ソフトウェアです。あなたは、Free Software
+;; Foundation が公表した GNU 一般公有使用許諾の「バージョン 1」あるいはそれ
+;; 以降の各バージョンの中からいずれかを選択し、そのバージョンが定める条項に
+;; 従って本プログラムを再頒布または変更することができます。
 ;;
-;; $BK\%W%m%0%i%`$OM-MQ$H$O;W$$$^$9$,!"HRI[$K$"$?$C$F$O!";T>l@-5Z$SFCDjL\E*E,(B
-;; $B9g@-$K$D$$$F$N0EL[$NJ]>Z$r4^$a$F!"$$$+$J$kJ]>Z$b9T$J$$$^$;$s!#>\:Y$K$D$$(B
-;; $B$F$O(B GNU $B0lHL8xM-;HMQ5vBz=q$r$*FI$_2<$5$$!#(B
+;; 本プログラムは有用とは思いますが、頒布にあたっては、市場性及び特定目的適
+;; 合性についての暗黙の保証を含めて、いかなる保証も行ないません。詳細につい
+;; ては GNU 一般公有使用許諾書をお読み下さい。
 ;;
-;; $B$"$J$?$O!"K\%W%m%0%i%`$H0l=o$K(B GNU $B0lHL8xM-;HMQ5vBz=q$N<L$7$r<u$1<h$C$F$$(B
-;; $B$k$O$:$G$9!#$=$&$G$J$$>l9g$O!"(BFree Software Foundation, Inc., 675 Mass
-;; Ave, Cambridge, MA 02139, USA $B$X<j;f$r=q$$$F2<$5$$!#(B
+;; あなたは、本プログラムと一緒に GNU 一般公有使用許諾書の写しを受け取ってい
+;; るはずです。そうでない場合は、Free Software Foundation, Inc., 675 Mass
+;; Ave, Cambridge, MA 02139, USA へ手紙を書いて下さい。
 ;;
 ;;;
-;; $B$3$N%W%m%0%i%`$O!";0=EBg3X9)3XItEE5$EE;R9)3X2J$NJ?@.#2G/EYB46H@8(B
-;; $BD;5o(B $B7r$5$s$H?yK\(B $BE/Li$5$s$,:n@.$7!"3yIt(B $B9@$5$s$,G[I[$7$?$b$N$r(B
-;; $B%Y!<%9$H$7$F!"2-DL?.%7%9%F%`$N4dK\$5$s$,(BMULE$BBP1~$X$N=$@55Z$S5!G=(B
-;; $BDI2C$r9T$C$?$b$N$K!"(Bmule 2.x$B$N(BGUI$B5!G=$rMxMQ$7$F%^%&%9A`:n$G7S@~(B
-;; $B$r0z$/5!G=$rDI2C$9$k$?$a$N%b%8%e!<%k$G$9!#(B:-)
+;; このプログラムは、三重大学工学部電気電子工学科の平成２年度卒業生
+;; 鳥居 健さんと杉本 哲也さんが作成し、鎌部 浩さんが配布したものを
+;; ベースとして、沖通信システムの岩本さんがMULE対応への修正及び機能
+;; 追加を行ったものに、mule 2.xのGUI機能を利用してマウス操作で罫線
+;; を引く機能を追加するためのモジュールです。:-)
 ;;
-;; ~/.emacs $B$K(B
+;; ~/.emacs に
 ;; 
 ;;      (if window-system
-;;          (autoload 'keisen-mode "keisen-mouse-mode" "$B7S@~%b!<%I!\%^%&%9(B" t))
-;;    (autoload 'keisen-mode "keisen-mode" "$B7S@~%b!<%I(B" t)
+;;          (autoload 'keisen-mode "keisen-mouse-mode" "罫線モード＋マウス" t))
+;;    (autoload 'keisen-mode "keisen-mode" "罫線モード" t)
 ;;
-;; $B$N$h$&$J(B4$B9T$rF~$l$F$*$/$HNI$$$G$7$g$&(B
+;; のような4行を入れておくと良いでしょう
 ;;
 ;;;
-;; keisen-mouse.el ver 1.0 for keisen-mule 2.02$B&C(B
-;; Author: $B>.NS(B $B@56=(B (masaoki@tky.hp.com)
+;; keisen-mouse.el ver 1.0 for keisen-mule 2.02γ
+;; Author: 小林 正興 (masaoki@tky.hp.com)
 ;;		       
 		       
 (require 'keisen-mode) 
 
-;; $BJQ?t$NDj5A(B
+;; 変数の定義
 (defvar keisen-mouse-restrict-direction t
-  "*non-nil$B$J$i$P(B, $B%^%&%9$N%I%i%C%0$N<+M30\F0$rM^@)$7$FD>@~$r(B
- $BIA$/$h$&$K$9$k(B")
+  "*non-nilならば, マウスのドラッグの自由移動を抑制して直線を
+ 描くようにする")
 
 (defvar keisen-mouse-use-hilite-region t
-  "*non-nil$B$J$i$P(B, $B%^%&%9A`:n$G;M3Q$rIA$$$?$j(B, $B%I%i%C%0$r$9$k>l9g$KHO0O$r(B
- $B%O%$%i%$%H$9$k(B. $BCY$$%^%7%s$G$O(Bnil$B$K$7$?J}$,NI$$$H;W$&(B")
-$B("(B
+  "*non-nilならば, マウス操作で四角を描いたり, ドラッグをする場合に範囲を
+ ハイライトする. 遅いマシンではnilにした方が良いと思う")
+│
 (defvar keisen-mouse-connection-list
-  '("  " "$B("(B" "$B(-(B" "$B("(B" "$B("(B" "$B(-(B" "$B(-(B" "$B(-(B" "$B(-(B"
-    "$B(!(B" "$B(%(B" "$B(0(B" "$B($(B" "$B()(B" "$B(9(B" "$B(/(B" "$B(9(B" "$B(9(B"
-    "$B(,(B" "$B(0(B" "$B(0(B" "$B(/(B" "$B(>(B" "$B(4(B" "$B(/(B" "$B(4(B" "$B(4(B"
-    "$B(!(B" "$B(&(B" "$B(1(B" "$B(#(B" "$B('(B" "$B(7(B" "$B(.(B" "$B(7(B" "$B(7(B"
-    "$B(!(B" "$B(*(B" "$B(?(B" "$B(((B" "$B(+(B" "$B(@(B" "$B(=(B" "$B(@(B" "$B(@(B"
-    "$B(,(B" "$B(:(B" "$B(5(B" "$B(8(B" "$B(;(B" "$B(6(B" "$B(3(B" "$B(6(B" "$B(6(B"
-    "$B(,(B" "$B(1(B" "$B(1(B" "$B(.(B" "$B(<(B" "$B(2(B" "$B(.(B" "$B(2(B" "$B(2(B"
-    "$B(,(B" "$B(:(B" "$B(5(B" "$B(8(B" "$B(;(B" "$B(6(B" "$B(3(B" "$B(6(B" "$B(6(B"
-    "$B(,(B" "$B(:(B" "$B(5(B" "$B(8(B" "$B(;(B" "$B(6(B" "$B(3(B" "$B(6(B" "$B(6(B")
-  "$B@\B3$rI=$9(Bvector$B$+$i3:Ev$9$k7S@~J8;z$rCj=P$9$k$?$a$N%j%9%H(B")
+  '("  " "│" "┃" "│" "│" "┃" "┃" "┃" "┃"
+    "─" "┘" "┛" "┐" "┤" "┨" "┓" "┨" "┨"
+    "━" "┛" "┛" "┓" "┥" "┫" "┓" "┫" "┫"
+    "─" "└" "┗" "┌" "├" "┠" "┏" "┠" "┠"
+    "─" "┴" "┸" "┬" "┼" "╂" "┰" "╂" "╂"
+    "━" "┷" "┻" "┯" "┿" "╋" "┳" "╋" "╋"
+    "━" "┗" "┗" "┏" "┝" "┣" "┏" "┣" "┣"
+    "━" "┷" "┻" "┯" "┿" "╋" "┳" "╋" "╋"
+    "━" "┷" "┻" "┯" "┿" "╋" "┳" "╋" "╋")
+  "接続を表すvectorから該当する罫線文字を抽出するためのリスト")
 
 (defvar keisen-mouse-last-point nil
-  "$B%^%&%9$rN%$7$?:G8e$N%]%$%s%H(B")
+  "マウスを離した最後のポイント")
 
 (defvar keisen-fill-bar-string nil
-  "$B7S@~$N0\F0;~$K;H$&0l;~JQ?t(B")
+  "罫線の移動時に使う一時変数")
 
 (defvar keisen-mouse-hilite-face 'default
-  "$B%I%i%C%0$7$?HO0O$rI=<($9$k$N$K;H$&$?$a$N(Bface$B$r3JG<$9$k0l;~JQ?t(B")
+  "ドラッグした範囲を表示するのに使うためのfaceを格納する一時変数")
 
-;; $B%a%K%e!<%P!<$NDj5A(B
+;; メニューバーの定義
 (defvar keisen-mode-menu (make-sparse-keymap "Keisen"))
 (define-key keisen-mode-map [menu-bar keisen]
   (cons "Keisen" keisen-mode-menu))
@@ -122,10 +122,10 @@
 (define-key-after keisen-mode-menu [help]
   '("Help" . describe-mode) 'stat)
 
-;; $B4X?t$NDj5A(B
+;; 関数の定義
 (defun km:if-shrink-val (xp x) ;-----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- 0$B$+$i(Bxp$B$N?tCMHO0O$K(Bx$B$,F~$C$F$$$k$+(B, x$B$H(Bxp$B$NId9f$,0c$&>l9g$O(Bt"
+  "[罫線モード関数]
+ 0からxpの数値範囲にxが入っているか, xとxpの符号が違う場合はt"
   (if (> xp 0)
       (if (> x 0)
           (> xp x)
@@ -134,9 +134,9 @@
       (> x xp))))
 
 (defun km:if-shrink-rectangle (initial-xy prev-xy current-xy) ;----------------
-  "[$B7S@~%b!<%I4X?t(B]
- initial-xy$B$+$i(Bprev-xy$B$N6k7AHO0O$K(Bcurrent-xy$B$,4^$^$l$k>l9g$O(Bt,
- $B$=$&$G$J$1$l$P(Bnil$B$rJV$9(B. $B$=$l$>$l$N0z?t$O(Bassoc-list$B$K$J$C$F$$$k(B"
+  "[罫線モード関数]
+ initial-xyからprev-xyの矩形範囲にcurrent-xyが含まれる場合はt,
+ そうでなければnilを返す. それぞれの引数はassoc-listになっている"
   ;;(print (cons initial-xy (cons prev-xy (list current-xy))))
   (if (null prev-xy) nil
     (let* ((x0 (car initial-xy))
@@ -149,9 +149,9 @@
           (km:if-shrink-val py cy)))))
 
 (defun km:move-to-position (posn) ;--------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $BI,MW$J$i%9%Z!<%9$d2~9T$rF~$l$J$,$i(B, event$B$GF@$?2hLL>e$N(Bposn$B$N0LCV$K(B
- $B%+!<%=%k$r0\F0$9$k(B"
+  "[罫線モード関数]
+ 必要ならスペースや改行を入れながら, eventで得た画面上のposnの位置に
+ カーソルを移動する"
   (goto-char (window-start))
   (let ((row (cdr (posn-col-row posn)))
         (indent-tabs-mode nil))
@@ -166,15 +166,15 @@
      nil)))
 
 (defun km:hilite-rectangle-line (pos ignore ignore) ;--------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B6k7ANN0h$N0l9T$r%O%$%i%$%H$9$k(B"
+  "[罫線モード関数]
+ 矩形領域の一行をハイライトする"
   (put-text-property pos (point) 'face keisen-mouse-hilite-face))
 
 (defun km:hilite-rectangle (start end) ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B6k7ANN0h$r%O%$%i%$%H$9$k(B"
+  "[罫線モード関数]
+ 矩形領域をハイライトする"
   (cond (keisen-mouse-use-hilite-region
-         ;; start$B$H(Bend$B$,=g$K$J$C$F$$$J$$$H@5$7$/F/$+$J$$(B
+         ;; startとendが順になっていないと正しく働かない
          (if (> start end)
              (let ((buf start))
                (setq start end
@@ -183,47 +183,47 @@
                                start end nil))))
 
 (defun km:keisen-char-vector (str) ;-------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B0z?t$N7S@~J8;z#1J8;z$N@\B3J}8~$rI=$9(Bvector$B$rJV$9(B"
+  "[罫線モード関数]
+ 引数の罫線文字１文字の接続方向を表すvectorを返す"
   (let (p1 p2 p3 p4)
-    (setq p1 (if (string-match str "$B("('(+(*()(&(%(<(:(;(>(B")
+    (setq p1 (if (string-match str "│├┼┴┤└┘┝┷┿┥")
                  1
-               (if (string-match str "$B(-(7(@(?(9(1(0(6(2(5(4(B")
+               (if (string-match str "┃┠╂┸┨┗┛╋┣┻┫")
                    2 0))
-          p2 (if (string-match str "$B("('(+((()(#($(<(8(;(>(B")
+          p2 (if (string-match str "│├┼┬┤┌┐┝┯┿┥")
                  1
-               (if (string-match str "$B(-(7(@(=(9(.(/(6(2(3(4(B")
+               (if (string-match str "┃┠╂┰┨┏┓╋┣┳┫")
                    2 0))
-          p3 (if (string-match str "$B(!(((+(*()($(%(?(=(@(9(B")
+          p3 (if (string-match str "─┬┼┴┤┐┘┸┰╂┨")
                  1
-               (if (string-match str "$B(,(3(6(5(4(/(0(;(>(8(:(B")
+               (if (string-match str "━┳╋┻┫┓┛┿┥┯┷")
                    2 0))
-          p4 (if (string-match str "$B(!(((+(*('(#(&(?(=(@(7(B")
+          p4 (if (string-match str "─┬┼┴├┌└┸┰╂┠")
                  1
-               (if (string-match str "$B(,(3(6(5(2(.(1(;(<(8(:(B")
+               (if (string-match str "━┳╋┻┣┏┗┿┝┯┷")
                    2 0)))
     (vector p1 p2 p3 p4)))
 
 (defun km:following-char-vector () ;-------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$N7S@~J8;z$N@\B3J}8~$rI=$9(Bvector$B$rJV$9(B"
+  "[罫線モード関数]
+ ポイント位置の罫線文字の接続方向を表すvectorを返す"
   (km:keisen-char-vector (char-to-string (following-char))))
 
 (defun km:vector-to-keisen (v) ;-----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $BM?$($i$l$?(Bvector$B$KBP1~$9$k7S@~J8;z$rJV$9(B"
+  "[罫線モード関数]
+ 与えられたvectorに対応する罫線文字を返す"
   (let ((val (+ (aref v 0) (* 3 (aref v 1))
                 (* 9 (aref v 2)) (* 27 (aref v 3)))))
     (nth val keisen-mouse-connection-list)))
 
 (defun km:central-vector (v1 v2 v3 v4) ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B>e2<:81&$N7S@~J8;z$N(Bvector$B$+$i(B, $BE,@Z$JCf?4(Bvector$B$r5a$a$k(B"
+  "[罫線モード関数]
+ 上下左右の罫線文字のvectorから, 適切な中心vectorを求める"
   (vector (aref v1 1) (aref v2 0) (aref v3 3) (aref v4 2)))
 
 (defun km:relative-vector (x y) ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$+$iM?$($i$l$?AjBP:BI80LCV$N7S@~J8;z$N(Bvector$B$rJV$9(B"
+  "[罫線モード関数]
+ ポイント位置から与えられた相対座標位置の罫線文字のvectorを返す"
   (save-excursion
     (let ((col (current-column)))
       (cond ((= y 1)
@@ -232,7 +232,7 @@
                  (newline)
                (forward-char 1)))
             ((= y -1)
-             (if (< (forward-line -1) 0) ; $B:G>e9T$+$i>e$K9T$3$&$H$7$?(B
+             (if (< (forward-line -1) 0) ; 最上行から上に行こうとした
                  (setq col -100))))
       (setq col (+ col (* x 2)))
       (if (> 0 col)
@@ -241,74 +241,74 @@
         (km:following-char-vector)))))
 
 (defun km:col-horizontal-bar () ;----------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$+$i2#J}8~$K$D$J$,$k7S@~$NN>=*C<0LCV$r5a$a(B, 
- $B;OE@$H=*E@$N(Bcolumn$B$N(B2$BMWAG$N(Bvector$B$K$7$FJV$9(B"
+  "[罫線モード関数]
+ ポイント位置から横方向につながる罫線の両終端位置を求め, 
+ 始点と終点のcolumnの2要素のvectorにして返す"
   (save-excursion
     (let ((c0 (current-column))
           c c1 c2)
       (setq c (max 0 (- c0 2)))
       (km:move-to-column-force c nil)
-      ;; $B$^$::8J}8~$rC5$7$F9T$/(B
-      (while (and (string-match "[$B(!(,(((3(8(=(*(5(:(?(+(6(@(;(B]"
+      ;; まず左方向を探して行く
+      (while (and (string-match "[─━┬┳┯┰┴┻┷┸┼╋╂┿]"
                                 (char-to-string (following-char)))
                   (> c 1))
         (setq c (- c 2))
         (km:move-to-column-force c nil))
-      (or (string-match "[$B(#(&(.(1('(2(<(7(B]"
+      (or (string-match "[┌└┏┗├┣┝┠]"
                         (char-to-string (following-char)))
           (setq c (+ c 2)))
       (setq c1 (max 0 c))
-      ;; $B1&J}8~$rC5$9(B
+      ;; 右方向を探す
       (setq c (+ c0 2))
       (km:move-to-column-force c nil)
-      (while (and (string-match "[$B(!(,(((3(8(=(*(5(:(?(+(6(@(;(B]"
+      (while (and (string-match "[─━┬┳┯┰┴┻┷┸┼╋╂┿]"
                                 (char-to-string (following-char)))
                   (null (eolp)))
         (setq c (+ c 2))
         (km:move-to-column-force c nil))
-      (or (string-match "[$B($(%(/(0(9(>(4()(B]"
+      (or (string-match "[┐┘┓┛┨┥┫┤]"
                         (char-to-string (following-char)))
           (setq c (- c 2)))
       (setq c2 c)
       (vector c1 c2))))
 
-;; horizontal $B$H(B vertical $B$G$O(B bar $B$rI=$9(B vector $B$N0UL#$,0c$&$3$H$KCm0U(B
+;; horizontal と vertical では bar を表す vector の意味が違うことに注意
 (defun km:col-vertical-bar () ;------------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$+$i=DJ}8~$K$D$J$,$k7S@~$NN>=*C<0LCV$r5a$a(B, 
- $B;OE@$N%]%$%s%H$HD9$5$N(B2$BMWAG$N(Bvector$B$K$7$FJV$9(B"
+  "[罫線モード関数]
+ ポイント位置から縦方向につながる罫線の両終端位置を求め, 
+ 始点のポイントと長さの2要素のvectorにして返す"
   (save-excursion
     (let ((p (point))
           p1 p2)
       (km:picture-move-down -1)
-      ;; $B$^$:>eJ}8~$rC5$7$F9T$/(B
-      (while (and (string-match "[$B("(-()(4(9(>('(2(<(7(+(6(@(;(B]"
+      ;; まず上方向を探して行く
+      (while (and (string-match "[│┃┤┫┨┥├┣┝┠┼╋╂┿]"
                                 (char-to-string (following-char)))
                   (null (bobp)))
         (km:picture-move-down -1))
-      (or (string-match "[$B(#($(.(/(((3(8(=(B]"
+      (or (string-match "[┌┐┏┓┬┳┯┰]"
                         (char-to-string (following-char)))
           (km:picture-move-down 1))
       (setq p1 (point))
-      ;; $B2<J}8~$rC5$9(B
-      ;; $B>e$K0lEY>e$,$C$F$$$k$N$G!"=i4|$N(Bpoint$B$N%P%C%U%!Fb$N0LCV$O$:$l$F$$$k(B
-      ;; $B$+$b$7$l$J$$$N$G!"8=:_$N(Bpoint$B$+$i!"$^$?5U$K2<$,$k(B
+      ;; 下方向を探す
+      ;; 上に一度上がっているので、初期のpointのバッファ内の位置はずれている
+      ;; かもしれないので、現在のpointから、また逆に下がる
       (setq p2 1)
       (km:picture-move-down 1)
-      (while (and (string-match "[$B("(-()(4(9(>('(2(<(7(+(6(@(;(B]"
+      (while (and (string-match "[│┃┤┫┨┥├┣┝┠┼╋╂┿]"
                                 (char-to-string (following-char)))
                   (null (eobp)))
         (setq p2 (1+ p2))
         (km:picture-move-down 1))
-      (or (string-match "[$B(&(%(1(0(*(5(:(?(B]"
+      (or (string-match "[└┘┗┛┴┻┷┸]"
                         (char-to-string (following-char)))
           (setq p2 (1- p2)))
       (vector p1 p2))))
 
 (defun km:hilite-horizontal-bar (bar face) ;-----------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- 2$BMWAG$N(Bvector$B$r%]%$%s%H0LCV$+$iN>C<$H8+$F%O%$%i%$%H$9$k(B"
+  "[罫線モード関数]
+ 2要素のvectorをポイント位置から両端と見てハイライトする"
   (and keisen-mouse-use-hilite-region
        bar
        (save-excursion
@@ -319,8 +319,8 @@
            (put-text-property p (point) 'face face)))))
 
 (defun km:hilite-vertical-bar (bar face) ;-------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- 2$BMWAG$N(Bvector$B$r%]%$%s%H0LCV$+$iN>C<$H8+$F%O%$%i%$%H$9$k(B"
+  "[罫線モード関数]
+ 2要素のvectorをポイント位置から両端と見てハイライトする"
   (and keisen-mouse-use-hilite-region
        bar
        (save-excursion
@@ -337,10 +337,10 @@
              (setq c (1- c)))))))
 
 (defun km:check-horizontal-bar (vec y) ;---------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$+$i(Bvec$B$GI=$5$l$k(Bbar$B$r=DJ}8~$K0\F02DG=$+$I$&$+D4$Y$k(B
- $B0\F02DG=$G$"$l$P(B, vec$B$KBP$7$F0\F0$7$?8e$KJd40$5$l$k$Y$-J8;zNs$r(B
- keisen-fill-bar-string $B$KF~$l(B, t$B$rJV$9(B"
+  "[罫線モード関数]
+ ポイント位置からvecで表されるbarを縦方向に移動可能かどうか調べる
+ 移動可能であれば, vecに対して移動した後に補完されるべき文字列を
+ keisen-fill-bar-string に入れ, tを返す"
   (setq keisen-fill-bar-string nil)
   (save-excursion
     (if (save-excursion (< (forward-line y) 0))
@@ -355,16 +355,16 @@
           (setq v1 (km:following-char-vector))
           (setq v2 (km:relative-vector 0 (- y)))
           (setq v3 (vector (aref v2 ai) (aref v2 ai) 0 0))
-          ;; $B:8C<$N=hM}(B
+          ;; 左端の処理
           (if (= c0 (aref vec 0))
-              (if (or (/= (aref v2 0) 0) ; "$B(!(B" $B$N$H$-$O9g@.$7$?$/$J$$(B
+              (if (or (/= (aref v2 0) 0) ; "─" のときは合成したくない
                       (/= (aref v2 1) 0))
                   (aset v3 2 (aref v2 2)))
             (if (/= (aref v1 2) 0)
                 (setq r nil)))
-          ;; $B1&C<$N=hM}(B
+          ;; 右端の処理
           (if (= c0 c1)
-              (if (or (/= (aref v2 0) 0) ; "$B(!(B" $B$N$H$-$O9g@.$7$?$/$J$$(B
+              (if (or (/= (aref v2 0) 0) ; "─" のときは合成したくない
                       (/= (aref v2 1) 0))
                   (aset v3 3 (aref v2 3)))
             (if (/= (aref v1 3) 0)
@@ -376,10 +376,10 @@
         r))))
 
 (defun km:check-vertical-bar (vec x) ;-----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- vec$B$GI=$5$l$k=D(Bbar$B$r2#J}8~$K0\F02DG=$+$I$&$+D4$Y$k(B
- $B0\F02DG=$G$"$l$P(B, vec$B$KBP$7$F0\F0$7$?8e$KJd40$5$l$k$Y$-J8;zNs$r(B
- keisen-fill-bar-string $B$KF~$l(B, t$B$rJV$9(B"
+  "[罫線モード関数]
+ vecで表される縦barを横方向に移動可能かどうか調べる
+ 移動可能であれば, vecに対して移動した後に補完されるべき文字列を
+ keisen-fill-bar-string に入れ, tを返す"
   (setq keisen-fill-bar-string nil)
   (save-excursion
     (let ((x-org (current-column))
@@ -396,16 +396,16 @@
             (km:move-to-column-force x-new nil)
             (setq v1 (km:following-char-vector))
             (setq v3 (vector 0 0 (aref v2 ai) (aref v2 ai)))
-            ;; $B>eC<$N=hM}(B
+            ;; 上端の処理
             (if (= c (aref vec 1))
-                (if (or (/= (aref v2 2) 0) ; "$B("(B" $B$N$H$-$O9g@.$7$?$/$J$$(B
+                (if (or (/= (aref v2 2) 0) ; "│" のときは合成したくない
                         (/= (aref v2 3) 0))
                     (aset v3 0 (aref v2 0)))
               (if (/= (aref v1 0) 0)
                   (setq r nil)))
-            ;; $B2<C<$N=hM}(B
+            ;; 下端の処理
             (if (= c 0)
-                (if (or (/= (aref v2 2) 0) ; "$B("(B" $B$N$H$-$O9g@.$7$?$/$J$$(B
+                (if (or (/= (aref v2 2) 0) ; "│" のときは合成したくない
                         (/= (aref v2 3) 0))
                     (aset v3 1 (aref v2 1)))
               (if (/= (aref v1 1) 0)
@@ -418,37 +418,37 @@
           r)))))
 
 (defun km:add-direction (str dir wid) ;----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~J8;z(Bstr$B$NJ}8~(Bdir$B$KB@$5(Bwid$B$N7S@~$r2C$((B, $BJV$9(B"
+  "[罫線モード関数]
+ 罫線文字strの方向dirに太さwidの罫線を加え, 返す"
   (let ((vec (km:keisen-char-vector str)))
     (aset vec dir wid)
     (km:vector-to-keisen vec)))
 
 (defun km:width-direction (str dir) ;------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B7S@~J8;z(Bstr$B$NJ}8~(Bdir$B$N7S@~$NB@$5$rJV$9(B"
+  "[罫線モード関数]
+ 罫線文字strの方向dirの罫線の太さを返す"
   (aref (km:keisen-char-vector str) dir))
 
 (defun km:replace-keisen-string (str dir) ;------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$+$i7S@~J8;zNs$r(Bdir(0=$B1&(B,1=$B2<(B)$B$K8~$+$C$FJ#?tJ8;z=E$M=q$-$9$k(B
- $B%P%C%U%!>e$G=E$M=q$-$5$l$?85$NJ8;zNs$rJV$9(B"
+  "[罫線モード関数]
+ ポイント位置から罫線文字列をdir(0=右,1=下)に向かって複数文字重ね書きする
+ バッファ上で重ね書きされた元の文字列を返す"
   (save-excursion
     (let ((org-str nil)
           (p 0)
           (len (length str))
           d1 d2 pat
           w ss c)
-      (cond ((= dir 0) ; $B1&J}8~$K9T$/(B
+      (cond ((= dir 0) ; 右方向に行く
              (setq d1 2
                    d2 3
-                   pat "[$B(!(,(B]")
+                   pat "[─━]")
              (setq keisen-vertical-move-count 0)
              (setq keisen-horizontal-move-count 1))
-            ((= dir 1) ; $B2<J}8~$K9T$/(B
+            ((= dir 1) ; 下方向に行く
              (setq d1 0
                    d2 1
-                   pat "[$B("(-(B]")
+                   pat "[│┃]")
              (setq keisen-vertical-move-count 1)
              (setq keisen-horizontal-move-count 0)))
       (while (> len p)
@@ -470,9 +470,9 @@
       org-str)))
 
 (defun km:bar-move-up-down (bar y) ;-------------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$N2#J}8~$N7S@~(Bbar$B$r>e2<$K0\F0$9$k(B
- $B0\F0$G$-$?$i(B t $B$rJV$9(B"
+  "[罫線モード関数]
+ ポイント位置の横方向の罫線barを上下に移動する
+ 移動できたら t を返す"
   (let ((possible (km:check-horizontal-bar bar y))
         org-str)
     (if (null possible)
@@ -486,9 +486,9 @@
       t)))
 
 (defun km:bar-move-left-right (bar x) ;----------------------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%]%$%s%H0LCV$N2#J}8~$N7S@~(Bbar$B$r:81&$K0\F0$9$k(B
- $B0\F0$G$-$?$i(B t $B$rJV$9(B"
+  "[罫線モード関数]
+ ポイント位置の横方向の罫線barを左右に移動する
+ 移動できたら t を返す"
   (let ((possible (km:check-vertical-bar bar x))
         (col (current-column))
         org-str)
@@ -499,15 +499,15 @@
             (km:replace-keisen-string keisen-fill-bar-string 1))
       (km:move-to-column-force (+ col (* x 2)) nil)
       (km:replace-keisen-string org-str 1)
-      ;; $B=D(Bbar$B$OF0$+$9$HCM$,JQ2=$9$k(B
+      ;; 縦barは動かすと値が変化する
       (aset bar 0 (point))
       t)))
 
 (defun km:drag-region (event face &optional adjust) ;--------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%^%&%9$G(Bevent$B$N;XDj0LCV$+$i6k7AHO0O$r%I%i%C%0$9$k(B. $B:G8e$K%\%?%s(B
- $B$,%j%j!<%9$5$l$?(Bevent$B$rJV$9(B. keisen-mouse-use-hilite-region$B$,(Bt$B$J(B
- $B$i$P(B, $B;XDj$5$l$?(Bface$B$GHO0O$r%O%$%i%$%HI=<($9$k(B"
+  "[罫線モード関数]
+ マウスでeventの指定位置から矩形範囲をドラッグする. 最後にボタン
+ がリリースされたeventを返す. keisen-mouse-use-hilite-regionがtな
+ らば, 指定されたfaceで範囲をハイライト表示する"
   (let* ((e0 (event-end event))
          (w0 (posn-window e0))
          (x-y0 (posn-col-row e0))
@@ -530,13 +530,13 @@
                      (x-y (posn-col-row posn)))
                 (if truncate-lines
                     (setq x-y (cons (+ (car x-y) (window-hscroll)) (cdr x-y))))
-                ;; frame$B$+$i$O$_=P$7$?$j(B, Window$B$+$i$O$_=P$7$?>l9g$O=hM}$r$7$J$$(B
+                ;; frameからはみ出したり, Windowからはみ出した場合は処理をしない
                 (cond ((and (windowp w) (eq w w0))
-                       ;; $B6k7ANN0h$,>.$5$/$J$C$?$i!"$O$_=P$?J,$r>C$9(B
+                       ;; 矩形領域が小さくなったら、はみ出た分を消す
                        (and (km:if-shrink-rectangle x-y0 px-y x-y)
                             (setq keisen-mouse-hilite-face 'default)
                             (km:hilite-rectangle (km:what-mark-point) pp))
-                       ;; $B6k7ANN0h$r%O%$%i%$%H$9$k(B
+                       ;; 矩形領域をハイライトする
                        (km:move-to-position posn)
                        (setq keisen-mouse-hilite-face face
                              pp (point))
@@ -546,15 +546,15 @@
     event))
 
 (defun km:drag-keisen-horizontally (event vbar w0 x0) ;------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%I%i%C%0A`:n$N(Bevent$B$K$h$C$FF@$i$l$k0LCV$K8~$+$C$F(B, $B=DJ}8~$N7S@~$N(Bbar$B$r(B
- $B?eJ?J}8~$K0\F0$9$k(B. $B0\F08e$N?7$7$$(Bx0$B$rJV$9(B"
+  "[罫線モード関数]
+ ドラッグ操作のeventによって得られる位置に向かって, 縦方向の罫線のbarを
+ 水平方向に移動する. 移動後の新しいx0を返す"
   (let* ((posn (event-end event))
          (w (posn-window posn))
          (x-y (posn-col-row posn))
          (keep t)
          (x (+ (- (car x-y) x0) (window-hscroll))))
-    ;; frame$B$+$i$O$_=P$7$?$j!"(BWindow$B$+$i$O$_=P$7$?>l9g$O=hM}$r$7$J$$(B
+    ;; frameからはみ出したり、Windowからはみ出した場合は処理をしない
     (cond ((and (windowp w) (eq w w0))
            (if vbar
                (while (and keep
@@ -577,15 +577,15 @@
   x0)
 
 (defun km:drag-keisen-vertically (event hbar w0 y0) ;--------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B%I%i%C%0A`:n$N(Bevent$B$K$h$C$FF@$i$l$k0LCV$K8~$+$C$F(B, $B2#J}8~$N7S@~$N(Bbar$B$r(B
- $B?bD>J}8~$K0\F0$9$k(B. $B0\F08e$N?7$7$$(By0$B$rJV$9(B"
+  "[罫線モード関数]
+ ドラッグ操作のeventによって得られる位置に向かって, 横方向の罫線のbarを
+ 垂直方向に移動する. 移動後の新しいy0を返す"
   (let* ((posn (event-end event))
          (w (posn-window posn))
          (x-y (posn-col-row posn))
          (keep t)
          (y (- (cdr x-y) y0)))
-    ;; frame$B$+$i$O$_=P$7$?$j!"(BWindow$B$+$i$O$_=P$7$?>l9g$O=hM}$r$7$J$$(B
+    ;; frameからはみ出したり、Windowからはみ出した場合は処理をしない
     (cond ((and (windowp w) (eq w w0))
            (if hbar
                (while (and keep (/= y 0))
@@ -605,9 +605,9 @@
   y0)
 
 (defun km:substring (str offset col &optional flg) ;---------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $BJ8;zNs$N(Boffset$B%+%i%`0LCV$+$i;XDj%+%i%`$^$G<h$j=P$9(B
- flg$B$,(Bt$B$N>l9g(B, $BG\I}$NJ8;z$,6-3&$KF~$C$?>l9g$O%9%Z!<%9$rJd40$9$k(B"
+  "[罫線モード関数]
+ 文字列のoffsetカラム位置から指定カラムまで取り出す
+ flgがtの場合, 倍幅の文字が境界に入った場合はスペースを補完する"
   (let ((pos 0)
         (c 0)
         ch ret)
@@ -629,10 +629,10 @@
     ret))
 
 (defun km:mouse-move-rectangle (rect begin end x y) ;--------------------------
-  "[$B7S@~%b!<%I4X?t(B]
- $B6k7A%G!<%?$r(Bx$B$,@5$J$i8e$+$i(Bx$B%+%i%`(B, $BIi$J$iA0$+$i(B-x$B%+%i%`(B, 
- y$B$,@5$J$i:G8e$+$i(By$B9T(B, $BIi$J$i@hF,$+$i(B-y$B9T>.$5$/$7$F(B, $B%]%$%s%H(B
- $B0LCV0J9_(B(x,y)$B$N0LCV$K$K>e=q$-$GA^F~$9$k(B"
+  "[罫線モード関数]
+ 矩形データをxが正なら後からxカラム, 負なら前から-xカラム, 
+ yが正なら最後からy行, 負なら先頭から-y行小さくして, ポイント
+ 位置以降(x,y)の位置にに上書きで挿入する"
   (let ((xlen (km:string-column (nth 0 rect)))
         (ylen (length rect))
         (new-end end)
@@ -672,12 +672,12 @@
         (km:hilite-rectangle begin new-end)))
     new-end))
 
-;; $B%$%s%?%i%/%F%#%V4X?t$NDj5A(B
+;; インタラクティブ関数の定義
 (defun keisen-mouse-draw-line (event) ;----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$G7S@~$r$R$/(B. $B%I%i%C%0A`:n$J$N$G(Bdown-mouse-x$B$K%P%$%s%I$9$k(B.
- keisen-mouse-restrict-direction$B$,(Bt$B$K$J$C$F$$$k$H(B, $B:G=i$KF0$$$?J}8~$K(B
- $B$N$_7S@~$,0z$1(B, $BESCf$+$iJ}8~$rJQ$($k$3$H$,$G$-$J$$(B"
+  "[罫線モード機能]
+ マウスで罫線をひく. ドラッグ操作なのでdown-mouse-xにバインドする.
+ keisen-mouse-restrict-directionがtになっていると, 最初に動いた方向に
+ のみ罫線が引け, 途中から方向を変えることができない"
   (interactive "e")
   (let* ((e0 (event-end event))
          (w0 (posn-window e0))
@@ -704,15 +704,15 @@
                      (y (cdr x-y))
                      (v (- y y0))
                      (h (/ (- x x0) 2)))
-                ;; frame$B$+$i$O$_=P$7$?$j!"(BWindow$B$+$i$O$_=P$7$?>l9g$O=hM}$r$7$J$$(B
+                ;; frameからはみ出したり、Windowからはみ出した場合は処理をしない
                 (cond ((and (windowp w) (eq w w0))
-                       ;; hmode$B$b(Bvmode$B$b%;%C%H$5$l$F$$$J$$$J$i%;%C%H$9$k(B
+                       ;; hmodeもvmodeもセットされていないならセットする
                        (or hmode vmode
                            (if (and (= v 0) (/= h 0))
                                (setq hmode t)
                              (or (= v 0) (setq vmode t))))
-                       ;; $B0lEY>e2<$KF0$-=P$7$?$i!":81&$K$OF0$+$J$$(B
-                       ;; $B0lEY:81&$KF0$-=P$7$?$i!">e2<$K$OF0$+$J$$(B
+                       ;; 一度上下に動き出したら、左右には動かない
+                       ;; 一度左右に動き出したら、上下には動かない
                        (and keisen-mouse-restrict-direction
                             (cond (vmode (setq h 0))
                                   (hmode (setq v 0))))
@@ -737,8 +737,8 @@
         (setq keisen-mouse-last-point (cons x0 y0))))))
 
 (defun keisen-mouse-transform-char (event) ;-----------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$G;XDj$7$?%]%$%s%H$N7S@~J8;z$r<~0O$K@5$7$/@\B3$9$k$h$&$K=$@5$9$k(B"
+  "[罫線モード機能]
+ マウスで指定したポイントの罫線文字を周囲に正しく接続するように修正する"
   (interactive "e")
   (mouse-set-point event)
   (let ((x (car (posn-col-row (event-end event)))))
@@ -755,34 +755,34 @@
       (km:insert-keisen str))))
                                     
 (defun keisen-mouse-down (event) ;---------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$G;XDj$7$?%]%$%s%H$r;X$7(B, $B%/%j%C%/2s?t$K1~$8$F2<0L$N5!G=$r8F$SJ,$1$k(B"
+  "[罫線モード機能]
+ マウスで指定したポイントを指し, クリック回数に応じて下位の機能を呼び分ける"
   (interactive "e")
   (mouse-set-point event)
   (let ((count (event-click-count event)))
     (if (= count 1)
         (keisen-mouse-draw-line event)
-      ;; 2$B2s(Bclick$B$7$?$H$-$O!"(Bdouble-xx$B$H(Bdouble-down-xx$B$N(B2$B$D$N(Bevent$B$,(B
-      ;; $BMh$k$N$G!"(Bdown$B$N$H$-$O=hM}$7$J$$(B
+      ;; 2回clickしたときは、double-xxとdouble-down-xxの2つのeventが
+      ;; 来るので、downのときは処理しない
       (and (= count 2)
            (null (memq 'down (event-modifiers event)))
            (keisen-mouse-transform-char event)))))
 
 (defun keisen-mouse-square-line (event) ;--------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$G;XDj$7$?HO0O$K7S@~$G;M3Q$rIA$/(B"
+  "[罫線モード機能]
+ マウスで指定した範囲に罫線で四角を描く"
   (interactive "e")
   (mouse-set-point event)
   (setq event (km:drag-region event 'region keisen-adjust-column-force))
   (km:move-to-position (event-end event))
   (keisen-square-line)
-  ;; $B%O%$%i%$%H$7$?NN0h$r85$KLa$9(B
+  ;; ハイライトした領域を元に戻す
   (setq keisen-mouse-hilite-face 'default)
   (km:hilite-rectangle (km:what-mark-point) (point)))
 
 (defun keisen-mouse-drag-line (event) ;----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$G4{B8$N7S@~$r%I%i%C%00\F0$9$k(B"
+  "[罫線モード機能]
+ マウスで既存の罫線をドラッグ移動する"
   (interactive "e")
   (mouse-set-point event)
   (let ((vec (km:following-char-vector))
@@ -808,7 +808,7 @@
         (setq event (read-event))
         (if (eq (event-basic-type event) 'mouse-movement)
             (let (nx ny)
-              ;; y$BJ}8~$X$N0\F0=hM}(B
+              ;; y方向への移動処理
               (save-excursion
                 (km:hilite-horizontal-bar hbar 'default)
                 (setq ny (km:drag-keisen-vertically event hbar w0 y0)))
@@ -821,7 +821,7 @@
                        (km:hilite-vertical-bar vbar 'region)))
                 (setq y0 ny))
               (km:hilite-horizontal-bar hbar 'region)
-              ;; x$BJ}8~$X$N0\F0=hM}(B
+              ;; x方向への移動処理
               (save-excursion
                 (km:hilite-vertical-bar vbar 'default)
                 (setq nx (km:drag-keisen-horizontally event vbar w0 x0)))
@@ -838,8 +838,8 @@
     (km:hilite-vertical-bar vbar 'default)))
 
 (defun keisen-mouse-drag-char (event) ;----------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$GI=Cf$NJ8;z$r%I%i%C%0$9$k(B"
+  "[罫線モード機能]
+ マウスで表中の文字をドラッグする"
   (interactive "e")
   (mouse-set-point event)
   (let* ((posn0 (event-end event))
@@ -883,47 +883,47 @@
     (km:hilite-rectangle begin end)))
 
 (defun keisen-mouse-drag-* (event) ;-------------------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$GJ8;z$+7S@~$r%I%i%C%0$9$k(B"
+  "[罫線モード機能]
+ マウスで文字か罫線をドラッグする"
   (interactive "e")
   (mouse-set-point event)
-  (if (string-match "[$B(!(B-$B(@(B]" (char-to-string (following-char)))
+  (if (string-match "[─-╂]" (char-to-string (following-char)))
       (keisen-mouse-drag-line event)
     (keisen-mouse-drag-char event)))
 
 (defun keisen-mouse-copy-rectangle (event) ;-----------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$G;XDj$7$?HO0O$r6k7A%P%C%U%!$KJ]B8$9$k(B"
+  "[罫線モード機能]
+ マウスで指定した範囲を矩形バッファに保存する"
   (interactive "e")
   (mouse-set-point event)
-  ;; $B%I%i%C%0$9$k(B
+  ;; ドラッグする
   (setq event (km:drag-region event 'highlight))
-  ;; $BHO0O$N=*E@$K9T$/(B
+  ;; 範囲の終点に行く
   (km:move-to-position (event-end event))
-  ;; $B%O%$%i%$%H$7$?NN0h$r85$KLa$9(B
+  ;; ハイライトした領域を元に戻す
   (setq keisen-mouse-hilite-face 'default)
   (let ((pp (point)))
     (km:hilite-rectangle (km:what-mark-point) pp)
-    ;; $B%l%8%9%?$KJ]B8$9$k(B
+    ;; レジスタに保存する
     (setq km:rectangle-save-buffer
           (km:save-extract-rectangle (km:what-mark-point) pp))))
 
 (defun keisen-mouse-yank-rectangle (event) ;-----------------------------------
-  "[$B7S@~%b!<%I5!G=(B]
- $B%^%&%9$G;XDj$7$?0LCV$K6k7A%P%C%U%!$r%Z!<%9%H$9$k(B"
+  "[罫線モード機能]
+ マウスで指定した位置に矩形バッファをペーストする"
   (interactive "e")
   (mouse-set-point event)
   (km:insert-rectangle km:rectangle-save-buffer))
 
-;; $B%^%&%9$N%^%C%T%s%0$r$9$k(B
+;; マウスのマッピングをする
 ;;
-;; $B%\%?%s(B1 : $B%I%i%C%0$7$F7S@~$r0z$/(B
-;; $B%\%?%s(B2 : $B%I%i%C%0$7$F7S@~$dI=$NCf?H$r0\F0$9$k(B
-;; $B%\%?%s(B3 : $B%I%i%C%0$7$F7S@~$K$h$k;M3Q$rIA$/(B
-;; $B%\%?%s(B1$B%@%V%k%/%j%C%/(B : $B<~0O$N7S@~$H@5$7$/$D$J$,$k$h$&$K7S@~$N(B
-;;                         $B8~$-$r=$@5$9$k(B
-;; M-$B%\%?%s(B1 : $B6k7A%3%T!<(B
-;; M-$B%\%?%s(B2 : $B6k7A%Z!<%9%H(B
+;; ボタン1 : ドラッグして罫線を引く
+;; ボタン2 : ドラッグして罫線や表の中身を移動する
+;; ボタン3 : ドラッグして罫線による四角を描く
+;; ボタン1ダブルクリック : 周囲の罫線と正しくつながるように罫線の
+;;                         向きを修正する
+;; M-ボタン1 : 矩形コピー
+;; M-ボタン2 : 矩形ペースト
 ;;
 (define-key keisen-mode-map [down-mouse-1] 'keisen-mouse-down)
 (define-key keisen-mode-map [double-mouse-1] 'keisen-mouse-down)
